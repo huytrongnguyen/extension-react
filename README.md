@@ -124,6 +124,26 @@ export default class Dashboard extends Component {
 
 The ```@Container``` decorator will provide a data stores to component's view. Note that you can load multiple data stores in one component, all data stores will be placed in ```props.store```.
 
+### Observer pattern
+
+Then ```Observable.create``` is an alias for the ```Observable``` constructor, you can call the ```subscribe``` function after create the observable.
+
+```javascript
+const observable = Observable.create()
+
+observable.subscribe(store => {
+  const { stores } = this.state
+  stores[store.name] = store
+  this.setState(() => ({ stores }))
+})
+```
+
+Whenever ```Observable``` is called, the ```subscribe``` function will be fired:
+
+```javascript
+observable.call(/* observer */)
+```
+
 ### Separation of Concerns
 
 At first, you define a simple store:
@@ -176,7 +196,6 @@ class SearchForm extends Component {
 })
 export default class SearchResult extends Component {
   render() {
-    console.log(this.props.stores.FamilyStore)
     return <section></section>
   }
 }
