@@ -1,7 +1,7 @@
 # Extension React
 
 [![npm version](http://img.shields.io/npm/v/ext-react.svg?style=flat-square)](http://npmjs.org/package/ext-react)
-[![Travis build status](https://travis-ci.org/huytrongnguyen/ext-react.svg)](https://travis-ci.org/huytrongnguyen/ext-react)
+[![Travis build status](https://travis-ci.org/huytrongnguyen/extension-react.svg)](https://travis-ci.org/huytrongnguyen/extension-react)
 [![npm download](https://img.shields.io/npm/dm/ext-react.svg?style=flat-square)](https://npmjs.org/package/ext-react)
 [![npm license](https://img.shields.io/npm/l/ext-react.svg)](https://npmjs.org/package/ext-react)
 

@@ -1,6 +1,6 @@
 {
   "name": "ext-react",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Utility Components and Services for React",
   "main": "dist/rext.js",
   "author": "Lionel Nguyen <huynguyen8505@gmail.com>",
