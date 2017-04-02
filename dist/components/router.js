@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Link = exports.Route = exports.Router = undefined;
+exports.Link = exports.Route = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -12,6 +12,10 @@ var _createClass = function () { function defineProperties(target, props) { for 
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
+
+var _observable = require('../events/observable');
+
+var _observable2 = _interopRequireDefault(_observable);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -23,39 +27,44 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Router = exports.Router = function (_Component) {
-  _inherits(Router, _Component);
+var INDEX_ROUTE = '/';
 
-  function Router() {
-    _classCallCheck(this, Router);
+var getRoute = function getRoute() {
+  return window.location.hash.substring(1) || '/';
+};
 
-    return _possibleConstructorReturn(this, (Router.__proto__ || Object.getPrototypeOf(Router)).apply(this, arguments));
-  }
+var matchPath = function matchPath(_ref) {
+  var index = _ref.index,
+      path = _ref.path;
 
-  return Router;
-}(_react.Component);
+  var route = getRoute();
+  if (index && route === INDEX_ROUTE) return true;
+  return route.startsWith(path);
+};
 
-var Route = exports.Route = function (_Component2) {
-  _inherits(Route, _Component2);
+var Route = exports.Route = function (_Component) {
+  _inherits(Route, _Component);
 
   function Route(props) {
     _classCallCheck(this, Route);
 
-    var _this2 = _possibleConstructorReturn(this, (Route.__proto__ || Object.getPrototypeOf(Route)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (Route.__proto__ || Object.getPrototypeOf(Route)).call(this, props));
 
-    _this2.state = {
-      match: _this2.matchPath(props)
+    _this.state = {
+      match: matchPath(props)
     };
-    return _this2;
+    return _this;
   }
 
   _createClass(Route, [{
-    key: 'componentWillReceiveProps',
-    value: function componentWillReceiveProps(nextProps) {
-      var _this3 = this;
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      var _this2 = this;
 
-      this.setState(function () {
-        return { match: _this3.matchPath(nextProps) };
+      _observable2.default.fromEvent(window, 'hashchange').subscribe(function () {
+        return _this2.setState(function () {
+          return { match: matchPath(_this2.props) };
+        });
       });
     }
   }, {
@@ -70,30 +79,51 @@ var Route = exports.Route = function (_Component2) {
         return null;
       }
 
-      return match ? _react2.default.createElement(component, {}) : null;
-    }
-  }, {
-    key: 'matchPath',
-    value: function matchPath(_ref) {
-      var index = _ref.index,
-          path = _ref.path;
-
-      var route = window.location.hash.substring(1) || '/';
-      if (index && route === '/') {
-        return true;
-      }
-      console.log(route.startsWith(path));
-      return route.startsWith(path);
+      return match ? _react2.default.createElement(component) : null;
     }
   }]);
 
   return Route;
 }(_react.Component);
 
-var Link = function Link(_ref2) {
-  var to = _ref2.to,
-      others = _objectWithoutProperties(_ref2, ['to']);
+var Link = exports.Link = function (_Component2) {
+  _inherits(Link, _Component2);
 
-  return _react2.default.createElement('a', _extends({ href: '#' + to }, others));
-};
-exports.Link = Link;
+  function Link(props) {
+    _classCallCheck(this, Link);
+
+    var _this3 = _possibleConstructorReturn(this, (Link.__proto__ || Object.getPrototypeOf(Link)).call(this, props));
+
+    _this3.state = {
+      match: matchPath({ path: props.to })
+    };
+    return _this3;
+  }
+
+  _createClass(Link, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      var _this4 = this;
+
+      _observable2.default.fromEvent(window, 'hashchange').subscribe(function () {
+        return _this4.setState(function () {
+          return { match: matchPath({ path: _this4.props.to }) };
+        });
+      });
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _props = this.props,
+          to = _props.to,
+          className = _props.className,
+          _props$activeClassNam = _props.activeClassName,
+          activeClassName = _props$activeClassNam === undefined ? 'active' : _props$activeClassNam,
+          others = _objectWithoutProperties(_props, ['to', 'className', 'activeClassName']);
+
+      return _react2.default.createElement('a', _extends({ href: '#' + to, className: to === getRoute() ? [className, activeClassName].join(' ') : className }, others));
+    }
+  }]);
+
+  return Link;
+}(_react.Component);

@@ -13,25 +13,16 @@ You'll need both React and Extension React:
 
 [![ext-react](https://nodei.co/npm/ext-react.png?downloadRank=true&downloads=true)](https://npmjs.org/package/ext-react)
 
-## Architecture Overview
+## Features
 
-Extension React is a library that helps you to write React applications by composing a component, adding application logic in services then boxing them in container.
+### Construct and launch the app
 
 At first, you need to define the root component and launch the app by using ```Rext.bootstrap``` function:
 
 ```javascript
 import React, { Component } from 'react'
-import { Route } from 'ext-react'
-import Dashboard from './dashboard/dashboard'
-
-export default class App extends Component {
-  render() {
-    return <section>
-      <Route path="/" component={Dashboard} />
-    </section>
-  }
-}
-
+import Rext from 'ext-react'
+import App from './components/app'
 Rext.bootstrap({
   selector: 'react-root',
   component: App,
@@ -41,9 +32,37 @@ Rext.bootstrap({
 })
 ```
 
-You have to use ```Route``` component to define which component should be loaded corresponding to the URL.
+This file is very stable. Once you've set it up, you may never change it again.
 
-Next, you define a data store in a class with ```@Store``` decorator, store will load data via ```proxy```:
+### Screen Navigation
+
+```javascript
+import React, { Component } from 'react'
+import { Route, Link } from 'ext-react'
+import Dashboard from './dashboard/dashboard'
+import Search from './search/search'
+
+export default class App extends Component {
+  render() {
+    return <section>
+      <ul className="navbar-nav mr-auto">
+        <li className="nav-item">
+          <Link to="/" className="nav-link">Dashboard</Link>
+        </li>
+        <li className="nav-item">
+          <Link to="/search" className="nav-link">Search</Link>
+        </li>
+      </ul>
+      <Route index component={Dashboard} />
+      <Route path="/search" component={Search} />
+    </section>
+  }
+}
+```
+
+The ```Route``` component is a basic responsibility to render some UI when a location matches the route's path while ```Link``` provides declarative, accessible navigation around your application. It's very similar to ```react-router``` v4.
+
+### Manage application state
 
 ```javascript
 import { Store } from 'ext-react'
@@ -58,7 +77,17 @@ export default class DashboardStore {
 }
 ```
 
-And then, you define a component's view:
+Stores manage the application state for a particular domain within the application. Stores load data via ```proxy```, you can define a proxy follow this structure:
+
+```javascript
+{
+  url: /* The URL from which to request the data object */,
+  method: /* GET, POST, PUT, DELETE. Default is GET */
+  params: /* request parameters sent as json data */
+}
+```
+
+### Container Components
 
 ```javascript
 import React, { Component } from 'react'
@@ -94,6 +123,85 @@ export default class Dashboard extends Component {
 ```
 
 The ```@Container``` decorator will provide a data stores to component's view. Note that you can load multiple data stores in one component, all data stores will be placed in ```props.store```.
+
+### Separation of Concerns
+
+At first, you define a simple store:
+
+```javascript
+import { Store } from 'ext-react'
+
+@Store
+export default class FamilyStore {
+  constructor() {
+    this.proxy = {
+      url: '/api/family'
+    }
+  }
+}
+```
+
+Next, define a search screen with 2 component: search form and search result. Search form will fire an action to search while search result will receive a response from search
+
+```javascript
+import React, { Component } from 'react'
+import FamilyStore from '~/stores/family'
+import FamilyService from '~/services/family'
+import { Button } from '~/components/bootstrap'
+
+export default class Search extends Component {
+  render() {
+    return <section>
+      <h1>Search</h1>
+      <SearchForm />
+      <SearchResult />
+    </section>
+  }
+}
+
+class SearchForm extends Component {
+  render() {
+    return <section>
+      <Button text="Search" onClick={() => this.onSearch()} />
+    </section>
+  }
+
+  onSearch() {
+    FamilyService.search({ status: 1, category: 1 })
+  }
+}
+
+@Container({
+  stores: [FamilyStore]
+})
+export default class SearchResult extends Component {
+  render() {
+    console.log(this.props.stores.FamilyStore)
+    return <section></section>
+  }
+}
+```
+
+Finally, you just define a ```FamilyService``` like this:
+
+```javascript
+import { Service } from 'ext-react'
+import FamilyStore from '~/stores/family'
+
+class FamilyService {
+  search(criteria) {
+    FamilyStore.load({
+      url: '/api/family',
+      method: 'post',
+      params: criteria
+    })
+  }
+}
+
+export default new FamilyService
+```
+
+When ```FamilyStore``` is loaded, it will fire an action to ```Container``` to reload data. Data will be updated in ```this.props.stores```.
 
 ## License
 

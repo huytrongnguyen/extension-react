@@ -12,10 +12,10 @@ class Ajax {
     })
   }
 
-  async request({ url, method = 'get', record, next, error, complete }) {
+  async request({ url, method = 'get', params, next, error, complete }) {
     try {
       this.ajaxBefore()
-      const response = await this.promise({ url, method, record })
+      const response = await this.promise({ url, method, params })
       return next ? next(response) : response
     } catch (ex) {
       this.ajaxError(ex)
@@ -39,9 +39,9 @@ class Ajax {
     })
   }
 
-  createRequest({ url, method, record }, done) {
+  createRequest({ url, method, params }, done) {
     (this.BASE_URL) && (url = `${this.BASE_URL}/${url}`)
-    (method === 'get' && record !== null) && (url = `${url}?${String.toQueryString(record)}`)
+    (method === 'get' && params !== null) && (url = `${url}?${String.toQueryString(params)}`)
     const xhr = this.xhr
     xhr.open(method, url, true)
     xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8')
@@ -58,7 +58,7 @@ class Ajax {
         }
       }
     }
-    xhr.send(record !== null ? JSON.stringify(record) : null)
+    xhr.send(params !== null ? JSON.stringify(params) : null)
   }
 }
 

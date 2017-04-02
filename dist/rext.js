@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Observable = exports.Route = exports.Container = exports.Service = exports.Store = exports.Cache = exports.Ajax = exports.Map = exports.List = exports.String = undefined;
+exports.Button = exports.Link = exports.Route = exports.Observable = exports.Container = exports.Service = exports.Store = exports.Cache = exports.Ajax = exports.Map = exports.List = exports.String = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       * index.js
@@ -83,21 +83,36 @@ Object.defineProperty(exports, 'Container', {
   }
 });
 
-var _route = require('./components/route');
-
-Object.defineProperty(exports, 'Route', {
-  enumerable: true,
-  get: function get() {
-    return _interopRequireDefault(_route).default;
-  }
-});
-
 var _observable = require('./events/observable');
 
 Object.defineProperty(exports, 'Observable', {
   enumerable: true,
   get: function get() {
     return _interopRequireDefault(_observable).default;
+  }
+});
+
+var _router = require('./components/router');
+
+Object.defineProperty(exports, 'Route', {
+  enumerable: true,
+  get: function get() {
+    return _router.Route;
+  }
+});
+Object.defineProperty(exports, 'Link', {
+  enumerable: true,
+  get: function get() {
+    return _router.Link;
+  }
+});
+
+var _bootstrap = require('./components/bootstrap');
+
+Object.defineProperty(exports, 'Button', {
+  enumerable: true,
+  get: function get() {
+    return _bootstrap.Button;
   }
 });
 
@@ -142,7 +157,9 @@ var Rext = function () {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                window.location.hash = '/';
+                if (!window.location.hash) {
+                  window.location.hash = '/';
+                }
                 _context.next = 3;
                 return onInit();
 

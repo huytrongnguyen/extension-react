@@ -40,7 +40,7 @@ var Ajax = function () {
         var url = _ref2.url,
             _ref2$method = _ref2.method,
             method = _ref2$method === undefined ? 'get' : _ref2$method,
-            record = _ref2.record,
+            params = _ref2.params,
             next = _ref2.next,
             error = _ref2.error,
             complete = _ref2.complete;
@@ -53,7 +53,7 @@ var Ajax = function () {
 
                 this.ajaxBefore();
                 _context.next = 4;
-                return this.promise({ url: url, method: method, record: record });
+                return this.promise({ url: url, method: method, params: params });
 
               case 4:
                 response = _context.sent;
@@ -108,9 +108,9 @@ var Ajax = function () {
     value: function createRequest(_ref3, done) {
       var url = _ref3.url,
           method = _ref3.method,
-          record = _ref3.record;
+          params = _ref3.params;
 
-      this.BASE_URL && (url = this.BASE_URL + '/' + url)(method === 'get' && record !== null) && (url = url + '?' + _string2.default.toQueryString(record));
+      this.BASE_URL && (url = this.BASE_URL + '/' + url)(method === 'get' && params !== null) && (url = url + '?' + _string2.default.toQueryString(params));
       var xhr = this.xhr;
       xhr.open(method, url, true);
       xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
@@ -127,7 +127,7 @@ var Ajax = function () {
           }
         }
       };
-      xhr.send(record !== null ? JSON.stringify(record) : null);
+      xhr.send(params !== null ? JSON.stringify(params) : null);
     }
   }]);
 

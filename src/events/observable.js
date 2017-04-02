@@ -1,47 +1,38 @@
-class Observable {
-  constructor() { }
+import Ext from '~/core/ext'
 
-  subscribers() {
-    if (!this._subscribersMap) {
-      this._subscribersMap = {}
-    }
-    return this._subscribersMap
+class EventObservable {
+  constructor(target, eventName) {
+    Ext.extend(EventObservable.prototype, {
+      target,
+      eventName
+    })
+    return this
   }
 
-  subscribe(name, cb) {
-    const subs = this.subscribers()
-    if (!subs[name]) {
-      subs[name] = [cb]
-    } else {
-      subs[name].push(cb)
-    }
-  }
-
-  unsubscribe(name, cb) {
-    const subs = this.subscribers()[name]
-    for (let key in subs) {
-      if (subs[key] == cb) {
-        subs[key] = null
-      }
-    }
-  }
-
-  clear(name) {
-    delete this.subscribers()[name]
-  }
-
-  publish() {
-    const args = [].slice.call(arguments),
-          name = args.shift(),
-          subs = this.subscribers()[name]
-
-    for (let key in subs) {
-      let sub = subs[key]
-      if (sub) {
-        sub.apply(this, args)
-      }
-    }
+  subscribe(subscriber) {
+    this.target.addEventListener(this.eventName, subscriber)
   }
 }
 
-export default new Observable
+export default class Observable {
+  constructor() {
+    this.subscriber = () => {}
+    return this
+  }
+
+  static create() {
+    return new Observable()
+  }
+
+  subscribe(subscriber) {
+    this.subscriber = subscriber
+  }
+
+  call(...args) {
+    this.subscriber.apply(this, args)
+  }
+
+  static fromEvent(target, eventName) {
+    return new EventObservable(target, eventName)
+  }
+}

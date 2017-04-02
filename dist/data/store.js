@@ -14,6 +14,10 @@ var _ajax = require('./ajax');
 
 var _ajax2 = _interopRequireDefault(_ajax);
 
+var _observable = require('../events/observable');
+
+var _observable2 = _interopRequireDefault(_observable);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
@@ -30,6 +34,8 @@ exports.default = function (Store) {
       _ext2.default.extend(DataStore.prototype, {
         name: Store.constructor.name,
         proxy: Store.proxy,
+        autoLoad: Store.autoLoad,
+        observable: _observable2.default.create(),
         data: []
       });
     }
@@ -43,11 +49,12 @@ exports.default = function (Store) {
       key: 'loadData',
       value: function loadData(data) {
         _ext2.default.extend(this.data, data);
+        this.observable.call(this);
       }
     }, {
       key: 'load',
       value: function () {
-        var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
+        var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(proxy) {
           var response;
           return regeneratorRuntime.wrap(function _callee$(_context) {
             while (1) {
@@ -55,7 +62,7 @@ exports.default = function (Store) {
                 case 0:
                   this.clearData();
                   _context.next = 3;
-                  return _ajax2.default.request({ url: this.proxy.url });
+                  return _ajax2.default.request(proxy || this.proxy);
 
                 case 3:
                   response = _context.sent;
@@ -71,7 +78,7 @@ exports.default = function (Store) {
           }, _callee, this);
         }));
 
-        function load() {
+        function load(_x) {
           return _ref.apply(this, arguments);
         }
 

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import List from '~/core/list'
+import Observable from '~/events/observable'
 
 export default (config) => (WrappedComponent) => class extends Component {
   constructor(props) {
@@ -12,7 +13,9 @@ export default (config) => (WrappedComponent) => class extends Component {
   async componentDidMount() {
     const { stores } = this.state
     for (let name in stores) {
-      await stores[name].load()
+      if (stores[name].autoLoad) {
+        await stores[name].load()
+      }
     }
     this.setState(() => ({ stores }))
   }
@@ -23,8 +26,15 @@ export default (config) => (WrappedComponent) => class extends Component {
 
   prepareStores(stores) {
     return List.of(config.stores).reduce((stores, store) => {
+      store.observable.subscribe(store => this.onDataChanged(store))
       stores[store.name] = store
       return stores
     }, {})
+  }
+
+  onDataChanged(store) {
+    const { stores } = this.state
+    stores[store.name] = store
+    this.setState(() => ({ stores }))
   }
 }
