@@ -13,9 +13,25 @@ export default class List {
     return new List(arguments)
   }
 
-  each(fn) {
-    for (let index = 0; index < this.array.length; ++index) {
-      fn(this.array[index], index)
+  collect() {
+    return this.array
+  }
+
+  each(iteratee) {
+    for (let index = 0, item; (item = this.array[index]) != null; ++index) {
+      iteratee(item, index, this.array)
     }
+  }
+
+  map(iteratee) {
+    const result = []
+    this.each((item, index, array) => result[index] = iteratee(item, index, array))
+    this.array = result
+    return this
+  }
+
+  reduce(iteratee, accumulator) {
+    this.each((item, index, array) => accumulator = iteratee(accumulator, item, index, array))
+    return accumulator
   }
 }

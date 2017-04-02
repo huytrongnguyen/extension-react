@@ -21,7 +21,7 @@ At first, you need to define the root component and launch the app by using ```R
 
 ```javascript
 import React, { Component } from 'react'
-import Rext, { Route } from 'rc-lazy'
+import { Route } from 'ext-react'
 import Dashboard from './dashboard/dashboard'
 
 export default class App extends Component {
@@ -32,23 +32,28 @@ export default class App extends Component {
   }
 }
 
-Rext
-.bootstrap(App, document.getElementById('react-root'), () => {
-  // function will be fired before the App component be rendered
+Rext.bootstrap({
+  selector: 'react-root',
+  component: App,
+  onInit: () => {
+    // function will be fired before the App component be rendered
+  }
 })
 ```
 
 You have to use ```Route``` component to define which component should be loaded corresponding to the URL.
 
-Next, you define a component's logic in a class with ```@Service``` decorator. ```init``` function will be called at the first of component's lifecycle:
+Next, you define a data store in a class with ```@Store``` decorator, store will load data via ```proxy```:
 
 ```javascript
-import Rext, { Service } from 'ext-react'
+import { Store } from 'ext-react'
 
-@Service
-export default class DashboardService {
-  init() {
-    return Rext.ajax('/api/dashboard','GET')
+@Store
+export default class DashboardStore {
+  constructor() {
+    this.proxy = {
+      url: '/api/dashboard'
+    }
   }
 }
 ```
@@ -57,15 +62,15 @@ And then, you define a component's view:
 
 ```javascript
 import React, { Component } from 'react'
-import { Container } from 'rc-lazy'
-import DashboardService from '~/services/dashboard'
+import { Container } from 'ext-react'
+import DashboardStore from '~/store/dashboard'
 
 @Container({
-  service: DashboardService
+  stores: [DashboardStore]
 })
 export default class Dashboard extends Component {
   render() {
-    const { data } = this.props.store
+    const { data } = this.props.store.DashboardStore
     return <section className="container-fluid">
       <table className="table table-sm table-hover table-striped">
         <thead>
@@ -88,8 +93,8 @@ export default class Dashboard extends Component {
 }
 ```
 
-The ```@Container``` decorator will provide a data and behavior to component's view by specifying the corresponding service. All datas will be placed in ```props.store``` and you can run any component's logic through ```props.service```.
+The ```@Container``` decorator will provide a data stores to component's view. Note that you can load multiple data stores in one component, all data stores will be placed in ```props.store```.
 
 ## License
 
-extension-react is released under the MIT license.
+ext-react is released under the MIT license.

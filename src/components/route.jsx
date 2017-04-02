@@ -29,3 +29,5 @@ export default class Route extends Component {
     return route.startsWith(path)
   }
 }
+
+export const Link = ({ to,  }) => <a href={`#${to}`} {...others} />

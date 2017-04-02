@@ -3,19 +3,16 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = exports.MutationType = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _class;
 
 var _string = require('../core/string');
 
 var _string2 = _interopRequireDefault(_string);
 
-var _service = require('../decorators/service');
+var _ext = require('../core/ext');
 
-var _service2 = _interopRequireDefault(_service);
+var _ext2 = _interopRequireDefault(_ext);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -23,71 +20,73 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var MutationType = exports.MutationType = {
-  POST: 'post',
-  PUT: 'put',
-  DELETE: 'delete'
-};
+var Ajax = function () {
+  function Ajax() {
+    _classCallCheck(this, Ajax);
 
-var Xhr = (0, _service2.default)(_class = function () {
-  function Xhr() {
-    _classCallCheck(this, Xhr);
-
-    this.BASE_API = null;
-    this.xhr = new XMLHttpRequest();
-    this.ajaxComplete = function () {/* to be implemented */};
-    this.ajaxError = function (error) {/* to be implemented */};
+    _ext2.default.extend(Ajax.prototype, {
+      xhr: new XMLHttpRequest(),
+      ajaxBefore: function ajaxBefore() {/* to be implemented */},
+      ajaxError: function ajaxError(error) {/* to be implemented */},
+      ajaxComplete: function ajaxComplete() {/* to be implemented */},
+      BASE_URL: null
+    });
   }
 
-  _createClass(Xhr, [{
-    key: 'ajax',
+  _createClass(Ajax, [{
+    key: 'request',
     value: function () {
-      var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(url, method, params) {
+      var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(_ref2) {
+        var url = _ref2.url,
+            _ref2$method = _ref2.method,
+            method = _ref2$method === undefined ? 'get' : _ref2$method,
+            record = _ref2.record,
+            next = _ref2.next,
+            error = _ref2.error,
+            complete = _ref2.complete;
         var response;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 _context.prev = 0;
-                _context.next = 3;
-                return this.promise({ url: url, method: method, params: params });
 
-              case 3:
+                this.ajaxBefore();
+                _context.next = 4;
+                return this.promise({ url: url, method: method, record: record });
+
+              case 4:
                 response = _context.sent;
+                return _context.abrupt('return', next ? next(response) : response);
 
-                if (!response.error) {
-                  _context.next = 7;
-                  break;
-                }
-
-                this.ajaxError(response.error);
-                return _context.abrupt('return', null);
-
-              case 7:
-                this.ajaxComplete();
-                return _context.abrupt('return', response);
-
-              case 11:
-                _context.prev = 11;
+              case 8:
+                _context.prev = 8;
                 _context.t0 = _context['catch'](0);
 
-                console.error(_context.t0);
                 this.ajaxError(_context.t0);
+                error && error(_context.t0);
                 return _context.abrupt('return', null);
 
-              case 16:
+              case 13:
+                _context.prev = 13;
+
+                this.ajaxComplete();
+                complete && complete();
+                return _context.finish(13);
+
+              case 17:
               case 'end':
                 return _context.stop();
             }
           }
-        }, _callee, this, [[0, 11]]);
+        }, _callee, this, [[0, 8, 13, 17]]);
       }));
 
-      function ajax(_x, _x2, _x3) {
+      function request(_x) {
         return _ref.apply(this, arguments);
       }
 
-      return ajax;
+      return request;
     }()
   }, {
     key: 'promise',
@@ -95,7 +94,7 @@ var Xhr = (0, _service2.default)(_class = function () {
       var _this = this;
 
       return new Promise(function (resolve, reject) {
-        _this.request(settings, function (err, res) {
+        _this.createRequest(settings, function (err, res) {
           if (err) {
             reject(err);
             return;
@@ -105,35 +104,34 @@ var Xhr = (0, _service2.default)(_class = function () {
       });
     }
   }, {
-    key: 'request',
-    value: function request(settings, done) {
-      var xhr = this.xhr;
-      var url = settings.url,
-          method = settings.method,
-          params = settings.params;
+    key: 'createRequest',
+    value: function createRequest(_ref3, done) {
+      var url = _ref3.url,
+          method = _ref3.method,
+          record = _ref3.record;
 
-      if (this.BASE_API) {
-        url = this.BASE_API + '/' + url;
-      }
-      if (method === 'get' && params !== null) {
-        url = url + '?' + _string2.default.toQueryString(params);
-      }
+      this.BASE_URL && (url = this.BASE_URL + '/' + url)(method === 'get' && record !== null) && (url = url + '?' + _string2.default.toQueryString(record));
+      var xhr = this.xhr;
       xhr.open(method, url, true);
       xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
       xhr.onreadystatechange = function () {
-        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-          try {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+          if (xhr.status === 200) {
             done(null, JSON.parse(xhr.responseText));
-          } catch (e) {
-            done(null, xhr.responseText);
+          } else {
+            try {
+              done(JSON.parse(xhr.responseText));
+            } catch (e) {
+              done(xhr.responseText);
+            }
           }
         }
       };
-      xhr.send(params !== null ? JSON.stringify(params) : null);
+      xhr.send(record !== null ? JSON.stringify(record) : null);
     }
   }]);
 
-  return Xhr;
-}()) || _class;
+  return Ajax;
+}();
 
-exports.default = Xhr;
+exports.default = new Ajax();

@@ -22,11 +22,34 @@ var List = function () {
   }
 
   _createClass(List, [{
+    key: "collect",
+    value: function collect() {
+      return this.array;
+    }
+  }, {
     key: "each",
-    value: function each(fn) {
-      for (var index = 0; index < this.array.length; ++index) {
-        fn(this.array[index], index);
+    value: function each(iteratee) {
+      for (var index = 0, item; (item = this.array[index]) != null; ++index) {
+        iteratee(item, index, this.array);
       }
+    }
+  }, {
+    key: "map",
+    value: function map(iteratee) {
+      var result = [];
+      this.each(function (item, index, array) {
+        return result[index] = iteratee(item, index, array);
+      });
+      this.array = result;
+      return this;
+    }
+  }, {
+    key: "reduce",
+    value: function reduce(iteratee, accumulator) {
+      this.each(function (item, index, array) {
+        return accumulator = iteratee(accumulator, item, index, array);
+      });
+      return accumulator;
     }
   }], [{
     key: "of",

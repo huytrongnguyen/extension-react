@@ -1,4 +1,4 @@
-class PubSub {
+class Observable {
   constructor() { }
 
   subscribers() {
@@ -44,4 +44,4 @@ class PubSub {
   }
 }
 
-export default new PubSub
+export default new Observable

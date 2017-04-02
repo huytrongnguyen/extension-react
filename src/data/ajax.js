@@ -1,0 +1,65 @@
+import String from '~/core/string'
+import Ext from '~/core/ext'
+
+class Ajax {
+  constructor() {
+    Ext.extend(Ajax.prototype, {
+      xhr: new XMLHttpRequest(),
+      ajaxBefore: () => { /* to be implemented */ },
+      ajaxError: (error) => { /* to be implemented */ },
+      ajaxComplete: () => { /* to be implemented */ },
+      BASE_URL: null
+    })
+  }
+
+  async request({ url, method = 'get', record, next, error, complete }) {
+    try {
+      this.ajaxBefore()
+      const response = await this.promise({ url, method, record })
+      return next ? next(response) : response
+    } catch (ex) {
+      this.ajaxError(ex)
+      error && error(ex)
+      return null
+    } finally {
+      this.ajaxComplete()
+      complete && complete()
+    }
+  }
+
+  promise(settings) {
+    return new Promise((resolve, reject) => {
+      this.createRequest(settings, (err, res) => {
+        if (err) {
+          reject(err)
+          return
+        }
+        resolve(res)
+      })
+    })
+  }
+
+  createRequest({ url, method, record }, done) {
+    (this.BASE_URL) && (url = `${this.BASE_URL}/${url}`)
+    (method === 'get' && record !== null) && (url = `${url}?${String.toQueryString(record)}`)
+    const xhr = this.xhr
+    xhr.open(method, url, true)
+    xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8')
+    xhr.onreadystatechange = () => {
+      if(xhr.readyState === XMLHttpRequest.DONE) {
+        if (xhr.status === 200) {
+          done(null, JSON.parse(xhr.responseText))
+        } else {
+          try {
+            done(JSON.parse(xhr.responseText))
+          } catch (e) {
+            done(xhr.responseText)
+          }
+        }
+      }
+    }
+    xhr.send(record !== null ? JSON.stringify(record) : null)
+  }
+}
+
+export default new Ajax

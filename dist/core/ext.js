@@ -8,31 +8,24 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Config = function () {
-  function Config() {
-    _classCallCheck(this, Config);
-
-    this._config = {};
+var Ext = function () {
+  function Ext() {
+    _classCallCheck(this, Ext);
   }
 
-  _createClass(Config, [{
-    key: "add",
-    value: function add(config) {
-      this._config = Object.assign({}, this._config, config);
+  _createClass(Ext, [{
+    key: "getById",
+    value: function getById(id) {
+      return document.getElementById(id);
     }
   }, {
-    key: "get",
-    value: function get(key) {
-      return this._config[key];
-    }
-  }, {
-    key: "set",
-    value: function set(key, value) {
-      this._config[key] = value;
+    key: "extend",
+    value: function extend() {
+      return Object.assign.apply(null, arguments); // immutable object
     }
   }]);
 
-  return Config;
+  return Ext;
 }();
 
-exports.default = new Config();
+exports.default = new Ext();

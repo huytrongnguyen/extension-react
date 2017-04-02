@@ -6,31 +6,38 @@
 
 import React from 'react'
 import { render } from 'react-dom'
-import service from './decorators/service'
-import Config from './common/config'
-import Xhr from './ajax/xhr'
+import Ext from './core/ext'
+import Ajax from './data/ajax'
 
-@service
-export default class Rext {
+class Rext {
   constructor() {
-    this.Config = Config
-  }
-
-  bootstrap(Component, selector, fn) {
-    this.onInit(fn).then(() => {
-      render(<Component />, selector)
+    Ext.extend(Rext.prototype, {
+      extend: Ext.extend,
+      ajax: (settings) => Ajax.request(settings)
     })
   }
 
-  async onInit(fn) {
-    return await fn()
-  }
-
-  ajax(url, method, params) {
-    return Xhr.ajax(url, method, params)
+  async bootstrap({ selector, component, onInit }) {
+    window.location.hash = '/'
+    await onInit()
+    render(React.createElement(component, {}), Ext.getById(selector))
   }
 }
 
-export { default as Service } from './decorators/service'
-export { default as Container } from './decorators/container'
+export default new Rext
+
+export { default as String } from './core/string'
+export { default as List } from './core/list'
+export { default as Map } from './core/map'
+
+export { default as Ajax } from './data/ajax'
+
+export { default as Cache } from './data/cache'
+export { default as Store } from './data/store'
+
+export { default as Service } from './app/service'
+export { default as Container } from './app/container'
+
 export { default as Route } from './components/route'
+
+export { default as Observable } from './events/observable'
