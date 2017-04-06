@@ -18,6 +18,7 @@ class Ajax {
       const response = await this.promise({ url, method, params })
       return next ? next(response) : response
     } catch (ex) {
+      console.error(`Cannot get response from server for url [${url}] caused by: ${ex}`);
       this.ajaxError(ex)
       error && error(ex)
       return null

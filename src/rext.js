@@ -36,11 +36,12 @@ export { default as Ajax } from './data/ajax'
 
 export { default as Cache } from './data/cache'
 export { default as Store } from './data/store'
+export { default as Model } from './data/store'
 
 export { default as Service } from './app/service'
 export { default as Container } from './app/container'
 
-export { default as Observable } from './events/observable'
+export { default as Observable } from './mixin/observable'
 
 export { Route, Link } from './components/router'
 export { Button } from './components/bootstrap'

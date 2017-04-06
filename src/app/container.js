@@ -1,13 +1,23 @@
 import React, { Component } from 'react'
 import List from '~/core/list'
-import Observable from '~/events/observable'
+import Map from '~/core/map'
+import Observable from '~/mixin/observable'
 
 export default (config) => (WrappedComponent) => class extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      stores: this.prepareStores(config.stores)
+      stores: {}
     }
+  }
+
+  componentWillMount() {
+    const stores = List.of(config.stores).reduce((stores, store) => {
+      store.subscribe(this.onDataChanged.bind(this))
+      stores[store.storeId] = store
+      return stores
+    }, {})
+    this.setState(() => ({ stores }))
   }
 
   async componentDidMount() {
@@ -17,16 +27,21 @@ export default (config) => (WrappedComponent) => class extends Component {
         await stores[name].load()
       }
     }
-    this.setState(() => ({ stores }))
+  }
+
+  componentWillUnmount() {
+    Map.of(this.state.store).each((storeId, store) => {
+      store.unsubscribe(this.onDataChanged)
+    })
   }
 
   render() {
-    return <WrappedComponent stores={this.state.stores} />
+    return <WrappedComponent {...this.state} {...this.props} />
   }
 
   prepareStores(stores) {
     return List.of(config.stores).reduce((stores, store) => {
-      store.observable.subscribe(store => this.onDataChanged(store))
+      store.subscribe(this.onDataChanged)
       stores[store.name] = store
       return stores
     }, {})

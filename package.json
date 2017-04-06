@@ -1,6 +1,6 @@
 {
   "name": "ext-react",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Utility Components and Services for React",
   "main": "dist/rext.js",
   "author": "Lionel Nguyen <huynguyen8505@gmail.com>",
@@ -16,7 +16,8 @@
   },
   "bugs": "https://github.com/huytrongnguyen/extension-react/issues",
   "scripts": {
-    "build": "rm -rf dist/* && babel src -D -d dist --watch"
+    "watch": "rm -rf dist/* && babel src -D -d dist --watch",
+    "build": "rm -rf dist/* && babel src -D -d dist"
   },
   "files": [
     "LICENSE",

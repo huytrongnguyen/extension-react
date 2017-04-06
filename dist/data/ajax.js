@@ -63,23 +63,24 @@ var Ajax = function () {
                 _context.prev = 8;
                 _context.t0 = _context['catch'](0);
 
+                console.error('Cannot get response from server for url [' + url + '] caused by: ' + _context.t0);
                 this.ajaxError(_context.t0);
                 error && error(_context.t0);
                 return _context.abrupt('return', null);
 
-              case 13:
-                _context.prev = 13;
+              case 14:
+                _context.prev = 14;
 
                 this.ajaxComplete();
                 complete && complete();
-                return _context.finish(13);
+                return _context.finish(14);
 
-              case 17:
+              case 18:
               case 'end':
                 return _context.stop();
             }
           }
-        }, _callee, this, [[0, 8, 13, 17]]);
+        }, _callee, this, [[0, 8, 14, 18]]);
       }));
 
       function request(_x) {

@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Button = exports.Link = exports.Route = exports.Observable = exports.Container = exports.Service = exports.Store = exports.Cache = exports.Ajax = exports.Map = exports.List = exports.String = undefined;
+exports.Button = exports.Link = exports.Route = exports.Observable = exports.Container = exports.Service = exports.Model = exports.Store = exports.Cache = exports.Ajax = exports.Map = exports.List = exports.String = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       * index.js
@@ -64,6 +64,12 @@ Object.defineProperty(exports, 'Store', {
     return _interopRequireDefault(_store).default;
   }
 });
+Object.defineProperty(exports, 'Model', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_store).default;
+  }
+});
 
 var _service = require('./app/service');
 
@@ -83,7 +89,7 @@ Object.defineProperty(exports, 'Container', {
   }
 });
 
-var _observable = require('./events/observable');
+var _observable = require('./mixin/observable');
 
 Object.defineProperty(exports, 'Observable', {
   enumerable: true,

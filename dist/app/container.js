@@ -4,6 +4,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = require('react');
@@ -14,7 +16,11 @@ var _list = require('../core/list');
 
 var _list2 = _interopRequireDefault(_list);
 
-var _observable = require('../events/observable');
+var _map = require('../core/map');
+
+var _map2 = _interopRequireDefault(_map);
+
+var _observable = require('../mixin/observable');
 
 var _observable2 = _interopRequireDefault(_observable);
 
@@ -39,12 +45,26 @@ exports.default = function (config) {
         var _this = _possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).call(this, props));
 
         _this.state = {
-          stores: _this.prepareStores(config.stores)
+          stores: {}
         };
         return _this;
       }
 
       _createClass(_class, [{
+        key: 'componentWillMount',
+        value: function componentWillMount() {
+          var _this2 = this;
+
+          var stores = _list2.default.of(config.stores).reduce(function (stores, store) {
+            store.subscribe(_this2.onDataChanged.bind(_this2));
+            stores[store.storeId] = store;
+            return stores;
+          }, {});
+          this.setState(function () {
+            return { stores: stores };
+          });
+        }
+      }, {
         key: 'componentDidMount',
         value: function () {
           var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
@@ -77,11 +97,6 @@ exports.default = function (config) {
                     break;
 
                   case 9:
-                    this.setState(function () {
-                      return { stores: stores };
-                    });
-
-                  case 10:
                   case 'end':
                     return _context.stop();
                 }
@@ -96,19 +111,26 @@ exports.default = function (config) {
           return componentDidMount;
         }()
       }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+          var _this3 = this;
+
+          _map2.default.of(this.state.store).each(function (storeId, store) {
+            store.unsubscribe(_this3.onDataChanged);
+          });
+        }
+      }, {
         key: 'render',
         value: function render() {
-          return _react2.default.createElement(WrappedComponent, { stores: this.state.stores });
+          return _react2.default.createElement(WrappedComponent, _extends({}, this.state, this.props));
         }
       }, {
         key: 'prepareStores',
         value: function prepareStores(stores) {
-          var _this2 = this;
+          var _this4 = this;
 
           return _list2.default.of(config.stores).reduce(function (stores, store) {
-            store.observable.subscribe(function (store) {
-              return _this2.onDataChanged(store);
-            });
+            store.subscribe(_this4.onDataChanged);
             stores[store.name] = store;
             return stores;
           }, {});

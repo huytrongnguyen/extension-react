@@ -10,11 +10,19 @@ var _ext = require('../core/ext');
 
 var _ext2 = _interopRequireDefault(_ext);
 
+var _list = require('../core/list');
+
+var _list2 = _interopRequireDefault(_list);
+
 var _ajax = require('./ajax');
 
 var _ajax2 = _interopRequireDefault(_ajax);
 
-var _observable = require('../events/observable');
+var _model = require('./model');
+
+var _model2 = _interopRequireDefault(_model);
+
+var _observable = require('../mixin/observable');
 
 var _observable2 = _interopRequireDefault(_observable);
 
@@ -32,23 +40,38 @@ exports.default = function (Store) {
       _classCallCheck(this, DataStore);
 
       _ext2.default.extend(DataStore.prototype, {
-        name: Store.constructor.name,
-        proxy: Store.proxy,
         autoLoad: Store.autoLoad,
+        data: [],
         observable: _observable2.default.create(),
-        data: []
+        modifiedRecords: {},
+        pageSize: Store.pageSize,
+        proxy: Store.proxy,
+        storeId: Store.constructor.name
       });
     }
 
     _createClass(DataStore, [{
-      key: 'clearData',
-      value: function clearData() {
+      key: 'subscribe',
+      value: function subscribe(observer) {
+        this.observable.subscribe(observer);
+      }
+    }, {
+      key: 'unsubscribe',
+      value: function unsubscribe(observer) {
+        this.observable.unsubscribe(observer);
+      }
+    }, {
+      key: 'removeAll',
+      value: function removeAll() {
         this.data = [];
       }
     }, {
       key: 'loadData',
       value: function loadData(data) {
-        _ext2.default.extend(this.data, data);
+        this.data = this.proxy.reader && this.proxy.reader.rootProperty ? data[this.proxy.reader.rootProperty] : data;
+        if (this.pageSize) {
+          this.page = data;
+        }
         this.observable.call(this);
       }
     }, {
@@ -60,17 +83,16 @@ exports.default = function (Store) {
             while (1) {
               switch (_context.prev = _context.next) {
                 case 0:
-                  this.clearData();
-                  _context.next = 3;
+                  _context.next = 2;
                   return _ajax2.default.request(proxy || this.proxy);
 
-                case 3:
+                case 2:
                   response = _context.sent;
 
                   response && this.loadData(response);
                   return _context.abrupt('return', this);
 
-                case 6:
+                case 5:
                 case 'end':
                   return _context.stop();
               }
@@ -84,6 +106,39 @@ exports.default = function (Store) {
 
         return load;
       }()
+    }, {
+      key: 'loadPage',
+      value: function loadPage(page) {
+        var proxy = _ext2.default.extend({}, this.proxy, { url: this.proxy.url + '?page=' + page });
+        return load(proxy);
+      }
+    }, {
+      key: 'commitChanges',
+      value: function commitChanges() {
+        this.modifiedRecords = {};
+        this.observable.call(this);
+      }
+    }, {
+      key: 'rejectChanges',
+      value: function rejectChanges() {
+        var _this = this;
+
+        _list2.default.of(this.data).each(function (record, index, data) {
+          if (_this.modifiedRecords[record.id]) {
+            data[index] = _ext2.default.extend({}, _this.modifiedRecords[record.id].phantom);
+          }
+        });
+        this.commitChanges();
+      }
+    }, {
+      key: 'setDirty',
+      value: function setDirty(record, fieldName, newValue) {
+        !this.modifiedRecords[record.id] && (this.modifiedRecords[record.id] = new _model2.default(record));
+        var modifiedRecord = this.modifiedRecords[record.id];
+        modifiedRecord.set(fieldName, newValue);
+        record[fieldName] = newValue;
+        this.observable.call(this);
+      }
     }]);
 
     return DataStore;
