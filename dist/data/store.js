@@ -119,6 +119,15 @@ exports.default = function (Store) {
         this.observable.call(this);
       }
     }, {
+      key: 'updateRecord',
+      value: function updateRecord(record, fieldName, newValue) {
+        !this.modifiedRecords[record.id] && (this.modifiedRecords[record.id] = new _model2.default(record));
+        var modifiedRecord = this.modifiedRecords[record.id];
+        modifiedRecord.set(fieldName, newValue);
+        record[fieldName] = newValue;
+        this.observable.call(this);
+      }
+    }, {
       key: 'rejectChanges',
       value: function rejectChanges() {
         var _this = this;
@@ -129,15 +138,6 @@ exports.default = function (Store) {
           }
         });
         this.commitChanges();
-      }
-    }, {
-      key: 'setDirty',
-      value: function setDirty(record, fieldName, newValue) {
-        !this.modifiedRecords[record.id] && (this.modifiedRecords[record.id] = new _model2.default(record));
-        var modifiedRecord = this.modifiedRecords[record.id];
-        modifiedRecord.set(fieldName, newValue);
-        record[fieldName] = newValue;
-        this.observable.call(this);
       }
     }]);
 

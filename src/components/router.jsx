@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Observable from '~/events/observable'
+import Observable from '~/mixin/observable'
 
 const INDEX_ROUTE = '/'
 

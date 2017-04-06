@@ -17,11 +17,11 @@ class Rext {
     })
   }
 
-  async bootstrap({ selector, component, onInit }) {
+  async bootstrap({ selector, component, init }) {
     if (!window.location.hash) {
       window.location.hash = '/'
     }
-    await onInit()
+    await init()
     render(React.createElement(component, {}), Ext.getById(selector))
   }
 }
@@ -44,4 +44,3 @@ export { default as Container } from './app/container'
 export { default as Observable } from './mixin/observable'
 
 export { Route, Link } from './components/router'
-export { Button } from './components/bootstrap'

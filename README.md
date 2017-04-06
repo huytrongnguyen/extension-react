@@ -13,7 +13,11 @@ You'll need both React and Extension React:
 
 [![ext-react](https://nodei.co/npm/ext-react.png?downloadRank=true&downloads=true)](https://npmjs.org/package/ext-react)
 
+You'll also need ```babel-polyfill``` to use async/await function
+
 ## Features
+
+This is very confusing document, I'll try to provide a clear document later
 
 ### Construct and launch the app
 
@@ -26,7 +30,7 @@ import App from './components/app'
 Rext.bootstrap({
   selector: 'react-root',
   component: App,
-  onInit: () => {
+  init: () => {
     // function will be fired before the App component be rendered
   }
 })
@@ -87,6 +91,8 @@ Stores manage the application state for a particular domain within the applicati
 }
 ```
 
+You have some function to work with store such as: ```subscribe```, ```unsubscribe```, ```removeAll```, ```loadData```, ```load```, ```loadPage```, ```updateRecord```, ```commitChanges```, ```rejectChanges```
+
 ### Container Components
 
 ```javascript
@@ -126,7 +132,7 @@ The ```@Container``` decorator will provide a data stores to component's view. N
 
 ### Observer pattern
 
-Then ```Observable.create``` is an alias for the ```Observable``` constructor, you can call the ```subscribe``` function after create the observable.
+Then ```Observable.create``` is an alias for the ```Observable``` constructor, you can call the ```subscribe``` function after create the observable. For example:
 
 ```javascript
 const observable = Observable.create()
@@ -138,10 +144,16 @@ observable.subscribe(store => {
 })
 ```
 
-Whenever ```Observable``` is called, the ```subscribe``` function will be fired:
+Whenever ```Observable``` is called, all observers will be called:
 
 ```javascript
 observable.call(/* observer */)
+```
+
+Also, you can unsubscribe:
+
+```javascript
+observable.ubsubscribe(fn)
 ```
 
 ### Separation of Concerns
@@ -155,7 +167,8 @@ import { Store } from 'ext-react'
 export default class FamilyStore {
   constructor() {
     this.proxy = {
-      url: '/api/family'
+      url: '/api/family',
+      method: 'post'
     }
   }
 }
@@ -209,11 +222,8 @@ import FamilyStore from '~/stores/family'
 
 class FamilyService {
   search(criteria) {
-    FamilyStore.load({
-      url: '/api/family',
-      method: 'post',
-      params: criteria
-    })
+    FamilyStore.proxy.params = criteria
+    FamilyStore.load()
   }
 }
 
@@ -221,6 +231,30 @@ export default new FamilyService
 ```
 
 When ```FamilyStore``` is loaded, it will fire an action to ```Container``` to reload data. Data will be updated in ```this.props.stores```.
+
+### Storing Data Locally In The Browser
+
+ * Saving cache
+
+```js
+import { Cache } from 'ext-react'
+
+Cache.set('token', { tokenId: 1, accessToken: 'abcdef' })
+```
+
+ * Retrieving cache
+
+```js
+const token = Cache.get('token') // token = { tokenId: 1, accessToken: 'abcdef' }
+```
+
+ * Flushing cache
+
+```js
+Cache.remove('token')
+Cache.remove() // remove all cached data
+```
+
 
 ## License
 

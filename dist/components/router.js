@@ -13,7 +13,7 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _observable = require('../events/observable');
+var _observable = require('../mixin/observable');
 
 var _observable2 = _interopRequireDefault(_observable);
 

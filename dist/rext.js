@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Button = exports.Link = exports.Route = exports.Observable = exports.Container = exports.Service = exports.Model = exports.Store = exports.Cache = exports.Ajax = exports.Map = exports.List = exports.String = undefined;
+exports.Link = exports.Route = exports.Observable = exports.Container = exports.Service = exports.Model = exports.Store = exports.Cache = exports.Ajax = exports.Map = exports.List = exports.String = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       * index.js
@@ -113,15 +113,6 @@ Object.defineProperty(exports, 'Link', {
   }
 });
 
-var _bootstrap = require('./components/bootstrap');
-
-Object.defineProperty(exports, 'Button', {
-  enumerable: true,
-  get: function get() {
-    return _bootstrap.Button;
-  }
-});
-
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
@@ -158,7 +149,7 @@ var Rext = function () {
       var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(_ref2) {
         var selector = _ref2.selector,
             component = _ref2.component,
-            onInit = _ref2.onInit;
+            init = _ref2.init;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -167,7 +158,7 @@ var Rext = function () {
                   window.location.hash = '/';
                 }
                 _context.next = 3;
-                return onInit();
+                return init();
 
               case 3:
                 (0, _reactDom.render)(_react2.default.createElement(component, {}), _ext2.default.getById(selector));

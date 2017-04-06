@@ -1,3 +1,7 @@
+## 1.2.1
+ * Fix issue in ```router``` component
+ * Update README.md
+
 ## 1.2.0
  * Improve ```Store``` and ```Observable```
  * Implement ```Model```
