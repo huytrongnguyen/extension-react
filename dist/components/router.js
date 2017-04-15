@@ -13,6 +13,10 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _list = require('../core/list');
+
+var _list2 = _interopRequireDefault(_list);
+
 var _observable = require('../mixin/observable');
 
 var _observable2 = _interopRequireDefault(_observable);
@@ -27,17 +31,49 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var ROUTES = {};
-
-var INDEX_ROUTE = '/';
-
-var getRoute = function getRoute() {
+var ROUTES = {},
+    getRoute = function getRoute() {
   return window.location.hash.substring(1) || '/';
-};
+},
+    getRoutePath = function getRoutePath(route) {
+  return route.split('/');
+},
+    isParam = function isParam(routeName) {
+  return routeName.startsWith(':');
+},
+    matchPath = function matchPath() {
+  var currentRoute = getRoute(),
+      params = {};
 
-var matchPath = function matchPath() {
-  var route = getRoute();
-  return ROUTES[route];
+  if (ROUTES[currentRoute]) {
+    return { route: currentRoute, component: ROUTES[currentRoute].component, params: params };
+  }
+
+  var currentPath = getRoutePath(currentRoute);
+  for (var key in ROUTES) {
+    var route = ROUTES[key],
+        routePath = route.path;
+    var matched = true;
+    _list2.default.of(routePath).each(function (routeName, index) {
+      if (routeName !== currentPath[index]) {
+        if (isParam(routeName)) {
+          params[routeName.substring(1)] = currentPath[index];
+        } else {
+          matched = false;
+          return;
+        }
+      }
+    });
+    if (matched) {
+      return { route: currentRoute, component: route.component, params: params };
+    }
+  }
+
+  if (ROUTES['*']) {
+    return { route: currentRoute, component: ROUTES['*'].component, params: params };
+  }
+
+  return { route: currentRoute, component: null, params: params };
 };
 
 var HashRouter = exports.HashRouter = function (_Component) {
@@ -48,9 +84,7 @@ var HashRouter = exports.HashRouter = function (_Component) {
 
     var _this = _possibleConstructorReturn(this, (HashRouter.__proto__ || Object.getPrototypeOf(HashRouter)).call(this, props));
 
-    _this.state = {
-      component: matchPath()
-    };
+    _this.state = matchPath();
     return _this;
   }
 
@@ -61,14 +95,17 @@ var HashRouter = exports.HashRouter = function (_Component) {
 
       _observable2.default.fromEvent(window, 'hashchange').subscribe(function () {
         return _this2.setState(function () {
-          return { component: matchPath() };
+          return matchPath();
         });
       });
     }
   }, {
     key: 'render',
     value: function render() {
-      var component = this.state.component;
+      var _state = this.state,
+          route = _state.route,
+          component = _state.component,
+          params = _state.params;
 
 
       if (!component) {
@@ -76,7 +113,7 @@ var HashRouter = exports.HashRouter = function (_Component) {
         return null;
       }
 
-      return _react2.default.createElement(component);
+      return _react2.default.createElement(component, { route: route, params: params });
     }
   }]);
 
@@ -91,9 +128,7 @@ var Link = exports.Link = function (_Component2) {
 
     var _this3 = _possibleConstructorReturn(this, (Link.__proto__ || Object.getPrototypeOf(Link)).call(this, props));
 
-    _this3.state = {
-      match: matchPath({ path: props.to })
-    };
+    _this3.state = matchPath();
     return _this3;
   }
 
@@ -104,14 +139,18 @@ var Link = exports.Link = function (_Component2) {
 
       _observable2.default.fromEvent(window, 'hashchange').subscribe(function () {
         return _this4.setState(function () {
-          return { match: matchPath({ path: _this4.props.to }) };
+          return matchPath();
         });
       });
     }
   }, {
     key: 'render',
     value: function render() {
-      var _props = this.props,
+      var _state2 = this.state,
+          route = _state2.route,
+          component = _state2.component,
+          params = _state2.params,
+          _props = this.props,
           to = _props.to,
           className = _props.className,
           _props$activeClassNam = _props.activeClassName,
@@ -125,8 +164,12 @@ var Link = exports.Link = function (_Component2) {
   return Link;
 }(_react.Component);
 
-exports.default = function (path) {
-  return function (target) {
-    ROUTES[path] = target;
+exports.default = function (route) {
+  return function (component) {
+    ROUTES[route] = {
+      route: route,
+      component: component,
+      path: getRoutePath(route)
+    };
   };
 };

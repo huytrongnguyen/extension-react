@@ -5,7 +5,7 @@
 [![npm download](https://img.shields.io/npm/dm/ext-react.svg?style=flat-square)](https://npmjs.org/package/ext-react)
 [![npm license](https://img.shields.io/npm/l/ext-react.svg)](https://npmjs.org/package/ext-react)
 
-Utility Components and Services for React
+Extension React is a JavaScript library that build on top of React
 
 ## Installation
 
@@ -15,9 +15,13 @@ You'll need both React and Extension React:
 
 You'll also need `babel-polyfill` to use async/await function
 
-## Features
+## Getting Started
 
-The project directory should now have the following structures:
+Getting started with Extension React couldn't be easier. With a single command, you'll have a fully functional "universal" starter application that can be run on a local web server.
+
+### Application Structure
+
+Although not mandatory, all suggestions listed below should be considered as best-practice guidelines to keep your application well organized, extensible and maintainable. The following is the recommended directory structure for an Extension React application:
 
 ```
 +-- `dist`
@@ -36,10 +40,12 @@ The project directory should now have the following structures:
 |   |   +-- `main.js`: main script
 +-- `gulpfile.babel.js`: build scripts
 +-- `package.json`: NPM package definition
-+-- `server.js`: code of `express` server, should point to `dist` folder
++-- `server.js`: code of local web server (ExpressJS), should point to `dist` folder
 ```
 
 Based on this seed structure, you're ready to make any change to build your application.
+
+For example: [https://github.com/huytrongnguyen/react-cms](https://github.com/huytrongnguyen/react-cms)
 
 ###  Load application with `Rext.application`
 
@@ -86,11 +92,26 @@ class Search extends Component {
   }
 }
 
+@Route('/details/:name')
+export default class Details extends Component {
+  render() {
+    return <h1>{this.props.params.name}</h1>
+  }
+}
+
+@Route('*')
+export default class NotFound extends Component {
+  render() {
+    return <h1>Not Found</h1>
+  }
+}
+
 class Viewport extends Component {
   render() {
     return <section>
       <Link to="/">Dashboard</Link>
       <Link to="/search">Search</Link>
+      <Link to="/details/huynguyen">Details</Link>
       <HashRouter />
     </section>
   }
@@ -101,6 +122,8 @@ Rext.application({
   viewport: Viewport
 })
 ```
+
+## Core Concepts
 
 ### Manage application state
 

@@ -1,64 +1,92 @@
-import React, { Component } from 'react'
-import Observable from '~/mixin/observable'
+import React, { Component } from 'react';
+import List from '~/core/list';
+import Observable from '~/mixin/observable';
 
-const ROUTES = {}
+const ROUTES = {},
+      getRoute = () => window.location.hash.substring(1) || '/',
+      getRoutePath = (route) => route.split('/'),
+      isParam = (routeName) => routeName.startsWith(':'),
+      matchPath = () => {
+        const currentRoute = getRoute(),
+              params = {};
 
-const INDEX_ROUTE = '/'
+        if (ROUTES[currentRoute]) {
+          return { route: currentRoute, component: ROUTES[currentRoute].component, params };
+        }
 
-const getRoute = () => window.location.hash.substring(1) || '/'
+        const currentPath = getRoutePath(currentRoute);
+        for (let key in ROUTES) {
+          const route = ROUTES[key],
+                routePath = route.path;
+          let matched = true;
+          List.of(routePath).each((routeName, index) => {
+            if (routeName !== currentPath[index]) {
+              if (isParam(routeName)) {
+                params[routeName.substring(1)] = currentPath[index];
+              } else {
+                matched = false;
+                return;
+              }
+            }
+          });
+          if (matched) {
+            return { route: currentRoute, component: route.component, params };
+          }
+        }
 
-const matchPath = () => {
-  const route = getRoute()
-  return ROUTES[route]
-}
+        if (ROUTES['*']) {
+          return { route: currentRoute, component: ROUTES['*'].component, params };
+        }
+
+        return { route: currentRoute, component: null, params };
+      }
 
 export class HashRouter extends Component {
   constructor(props) {
-    super(props)
-    this.state = {
-      component: matchPath()
-    }
+    super(props);
+    this.state = matchPath();
   }
 
   componentDidMount() {
-    Observable.fromEvent(window, 'hashchange')
-    .subscribe(() => this.setState(() => ({ component: matchPath() })))
+    Observable.fromEvent(window, 'hashchange').subscribe(() => this.setState(() => (matchPath())));
   }
 
   render() {
-    const { component } = this.state
+    const { route, component, params } = this.state;
 
     if (!component) {
-      console.error('component props should not be null')
-      return null
+      console.error('component props should not be null');
+      return null;
     }
 
-    return React.createElement(component)
+    return React.createElement(component, { route, params });
   }
 }
 
 
 export class Link extends Component {
   constructor(props) {
-    super(props)
-    this.state = {
-      match: matchPath({ path: props.to })
-    }
+    super(props);
+    this.state = matchPath();
   }
 
   componentDidMount() {
-    Observable.fromEvent(window, 'hashchange')
-    .subscribe(() => this.setState(() => ({ match: matchPath({ path: this.props.to }) })))
+    Observable.fromEvent(window, 'hashchange').subscribe(() => this.setState(() => (matchPath())));
   }
 
   render() {
-    const { to, className, activeClassName = 'active', ...others } = this.props
-    return <a href={`#${to}`} className={to === getRoute() ? [className, activeClassName].join(' ') : className} {...others} />
+    const { route, component, params } = this.state,
+          { to, className, activeClassName = 'active', ...others } = this.props;
+    return <a href={`#${to}`} className={to === getRoute() ? [className, activeClassName].join(' ') : className} {...others} />;
   }
 }
 
-export default (path) => {
-  return (target) => {
-    ROUTES[path] = target
+export default (route) => {
+  return (component) => {
+    ROUTES[route] = {
+      route,
+      component,
+      path: getRoutePath(route)
+    };
   }
 }
