@@ -3,13 +3,9 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Link = exports.Route = exports.Observable = exports.Container = exports.Service = exports.Model = exports.Store = exports.Cache = exports.Ajax = exports.Map = exports.List = exports.String = undefined;
+exports.Link = exports.HashRouter = exports.Route = exports.Observable = exports.Container = exports.Service = exports.Model = exports.Store = exports.Cache = exports.Ajax = exports.Map = exports.List = exports.String = undefined;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * index.js
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * This is the entry file for the application, only setup and boilerplate code.
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _string = require('./core/string');
 
@@ -103,7 +99,13 @@ var _router = require('./components/router');
 Object.defineProperty(exports, 'Route', {
   enumerable: true,
   get: function get() {
-    return _router.Route;
+    return _interopRequireDefault(_router).default;
+  }
+});
+Object.defineProperty(exports, 'HashRouter', {
+  enumerable: true,
+  get: function get() {
+    return _router.HashRouter;
   }
 });
 Object.defineProperty(exports, 'Link', {
@@ -123,6 +125,8 @@ var _ext = require('./core/ext');
 
 var _ext2 = _interopRequireDefault(_ext);
 
+var _list2 = _interopRequireDefault(_list);
+
 var _ajax2 = _interopRequireDefault(_ajax);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -135,21 +139,19 @@ var Rext = function () {
   function Rext() {
     _classCallCheck(this, Rext);
 
-    _ext2.default.extend(Rext.prototype, {
-      extend: _ext2.default.extend,
-      ajax: function ajax(settings) {
-        return _ajax2.default.request(settings);
-      }
-    });
+    this.extend = _ext2.default.extend;
+    this.ajax = function (settings) {
+      return _ajax2.default.request(settings);
+    };
   }
 
   _createClass(Rext, [{
-    key: 'bootstrap',
+    key: 'application',
     value: function () {
       var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(_ref2) {
         var selector = _ref2.selector,
-            component = _ref2.component,
-            init = _ref2.init;
+            viewport = _ref2.viewport,
+            launch = _ref2.launch;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -157,11 +159,13 @@ var Rext = function () {
                 if (!window.location.hash) {
                   window.location.hash = '/';
                 }
+
                 _context.next = 3;
-                return init();
+                return launch();
 
               case 3:
-                (0, _reactDom.render)(_react2.default.createElement(component, {}), _ext2.default.getById(selector));
+
+                (0, _reactDom.render)(_react2.default.createElement(viewport, {}), _ext2.default.getById(selector));
 
               case 4:
               case 'end':
@@ -171,11 +175,11 @@ var Rext = function () {
         }, _callee, this);
       }));
 
-      function bootstrap(_x) {
+      function application(_x) {
         return _ref.apply(this, arguments);
       }
 
-      return bootstrap;
+      return application;
     }()
   }]);
 

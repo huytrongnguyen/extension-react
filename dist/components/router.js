@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Link = exports.Route = undefined;
+exports.Link = exports.HashRouter = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -27,51 +27,48 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var ROUTES = {};
+
 var INDEX_ROUTE = '/';
 
 var getRoute = function getRoute() {
   return window.location.hash.substring(1) || '/';
 };
 
-var matchPath = function matchPath(_ref) {
-  var index = _ref.index,
-      path = _ref.path;
-
+var matchPath = function matchPath() {
   var route = getRoute();
-  if (index && route === INDEX_ROUTE) return true;
-  return route.startsWith(path);
+  return ROUTES[route];
 };
 
-var Route = exports.Route = function (_Component) {
-  _inherits(Route, _Component);
+var HashRouter = exports.HashRouter = function (_Component) {
+  _inherits(HashRouter, _Component);
 
-  function Route(props) {
-    _classCallCheck(this, Route);
+  function HashRouter(props) {
+    _classCallCheck(this, HashRouter);
 
-    var _this = _possibleConstructorReturn(this, (Route.__proto__ || Object.getPrototypeOf(Route)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (HashRouter.__proto__ || Object.getPrototypeOf(HashRouter)).call(this, props));
 
     _this.state = {
-      match: matchPath(props)
+      component: matchPath()
     };
     return _this;
   }
 
-  _createClass(Route, [{
+  _createClass(HashRouter, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
       var _this2 = this;
 
       _observable2.default.fromEvent(window, 'hashchange').subscribe(function () {
         return _this2.setState(function () {
-          return { match: matchPath(_this2.props) };
+          return { component: matchPath() };
         });
       });
     }
   }, {
     key: 'render',
     value: function render() {
-      var match = this.state.match,
-          component = this.props.component;
+      var component = this.state.component;
 
 
       if (!component) {
@@ -79,11 +76,11 @@ var Route = exports.Route = function (_Component) {
         return null;
       }
 
-      return match ? _react2.default.createElement(component) : null;
+      return _react2.default.createElement(component);
     }
   }]);
 
-  return Route;
+  return HashRouter;
 }(_react.Component);
 
 var Link = exports.Link = function (_Component2) {
@@ -127,3 +124,9 @@ var Link = exports.Link = function (_Component2) {
 
   return Link;
 }(_react.Component);
+
+exports.default = function (path) {
+  return function (target) {
+    ROUTES[path] = target;
+  };
+};

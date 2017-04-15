@@ -15,8 +15,8 @@ var List = function () {
     _classCallCheck(this, List);
 
     this.array = EMPTY_LIST;
-    if (value && value.length > 0) {
-      this.array = value.length > 1 ? value : value[0] ? value[0] : EMPTY_LIST;
+    if (value && value.length) {
+      this.array = [].concat(value);
     }
     return this;
   }
@@ -40,8 +40,7 @@ var List = function () {
       this.each(function (item, index, array) {
         return result[index] = iteratee(item, index, array);
       });
-      this.array = result;
-      return this;
+      return new List(result);
     }
   }, {
     key: "reduce",
@@ -53,8 +52,8 @@ var List = function () {
     }
   }], [{
     key: "of",
-    value: function of() /*...values*/{
-      return new List(arguments);
+    value: function of(value) {
+      return new List(value);
     }
   }]);
 

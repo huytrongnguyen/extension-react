@@ -3,14 +3,14 @@ const EMPTY_LIST = []
 export default class List {
   constructor(value) {
     this.array = EMPTY_LIST
-    if (value && value.length > 0) {
-      this.array = value.length > 1 ? value : (value[0] ? value[0] : EMPTY_LIST)
+    if (value && value.length) {
+      this.array = [].concat(value)
     }
     return this
   }
 
-  static of(/*...values*/) {
-    return new List(arguments)
+  static of(value) {
+    return new List(value)
   }
 
   collect() {
@@ -26,8 +26,7 @@ export default class List {
   map(iteratee) {
     const result = []
     this.each((item, index, array) => result[index] = iteratee(item, index, array))
-    this.array = result
-    return this
+    return new List(result)
   }
 
   reduce(iteratee, accumulator) {

@@ -1,28 +1,23 @@
-/**
- * index.js
- *
- * This is the entry file for the application, only setup and boilerplate code.
- */
-
 import React from 'react'
 import { render } from 'react-dom'
 import Ext from './core/ext'
+import List from './core/list'
 import Ajax from './data/ajax'
 
 class Rext {
   constructor() {
-    Ext.extend(Rext.prototype, {
-      extend: Ext.extend,
-      ajax: (settings) => Ajax.request(settings)
-    })
+    this.extend = Ext.extend;
+    this.ajax = (settings) => Ajax.request(settings);
   }
 
-  async bootstrap({ selector, component, init }) {
+  async application({ selector, viewport, launch }) {
     if (!window.location.hash) {
       window.location.hash = '/'
     }
-    await init()
-    render(React.createElement(component, {}), Ext.getById(selector))
+
+    await launch()
+
+    render(React.createElement(viewport, {}), Ext.getById(selector))
   }
 }
 
@@ -43,4 +38,5 @@ export { default as Container } from './app/container'
 
 export { default as Observable } from './mixin/observable'
 
-export { Route, Link } from './components/router'
+export { default as Route } from './components/router'
+export { HashRouter, Link } from './components/router'

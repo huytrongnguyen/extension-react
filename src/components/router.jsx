@@ -1,41 +1,42 @@
 import React, { Component } from 'react'
 import Observable from '~/mixin/observable'
 
+const ROUTES = {}
+
 const INDEX_ROUTE = '/'
 
 const getRoute = () => window.location.hash.substring(1) || '/'
 
-const matchPath = ({index, path}) => {
+const matchPath = () => {
   const route = getRoute()
-  if (index && route === INDEX_ROUTE) return true
-  return route.startsWith(path)
+  return ROUTES[route]
 }
 
-export class Route extends Component {
+export class HashRouter extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      match: matchPath(props)
+      component: matchPath()
     }
   }
 
   componentDidMount() {
     Observable.fromEvent(window, 'hashchange')
-    .subscribe(() => this.setState(() => ({ match: matchPath(this.props) })))
+    .subscribe(() => this.setState(() => ({ component: matchPath() })))
   }
 
   render() {
-    const { match } = this.state,
-          { component } = this.props
+    const { component } = this.state
 
     if (!component) {
       console.error('component props should not be null')
       return null
     }
 
-    return match ? React.createElement(component) : null
+    return React.createElement(component)
   }
 }
+
 
 export class Link extends Component {
   constructor(props) {
@@ -53,5 +54,11 @@ export class Link extends Component {
   render() {
     const { to, className, activeClassName = 'active', ...others } = this.props
     return <a href={`#${to}`} className={to === getRoute() ? [className, activeClassName].join(' ') : className} {...others} />
+  }
+}
+
+export default (path) => {
+  return (target) => {
+    ROUTES[path] = target
   }
 }

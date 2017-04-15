@@ -13,58 +13,94 @@ You'll need both React and Extension React:
 
 [![ext-react](https://nodei.co/npm/ext-react.png?downloadRank=true&downloads=true)](https://npmjs.org/package/ext-react)
 
-You'll also need ```babel-polyfill``` to use async/await function
+You'll also need `babel-polyfill` to use async/await function
 
 ## Features
 
-This is very confusing document, I'll try to provide a clear document later
+The project directory should now have the following structures:
 
-### Construct and launch the app
+```
++-- `dist`
+|   +-- `index.html`: application page
++-- `node_modules`: NPM components
++-- `src`
+|   +-- `css`
+|   |   +-- `_variables.scss`: application styles constant values
+|   |   +-- `app.scss`: application styles
+|   +-- `js`
+|   |   +-- `common`: code of shared function
+|   |   +-- `components`: code (scripts and views) of every feature should be a sub-directory
+|   |   +-- `services`: code of services
+|   |   +-- `stores`: code of stores
+|   |   +-- `ux`: code of shared components
+|   |   +-- `main.js`: main script
++-- `gulpfile.babel.js`: build scripts
++-- `package.json`: NPM package definition
++-- `server.js`: code of `express` server, should point to `dist` folder
+```
 
-At first, you need to define the root component and launch the app by using ```Rext.bootstrap``` function:
+Based on this seed structure, you're ready to make any change to build your application.
 
-```javascript
-import React, { Component } from 'react'
+###  Load application with `Rext.application`
+
+Loads application and starts it up with given configuration after the page is ready
+
+```js
+import 'babel-polyfill'
 import Rext from 'ext-react'
-import App from './components/app'
-Rext.bootstrap({
+import Viewport from './components/viewport/viewport'
+
+Rext.application({
   selector: 'react-root',
-  component: App,
-  init: () => {
-    // function will be fired before the App component be rendered
+  viewport: Viewport,
+  launch: () => {
+    // Called automatically when the page has completely loaded.
   }
 })
 ```
 
-This file is very stable. Once you've set it up, you may never change it again.
-
 ### Screen Navigation
 
-```javascript
-import React, { Component } from 'react'
-import { Route, Link } from 'ext-react'
-import Dashboard from './dashboard/dashboard'
-import Search from './search/search'
+`Route` decorator is most basic responsibility is to render UI when a location matches the route’s path.
 
-export default class App extends Component {
+`Link` provides declarative, accessible navigation around your application.
+
+`HashRouter` uses the hash portion of the URL (i.e. window.location.hash) to keep your UI in sync with the URL.
+
+```js
+import 'babel-polyfill'
+import React, { Component } from 'react'
+import { Route, Link, HashRouter } from 'ext-react'
+
+@Route('/')
+class Dashboard extends Component {
+  render() {
+    return <section />
+  }
+}
+
+@Route('/search')
+class Search extends Component {
+  render() {
+    return <section />
+  }
+}
+
+class Viewport extends Component {
   render() {
     return <section>
-      <ul className="navbar-nav mr-auto">
-        <li className="nav-item">
-          <Link to="/" className="nav-link">Dashboard</Link>
-        </li>
-        <li className="nav-item">
-          <Link to="/search" className="nav-link">Search</Link>
-        </li>
-      </ul>
-      <Route index component={Dashboard} />
-      <Route path="/search" component={Search} />
+      <Link to="/">Dashboard</Link>
+      <Link to="/search">Search</Link>
+      <HashRouter />
     </section>
   }
 }
-```
 
-The ```Route``` component is a basic responsibility to render some UI when a location matches the route's path while ```Link``` provides declarative, accessible navigation around your application. It's very similar to ```react-router``` v4.
+Rext.application({
+  selector: 'react-root',
+  viewport: Viewport
+})
+```
 
 ### Manage application state
 
