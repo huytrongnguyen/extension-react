@@ -13,19 +13,17 @@ You'll need both React and Extension React:
 
 [![ext-react](https://nodei.co/npm/ext-react.png?downloadRank=true&downloads=true)](https://npmjs.org/package/ext-react)
 
-You'll also need `babel-polyfill` to use async/await function
+You'll also need `babel-polyfill` to use async/await function and `babel-preset-es2017` to use decorator
 
 ## Getting Started
 
 Getting started with Extension React couldn't be easier. With a single command, you'll have a fully functional "universal" starter application that can be run on a local web server.
 
-### Application Structure
+### 1. Application Structure
 
 Although not mandatory, all suggestions listed below should be considered as best-practice guidelines to keep your application well organized, extensible and maintainable. The following is the recommended directory structure for an Extension React application:
 
 ```
-+-- `dist`
-|   +-- `index.html`: application page
 +-- `node_modules`: NPM components
 +-- `src`
 |   +-- `css`
@@ -39,15 +37,16 @@ Although not mandatory, all suggestions listed below should be considered as bes
 |   |   +-- `ux`: code of shared components
 |   |   +-- `main.js`: main script
 +-- `gulpfile.babel.js`: build scripts
++-- `index.html`: application page
 +-- `package.json`: NPM package definition
-+-- `server.js`: code of local web server (ExpressJS), should point to `dist` folder
++-- `server.js`: code of local web server (ExpressJS)
 ```
 
 Based on this seed structure, you're ready to make any change to build your application.
 
 For example: [https://github.com/huytrongnguyen/react-cms](https://github.com/huytrongnguyen/react-cms)
 
-###  Load application with `Rext.application`
+###  2. Load application with `Rext.application`
 
 Loads application and starts it up with given configuration after the page is ready
 
@@ -65,7 +64,7 @@ Rext.application({
 })
 ```
 
-### Screen Navigation
+### 3. Screen Navigation
 
 `Route` decorator is most basic responsibility is to render UI when a location matches the route’s path.
 
@@ -125,36 +124,11 @@ Rext.application({
 
 ## Core Concepts
 
-### Manage application state
+### 1 Container
 
-```javascript
-import { Store } from 'ext-react'
+A `Container` is a special type of `Component` that can contain other `Components`. Containers are the glue that binds an application together.
 
-@Store
-export default class DashboardStore {
-  constructor() {
-    this.proxy = {
-      url: '/api/dashboard'
-    }
-  }
-}
-```
-
-Stores manage the application state for a particular domain within the application. Stores load data via ```proxy```, you can define a proxy follow this structure:
-
-```javascript
-{
-  url: /* The URL from which to request the data object */,
-  method: /* GET, POST, PUT, DELETE. Default is GET */
-  params: /* request parameters sent as json data */
-}
-```
-
-You have some function to work with store such as: ```subscribe```, ```unsubscribe```, ```removeAll```, ```loadData```, ```load```, ```loadPage```, ```updateRecord```, ```commitChanges```, ```rejectChanges```
-
-### Container Components
-
-```javascript
+```js
 import React, { Component } from 'react'
 import { Container } from 'ext-react'
 import DashboardStore from '~/store/dashboard'
@@ -189,11 +163,68 @@ export default class Dashboard extends Component {
 
 The ```@Container``` decorator will provide a data stores to component's view. Note that you can load multiple data stores in one component, all data stores will be placed in ```props.store```.
 
-### Observer pattern
+### 2. Components
 
-Then ```Observable.create``` is an alias for the ```Observable``` constructor, you can call the ```subscribe``` function after create the observable. For example:
+Extenstion React provides a wide range of useful Components out of the box, and any `Component` can easily be extended to create a customized component.
 
-```javascript
+#### 2.1 Grid
+
+(Under Construction)
+
+### 3. Component Layout
+
+`Component` has a `Layout` which defines how it sizes and positions its internal child items. (Under Construction)
+
+### 4. Data Package
+
+The data package is what loads and saves all of the data in your application.
+
+#### 4.1 Models
+
+The centerpiece of the data package is `Model` which represents an entity in an application. (Under Construction)
+
+#### 4.2 Stores
+
+Models are typically used with a `Store`, which is basically a collection of records. Creating a `Store` and loading its data is simple:
+
+```js
+import { Store } from 'ext-react'
+
+export default Store({
+  storeId: 'DashboardStore',
+  proxy: {
+    url: '/api/dashboard'
+  },
+  autoLoad: true
+})
+```
+
+In the example above we configured an AJAX proxy to load data from the url `/api/dashboard`.
+
+Stores load data via ```proxy``` with this following structure:
+
+```json
+{
+  url:    /* The URL from which to request the data object */,
+  method: /* The default HTTP method to be used for requests. If not set, GET will be used. */
+  params: /* Request parameters sent as json data */
+  reader: /* Use to decode the server's response */
+}
+```
+
+#### 4.3 Validations
+
+Models also provide a bevy of support for validating data. (Under Construction)
+
+### 5. Events
+
+Events fire whenever something interesting happens to one of your Classes.
+
+#### 5.1 Adding Observers
+
+`Observable.create` is an alias for the `Observable` constructor, you can call the `subscribe` function after create the observable. For example:
+
+```js
 const observable = Observable.create()
 
 observable.subscribe(store => {
@@ -203,117 +234,29 @@ observable.subscribe(store => {
 })
 ```
 
-Whenever ```Observable``` is called, all observers will be called:
+#### 5.2 Firing Custom Events
 
-```javascript
+Whenever `Observable` is called, all observers will be called:
+
+```js
 observable.call(/* observer */)
 ```
 
-Also, you can unsubscribe:
+#### 5.3 Removing Observers
 
-```javascript
+Just as we can add listeners at any time, we can also remove them. This time we use the `ubsubscribe` function. To remove a listener, we need a reference to its function.
+
+```js
 observable.ubsubscribe(fn)
 ```
 
-### Separation of Concerns
+#### 5.4 Listening for DOM Events
 
-At first, you define a simple store:
-
-```javascript
-import { Store } from 'ext-react'
-
-@Store
-export default class FamilyStore {
-  constructor() {
-    this.proxy = {
-      url: '/api/family',
-      method: 'post'
-    }
-  }
-}
-```
-
-Next, define a search screen with 2 component: search form and search result. Search form will fire an action to search while search result will receive a response from search
-
-```javascript
-import React, { Component } from 'react'
-import FamilyStore from '~/stores/family'
-import FamilyService from '~/services/family'
-import { Button } from '~/components/bootstrap'
-
-export default class Search extends Component {
-  render() {
-    return <section>
-      <h1>Search</h1>
-      <SearchForm />
-      <SearchResult />
-    </section>
-  }
-}
-
-class SearchForm extends Component {
-  render() {
-    return <section>
-      <Button text="Search" onClick={() => this.onSearch()} />
-    </section>
-  }
-
-  onSearch() {
-    FamilyService.search({ status: 1, category: 1 })
-  }
-}
-
-@Container({
-  stores: [FamilyStore]
-})
-export default class SearchResult extends Component {
-  render() {
-    return <section></section>
-  }
-}
-```
-
-Finally, you just define a ```FamilyService``` like this:
-
-```javascript
-import { Service } from 'ext-react'
-import FamilyStore from '~/stores/family'
-
-class FamilyService {
-  search(criteria) {
-    FamilyStore.proxy.params = criteria
-    FamilyStore.load()
-  }
-}
-
-export default new FamilyService
-```
-
-When ```FamilyStore``` is loaded, it will fire an action to ```Container``` to reload data. Data will be updated in ```this.props.stores```.
-
-### Storing Data Locally In The Browser
-
- * Saving cache
+By targeting the DOM element, we can attach many native events to which the component can then listen.
 
 ```js
-import { Cache } from 'ext-react'
-
-Cache.set('token', { tokenId: 1, accessToken: 'abcdef' })
+Observable.fromEvent(window, 'hashchange').subscribe(() => this.setState(() => (matchPath())));
 ```
-
- * Retrieving cache
-
-```js
-const token = Cache.get('token') // token = { tokenId: 1, accessToken: 'abcdef' }
-```
-
- * Flushing cache
-
-```js
-Cache.remove('token')
-Cache.remove() // remove all cached data
-```
-
 
 ## License
 

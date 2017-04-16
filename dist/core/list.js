@@ -16,7 +16,7 @@ var List = function () {
 
     this.array = EMPTY_LIST;
     if (value && value.length) {
-      this.array = [].concat(value);
+      this.array = value;
     }
     return this;
   }

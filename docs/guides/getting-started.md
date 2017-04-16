@@ -2,13 +2,11 @@
 
 Getting started with Extension React couldn't be easier. With a single command, you'll have a fully functional "universal" starter application that can be run on a local web server.
 
-### Application Structure
+## Application Structure
 
 Although not mandatory, all suggestions listed below should be considered as best-practice guidelines to keep your application well organized, extensible and maintainable. The following is the recommended directory structure for an Extension React application:
 
 ```
-+-- `dist`
-|   +-- `index.html`: application page
 +-- `node_modules`: NPM components
 +-- `src`
 |   +-- `css`
@@ -22,15 +20,16 @@ Although not mandatory, all suggestions listed below should be considered as bes
 |   |   +-- `ux`: code of shared components
 |   |   +-- `main.js`: main script
 +-- `gulpfile.babel.js`: build scripts
++-- `index.html`: application page
 +-- `package.json`: NPM package definition
-+-- `server.js`: code of local web server (ExpressJS), should point to `dist` folder
++-- `server.js`: code of local web server (ExpressJS)
 ```
 
 Based on this seed structure, you're ready to make any change to build your application.
 
 For example: [https://github.com/huytrongnguyen/react-cms](https://github.com/huytrongnguyen/react-cms)
 
-###  Load application with `Rext.application`
+##  Load application with `Rext.application`
 
 Loads application and starts it up with given configuration after the page is ready
 
@@ -48,7 +47,7 @@ Rext.application({
 })
 ```
 
-### Screen Navigation
+## Screen Navigation
 
 `Route` decorator is most basic responsibility is to render UI when a location matches the route’s path.
 

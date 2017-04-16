@@ -4,7 +4,7 @@ export default class List {
   constructor(value) {
     this.array = EMPTY_LIST
     if (value && value.length) {
-      this.array = [].concat(value)
+      this.array = value
     }
     return this
   }
