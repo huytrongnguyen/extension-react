@@ -28,8 +28,6 @@ var AbstractStore = function () {
       observable: _observable2.default.create(),
       modifiedRecords: {}
     });
-
-    StoreManager[this.storeId] = this;
   }
 
   _createClass(AbstractStore, [{
