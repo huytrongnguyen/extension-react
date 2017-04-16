@@ -8,8 +8,6 @@ export default class AbstractStore {
       observable: Observable.create(),
       modifiedRecords: {},
     })
-
-    StoreManager[this.storeId] = this
   }
 
   subscribe(observer) {
