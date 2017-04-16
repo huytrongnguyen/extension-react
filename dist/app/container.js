@@ -68,7 +68,7 @@ exports.default = function (config) {
         key: 'componentDidMount',
         value: function () {
           var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
-            var stores, name;
+            var stores, storeId;
             return regeneratorRuntime.wrap(function _callee$(_context) {
               while (1) {
                 switch (_context.prev = _context.next) {
@@ -82,15 +82,15 @@ exports.default = function (config) {
                       break;
                     }
 
-                    name = _context.t1.value;
+                    storeId = _context.t1.value;
 
-                    if (!stores[name].autoLoad) {
+                    if (!stores[storeId].autoLoad) {
                       _context.next = 7;
                       break;
                     }
 
                     _context.next = 7;
-                    return stores[name].load();
+                    return stores[storeId].load();
 
                   case 7:
                     _context.next = 2;
@@ -125,22 +125,11 @@ exports.default = function (config) {
           return _react2.default.createElement(WrappedComponent, _extends({}, this.state, this.props));
         }
       }, {
-        key: 'prepareStores',
-        value: function prepareStores(stores) {
-          var _this4 = this;
-
-          return _list2.default.of(config.stores).reduce(function (stores, store) {
-            store.subscribe(_this4.onDataChanged);
-            stores[store.name] = store;
-            return stores;
-          }, {});
-        }
-      }, {
         key: 'onDataChanged',
         value: function onDataChanged(store) {
           var stores = this.state.stores;
 
-          stores[store.name] = store;
+          stores[store.storeId] = store;
           this.setState(function () {
             return { stores: stores };
           });

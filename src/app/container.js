@@ -22,9 +22,9 @@ export default (config) => (WrappedComponent) => class extends Component {
 
   async componentDidMount() {
     const { stores } = this.state
-    for (let name in stores) {
-      if (stores[name].autoLoad) {
-        await stores[name].load()
+    for (let storeId in stores) {
+      if (stores[storeId].autoLoad) {
+        await stores[storeId].load()
       }
     }
   }
@@ -39,17 +39,9 @@ export default (config) => (WrappedComponent) => class extends Component {
     return <WrappedComponent {...this.state} {...this.props} />
   }
 
-  prepareStores(stores) {
-    return List.of(config.stores).reduce((stores, store) => {
-      store.subscribe(this.onDataChanged)
-      stores[store.name] = store
-      return stores
-    }, {})
-  }
-
   onDataChanged(store) {
     const { stores } = this.state
-    stores[store.name] = store
+    stores[store.storeId] = store
     this.setState(() => ({ stores }))
   }
 }

@@ -1,7 +1,8 @@
-## 1.3.0
+## 1.3.3
  * Correct `List`, `Map`
  * Change `Rext.bootstrap` to `Rext.application` and `init` to `launch`
  * Provide `HashRouter` component and `Router` decorator
+ * Revise `Store` with new implementation
  * Update README.md
 
 ## 1.2.1
