@@ -24,22 +24,22 @@ Getting started with Extension React couldn't be easier. With a single command, 
 Although not mandatory, all suggestions listed below should be considered as best-practice guidelines to keep your application well organized, extensible and maintainable. The following is the recommended directory structure for an Extension React application:
 
 ```
-+-- `node_modules`: NPM components
-+-- `src`
-|   +-- `css`
-|   |   +-- `_variables.scss`: application styles constant values
-|   |   +-- `app.scss`: application styles
-|   +-- `js`
-|   |   +-- `common`: code of shared function
-|   |   +-- `components`: code (scripts and views) of every feature should be a sub-directory
-|   |   +-- `services`: code of services
-|   |   +-- `stores`: code of stores
-|   |   +-- `ux`: code of shared components
-|   |   +-- `main.js`: main script
-+-- `gulpfile.babel.js`: build scripts
-+-- `index.html`: application page
-+-- `package.json`: NPM package definition
-+-- `server.js`: code of local web server (ExpressJS)
++-- node_modules: NPM components
++-- src
+|   +-- css
+|   |   +-- _variables.scss: application styles constant values
+|   |   +-- app.scss: application styles
+|   +-- js
+|   |   +-- common: code of shared function
+|   |   +-- components: code (scripts and views) of every feature should be a sub-directory
+|   |   +-- services: code of services
+|   |   +-- stores: code of stores
+|   |   +-- ux: code of shared components
+|   |   +-- main.js: main script
++-- gulpfile.babel.js: build scripts
++-- index.html: application page
++-- package.json: NPM package definition
++-- server.js: code of local web server (ExpressJS)
 ```
 
 Based on this seed structure, you're ready to make any change to build your application.
