@@ -1,0 +1,9 @@
+@import "variables";
+
+body {
+  font-size: $font-size;
+  background-color: $bgcolor;
+  font-family: tahoma, arial, verdana, sans-serif;
+  -webkit-font-smoothing: subpixel-antialiased;
+  color: $night;
+}

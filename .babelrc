@@ -3,7 +3,12 @@
   "plugins": [
     "transform-decorators-legacy",
     "transform-object-rest-spread",
-    ["root-import", { "rootPathSuffix": "src/" }]
+    ["babel-plugin-root-import", [{
+      "rootPathSuffix": "src/"
+    }, {
+      "rootPathPrefix": "@",
+      "rootPathSuffix": "dist/"
+    }]]
   ],
   "ignore": "node_modules"
 }

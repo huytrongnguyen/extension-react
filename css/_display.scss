@@ -1,0 +1,32 @@
+@import "variables";
+
+.d-flex {
+  display: flex !important;
+}
+
+@each $direction in column, row {
+  .flex-#{$direction} {
+    flex-direction: #{$direction} !important;
+  }
+}
+
+@each $alignment in left, center, right, justify {
+  .text-#{$alignment} {
+    text-align: #{$alignment} !important;
+  }
+}
+
+.row {
+  margin: 0 auto;
+}
+
+@for $i from 1 to 12 {
+  .col-#{$i} {
+    margin: 0 $size-sm;
+    width: 100% / $i;
+  }
+}
+
+.mr-auto {
+  margin-right: auto !important;
+}

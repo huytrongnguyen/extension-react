@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -14,14 +14,34 @@ var Ext = function () {
   }
 
   _createClass(Ext, [{
-    key: "getById",
+    key: 'getById',
     value: function getById(id) {
       return document.getElementById(id);
     }
   }, {
-    key: "extend",
+    key: 'extend',
     value: function extend() {
       return Object.assign.apply(null, arguments); // immutable object
+    }
+  }, {
+    key: 'createElement',
+    value: function createElement(html) {
+      var div = document.createElement('div');
+      div.innerHTML = html;
+      return div.children[0];
+    }
+
+    /**
+     * Returns `true` if the passed value is a JavaScript Function, `false` otherwise.
+     * @param {Object} value The value to test.
+     * @return {Boolean}
+     * @method
+     */
+
+  }, {
+    key: 'isFunction',
+    value: function isFunction(value) {
+      return !!value && typeof value === 'function';
     }
   }]);
 

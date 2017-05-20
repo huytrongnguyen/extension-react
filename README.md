@@ -124,22 +124,83 @@ Rext.application({
 
 ## Core Concepts
 
-### 1 Container
+### 1. Layouts and Containers
 
-A `Container` is a special type of `Component` that can contain other `Components`. Containers are the glue that binds an application together.
+The layout system is one of the most powerful parts of Ext JS. It handles the sizing and positioning of every Component in your application.
+
+Extenstion React provides a wide range of useful Components out of the box, and any `Component` can easily be extended to create a customized component.
+
+#### 1.1 Container
+
+Applications are made up of lots of components, usually nested inside one another. Containers allow you to render and arrange child Components inside them.
+
+Most apps have a single top-level Container called a Viewport, which takes up the entire screen. Inside of this are child components.
 
 ```js
-import React, { Component } from 'react'
-import { Container } from 'ext-react'
-import DashboardStore from '~/store/dashboard'
+import React, { Component } from 'react';
+import { Container, HashRouter } from '@/rext';
+import Header from './header';
+import Side from './side';
+import Nav from './nav';
+import Footer from './footer';
 
-@Container({
+export default class Viewport extends Component {
+  render() {
+    return (<Container>
+      <Header />
+      <Container hbox>
+        <Side />
+        <Container id="main-container">
+          <Nav />
+          <HashRouter />
+        </Container>
+      </Container>
+      <Footer />
+    </Container>);
+  }
+}
+```
+
+Layouts determine how the child components should be laid out on the screen. By default, `Container` use VBox layout. If you need to use HBox layout, add `hbox` property to `Container` component.
+
+#### 1.2 Grid
+
+(Under Construction)
+
+### 2. Components
+
+A component controls a patch of screen called a view. You define a component's application logic—what it does to support the view—inside a class. The class interacts with the view through an API of properties and methods. For example:
+
+```js
+// dashboard.js
+import { Route, Component } from 'ext-react';
+import DashboardStore from '~/stores/dashboard';
+import DashboardView from './dashboard.view';
+
+@Route('/')
+@Component({
+  componentAs: 'Dashboard',
+  view: DashboardView,
   stores: [DashboardStore]
 })
+export default class Dashboard {
+  constructor() {
+    this.title = 'Dashboard';
+  }
+}
+```
+
+You define a component's view with React Component.
+
+```js
+// dashboard.view.jsx
+import React, { Component } from 'react'
+
 export default class Dashboard extends Component {
   render() {
-    const { data } = this.props.store.DashboardStore
+    const { data } = this.props.stores.DashboardStore
     return <section className="container-fluid">
+      <h1>{this.props.Dashboard.title}</h1>
       <table className="table table-sm table-hover table-striped">
         <thead>
           <tr>
@@ -161,29 +222,29 @@ export default class Dashboard extends Component {
 }
 ```
 
-The ```@Container``` decorator will provide a data stores to component's view. Note that you can load multiple data stores in one component, all data stores will be placed in ```props.store```.
+Metadata tells Extension React how to process a class and you can attach metadata by using a `Component` decorator:
 
-### 2. Components
+```js
+@Component({
+  componentAs: 'Dashboard',
+  view: DashboardView,
+  stores: [DashboardStore]
+})
+```
 
-Extenstion React provides a wide range of useful Components out of the box, and any `Component` can easily be extended to create a customized component.
+ * `componentAs`: binding the `Component` to the `View`, default is 'vm'. That's mean you can access any property or method of `Component` via `this.props.vm`. For above example, it would be `this.props.Dashboard`.
+ * `view`: tell React how to render the component.
+ * `stores`: array of stores that the component requires.
 
-#### 2.1 Grid
-
-(Under Construction)
-
-### 3. Component Layout
-
-`Component` has a `Layout` which defines how it sizes and positions its internal child items. (Under Construction)
-
-### 4. Data Package
+### 3. Data Package
 
 The data package is what loads and saves all of the data in your application.
 
-#### 4.1 Models
+#### 3.1 Models
 
 The centerpiece of the data package is `Model` which represents an entity in an application. (Under Construction)
 
-#### 4.2 Stores
+#### 3.2 Stores
 
 Models are typically used with a `Store`, which is basically a collection of records. Creating a `Store` and loading its data is simple:
 
@@ -203,7 +264,7 @@ In the example above we configured an AJAX proxy to load data from the url `/api
 
 Stores load data via ```proxy``` with this following structure:
 
-```json
+```js
 {
   url:    /* The URL from which to request the data object */,
   method: /* The default HTTP method to be used for requests. If not set, GET will be used. */
@@ -212,15 +273,15 @@ Stores load data via ```proxy``` with this following structure:
 }
 ```
 
-#### 4.3 Validations
+#### 3.3 Validations
 
 Models also provide a bevy of support for validating data. (Under Construction)
 
-### 5. Events
+### 4. Events
 
 Events fire whenever something interesting happens to one of your Classes.
 
-#### 5.1 Adding Observers
+#### 4.1 Adding Observers
 
 `Observable.create` is an alias for the `Observable` constructor, you can call the `subscribe` function after create the observable. For example:
 
@@ -234,7 +295,7 @@ observable.subscribe(store => {
 })
 ```
 
-#### 5.2 Firing Custom Events
+#### 4.2 Firing Custom Events
 
 Whenever `Observable` is called, all observers will be called:
 
@@ -242,7 +303,7 @@ Whenever `Observable` is called, all observers will be called:
 observable.call(/* observer */)
 ```
 
-#### 5.3 Removing Observers
+#### 4.3 Removing Observers
 
 Just as we can add listeners at any time, we can also remove them. This time we use the `ubsubscribe` function. To remove a listener, we need a reference to its function.
 
@@ -250,13 +311,46 @@ Just as we can add listeners at any time, we can also remove them. This time we 
 observable.ubsubscribe(fn)
 ```
 
-#### 5.4 Listening for DOM Events
+#### 4.4 Listening for DOM Events
 
 By targeting the DOM element, we can attach many native events to which the component can then listen.
 
 ```js
 Observable.fromEvent(window, 'hashchange').subscribe(() => this.setState(() => (matchPath())));
 ```
+
+## Change Logs
+
+### 1.4.0
+ * Change `Rext.application` to `Rext.launch`, do not need a separate target `<div id="root"/>` in index.html file.
+ * Revise `Container` concept and change to `Component`
+ * Provide `Container` component and CSS
+
+### 1.3.3
+ * Correct `List`, `Map`
+ * Change `Rext.bootstrap` to `Rext.application` and `init` to `launch`
+ * Provide `HashRouter` component and `Router` decorator
+ * Revise `Store` with new implementation
+ * Update README.md
+
+### 1.2.1
+ * Fix issue in `router` component
+ * Update README.md
+
+### 1.2.0
+ * Improve `Store` and `Observable`
+ * Implement `Model`
+
+### 1.1.0
+ * Implement `Observable`
+
+### 1.0.0
+ * Change params in `bootstrap` function
+ * Implement `Store`, `Container` and `Router`
+
+### 0.0.1
+ * Define Architecture Overview
+ * Implement `bootstrap` function to launch the app
 
 ## License
 

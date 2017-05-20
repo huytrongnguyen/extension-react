@@ -16,9 +16,9 @@
   },
   "bugs": "https://github.com/huytrongnguyen/extension-react/issues",
   "scripts": {
-    "watch": "rm -rf dist/* && babel src -D -d dist --watch",
-    "build": "rm -rf dist/* && babel src -D -d dist",
-    "css": "node-sass --include-path scss css/ext-react.scss dist/css/ext-react.css",
+    "style": "node-sass --include-path scss css/rext.scss dist/css/rext.css && gulp copy",
+    "script": "rm -rf dist/* && babel src -D -d dist --watch",
+    "build": "rm -rf dist/* && babel src -D -d dist && node-sass --include-path scss css/ext-react.scss dist/css/ext-react.css",
     "server": "babel-node server.js --presets es2015"
   },
   "files": [
@@ -41,8 +41,7 @@
     "babel-preset-react": "6.24.1",
     "babelify": "7.3.0",
     "browserify": "14.3.0",
-    "del": "2.2.2",
-    "express": "4.15.2",
+    "express": "4.15.3",
     "gulp": "3.9.1",
     "gulp-sass": "3.1.0",
     "gulp-streamify": "1.0.2",

@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Link = exports.HashRouter = exports.Route = exports.Observable = exports.Container = exports.Service = exports.Model = exports.Store = exports.Cache = exports.Ajax = exports.Map = exports.List = exports.String = undefined;
+exports.Container = exports.Link = exports.HashRouter = exports.Route = exports.Observable = exports.Component = exports.Service = exports.Model = exports.Store = exports.Cache = exports.Ajax = exports.Map = exports.List = exports.String = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -76,12 +76,12 @@ Object.defineProperty(exports, 'Service', {
   }
 });
 
-var _container = require('./app/container');
+var _component = require('./app/component');
 
-Object.defineProperty(exports, 'Container', {
+Object.defineProperty(exports, 'Component', {
   enumerable: true,
   get: function get() {
-    return _interopRequireDefault(_container).default;
+    return _interopRequireDefault(_component).default;
   }
 });
 
@@ -115,6 +115,17 @@ Object.defineProperty(exports, 'Link', {
   }
 });
 
+var _container = require('./components/container');
+
+Object.defineProperty(exports, 'Container', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_container).default;
+  }
+});
+
+require('babel-polyfill');
+
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
@@ -146,6 +157,18 @@ var Rext = function () {
   }
 
   _createClass(Rext, [{
+    key: 'launch',
+    value: function launch(viewport) {
+      if (!window.location.hash) {
+        window.location.hash = '/';
+      }
+
+      var root = _ext2.default.createElement('<div id="react-root"></div>');
+      document.body.appendChild(root);
+      _ext2.default.isFunction(viewport) && (viewport = viewport());
+      (0, _reactDom.render)(viewport, root);
+    }
+  }, {
     key: 'application',
     value: function () {
       var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(_ref2) {
@@ -156,18 +179,19 @@ var Rext = function () {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
+                console.log('This is deprecated function, please use Rext.launch instead.');
                 if (!window.location.hash) {
                   window.location.hash = '/';
                 }
 
-                _context.next = 3;
+                _context.next = 4;
                 return launch();
 
-              case 3:
+              case 4:
 
                 (0, _reactDom.render)(_react2.default.createElement(viewport, {}), _ext2.default.getById(selector));
 
-              case 4:
+              case 5:
               case 'end':
                 return _context.stop();
             }
