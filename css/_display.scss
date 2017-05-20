@@ -27,6 +27,14 @@
   }
 }
 
-.mr-auto {
-  margin-right: auto !important;
+.mr-auto { margin-right: auto !important; }
+.mt-sm { margin-top: $size-sm !important; }
+.mr-sm { margin-right: $size-sm !important; }
+.mb-sm { margin-bottom: $size-sm !important; }
+.ml-sm { margin-left: $size-sm !important; }
+
+.form-group { margin-bottom: $size-sm; }
+.form-inline {
+  display: flex;
+  flex-flow: row wrap;
 }

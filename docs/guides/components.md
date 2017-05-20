@@ -48,7 +48,7 @@ export default class Dashboard extends Component {
           )}
         </tbody>
       </table>
-    </section>
+    </section>;
   }
 }
 ```

@@ -7,16 +7,15 @@ import Footer from './footer';
 
 export default class Viewport extends Component {
   render() {
-    return (<Container>
+    return <Container>
       <Header />
       <Container hbox>
-        <Side />
         <Container id="main-container">
           <Nav />
           <HashRouter />
         </Container>
       </Container>
       <Footer />
-    </Container>);
+    </Container>;
   }
 }

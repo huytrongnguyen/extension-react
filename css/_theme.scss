@@ -7,3 +7,53 @@ body {
   -webkit-font-smoothing: subpixel-antialiased;
   color: $night;
 }
+
+header, footer {
+  padding: $size;
+  box-shadow: 0px 0px 2px rgba(0, 0, 0, .85);
+  background-color: #deecfd;
+  background-image: -webkit-linear-gradient(top, #ccdef6, #d6e6fa 25%, #deecfd 45%);
+}
+
+header {
+  border-bottom: $border;
+}
+
+footer {
+  border-top: $border;
+}
+
+#{$a-tags} {
+  text-decoration: none !important;
+  color: $night;
+}
+
+.panel-body {
+  padding: $size;
+  background-color: #d9e7f8;
+  border: $border;
+}
+
+.form-control {
+  border: 1px solid #b5b8c8;
+  border-radius: $size-xs;
+  font-size: $font-size;
+  padding: $size-sm $size-xs;
+  &:focus {
+    border-color: #7eadd9;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  &:hover {
+    background: rgba(0, 0, 0, 0.4);
+  }
+}

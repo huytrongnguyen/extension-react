@@ -1,6 +1,6 @@
 {
   "name": "ext-react",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "JavaScript library that build on top of React",
   "main": "dist/rext.js",
   "author": "Lionel Nguyen <huynguyen8505@gmail.com> (https://github.com/huytrongnguyen)",

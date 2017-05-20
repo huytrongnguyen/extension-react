@@ -17,6 +17,11 @@
     flex-direction: row;
     .nav-item {
       padding: 0 $size;
+      &.active {
+        font-weight: bold;
+        cursor: default !important;
+        pointer-events: none;
+      }
     }
   }
 }

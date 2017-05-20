@@ -1,10 +1,10 @@
 /***** SIZE *****/
 $size: .75rem; /* 12px */
-$size-sm: $size / 2;
+$size-sm: $size * 2 / 3;
 $size-xs: $size / 3;
-$size-lg: $size * 2;
-$size-xl: $size * 3;
-$size-xxl: $size * 4;
+$size-lg: $size * 3 / 2;
+$size-xl: $size * 2;
+$size-xxl: $size * 5 / 2;
 $font-size: $size / 6 * 7; /* 14px */
 
 /***** COLOR *****/
@@ -15,6 +15,6 @@ $black: #000;
 $solitude: #dfe9f6;
 
 $bgcolor: $solitude;
-$border: 1px solid $silver;
+$border: 1px solid #99bce8;
 $box-shadow: rgba(0, 0, 0, 0.31) 0px 0px 1px, rgba(0, 0, 0, 0.18) 0px 0px 5px, rgba(0, 0, 0, 0.3) 0px 8px 50px;
 $a-tags: 'a, a:active, a:hover, a:visited, a:focus';
