@@ -44,7 +44,7 @@ Although not mandatory, all suggestions listed below should be considered as bes
 
 Based on this seed structure, you're ready to make any change to build your application.
 
-For example: [https://github.com/huytrongnguyen/react-cms](https://github.com/huytrongnguyen/react-cms)
+For example: [https://github.com/huytrongnguyen/extension-react/tree/master/example](https://github.com/huytrongnguyen/extension-react/tree/master/example)
 
 ###  2. Load application with `Rext.application`
 
