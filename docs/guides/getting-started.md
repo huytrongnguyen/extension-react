@@ -2,16 +2,16 @@
 
 Getting started with Extension React couldn't be easier. With a single command, you'll have a fully functional "universal" starter application that can be run on a local web server.
 
-##  Load application with `Rext.application`
+##  Load application with `Rext.launch`
 
-To launch your app, add the following to your main.js file
+To launch your app, add the following to your `main.js` file
 
 ```js
-import 'babel-polyfill'
-import Rext from 'ext-react'
-import Viewport from './components/viewport/viewport'
+import 'babel-polyfill';
+import Rext from 'ext-react';
+import Viewport from './components/viewport/viewport';
 
-Rext.launch(<Viewport />)
+Rext.launch(<Viewport />);
 ```
 
 The launch function renders the specified component into the document body. If you need to do something before initial render, just return the component to be rendered in a callback function:
@@ -21,8 +21,8 @@ Rext.launch(() => {
   // do something before initial render
 
   // return the component to be rendered
-  return <App/>
-})
+  return (<App/>);
+});
 ```
 
 ## Screen Navigation

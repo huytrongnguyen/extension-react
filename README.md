@@ -46,22 +46,27 @@ Based on this seed structure, you're ready to make any change to build your appl
 
 For example: [https://github.com/huytrongnguyen/extension-react/tree/master/example](https://github.com/huytrongnguyen/extension-react/tree/master/example)
 
-###  2. Load application with `Rext.application`
+###  2. Load application with `Rext.launch`
 
-Loads application and starts it up with given configuration after the page is ready
+To launch your app, add the following to your `main.js` file
 
 ```js
-import 'babel-polyfill'
-import Rext from 'ext-react'
-import Viewport from './components/viewport/viewport'
+import 'babel-polyfill';
+import Rext from 'ext-react';
+import Viewport from './components/viewport/viewport';
 
-Rext.application({
-  selector: 'react-root',
-  viewport: Viewport,
-  launch: () => {
-    // Called automatically when the page has completely loaded.
-  }
-})
+Rext.launch(<Viewport />);
+```
+
+The launch function renders the specified component into the document body. If you need to do something before initial render, just return the component to be rendered in a callback function:
+
+```js
+Rext.launch(() => {
+  // do something before initial render
+
+  // return the component to be rendered
+  return (<App/>);
+});
 ```
 
 ### 3. Screen Navigation
