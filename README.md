@@ -17,36 +17,7 @@ You'll need both React and Extension React:
 
 You'll also need `babel-polyfill` to use async/await function and `babel-preset-es2017` to use decorator
 
-## Getting Started
-
-Getting started with Extension React couldn't be easier. With a single command, you'll have a fully functional "universal" starter application that can be run on a local web server.
-
-### Application Structure
-
-Although not mandatory, all suggestions listed below should be considered as best-practice guidelines to keep your application well organized, extensible and maintainable. The following is the recommended directory structure for an Extension React application:
-
-```
-+-- node_modules: NPM components
-+-- src
-|   +-- css
-|   |   +-- _variables.scss: application styles constant values
-|   |   +-- app.scss: application styles
-|   +-- js
-|   |   +-- common: code of shared function
-|   |   +-- components: code (scripts and views) of every feature should be a sub-directory
-|   |   +-- services: code of services
-|   |   +-- stores: code of stores
-|   |   +-- ux: code of shared components
-|   |   +-- main.js: main script
-+-- gulpfile.babel.js: build scripts
-+-- index.html: application page
-+-- package.json: NPM package definition
-+-- server.js: code of local web server (ExpressJS)
-```
-
-Based on this seed structure, you're ready to make any change to build your application.
-
-### Load application with `Rext.launch`
+## Quick Start
 
 To launch your app, add the following to your `main.js` file
 
@@ -54,9 +25,6 @@ To launch your app, add the following to your `main.js` file
 import 'babel-polyfill';
 import Rext from 'ext-react';
 import Viewport from './components/viewport/viewport';
-import Dashboard from './components/dashboard/dashboard';
-import Search from './components/search/search';
-import NotFound from './components/notfound/notfound';
 
 Rext.launch(<Viewport />);
 ```
@@ -72,7 +40,48 @@ Rext.launch(() => {
 });
 ```
 
-### Screen Navigation
+## Components
+
+A component in Extension React is the combination of a React Component and a component class that controls a portion of the screen. Here is an example of a component:
+
+```js
+// ./components/dashboard/dashboard.js
+import { Component } from '@/rext'
+import DashboardView from './dashboard.view'
+
+@Component({
+  view: DashboardView
+})
+export default class Dashboard {
+  constructor() {
+    this.title = 'Dashboard'
+  }
+}
+```
+
+```js
+// ./components/dashboard/dashboard.view.jsx
+import React, { Component } from 'react';
+
+export default class Dashboard extends Component {
+  render() {
+    return <h1>{this.props.vm.title}</h1>;
+  }
+}
+```
+
+Every component begins with an `@Component` decorator function that takes a *metadata* object. The metadata object describes how the React Component and component class work together. That's mean you can access any property or method of component class via `this.props.vm`. You can rename `vm` to your name by using `componentAs` property in *metadata*. For example:
+
+```js
+@Component({
+  componentAs: 'Dashboard',
+  view: DashboardView
+})
+```
+
+Then you will access properties and methods of component class via `this.props.Dashboard`.
+
+## Screen Navigation
 
 `Route` decorator is most basic responsibility is to render UI when a location matches the route’s path.
 
@@ -163,66 +172,12 @@ export default class Details extends Component {
 }
 ```
 
-### Components
-
-A component controls a patch of screen called a view. You define a component's application logic—what it does to support the view—inside a class. The class interacts with the view through an API of properties and methods. For example:
-
-```js
-// dashboard.js
-import { Route, Component } from 'ext-react';
-import DashboardStore from '~/stores/dashboard';
-import DashboardView from './dashboard.view';
-
-@Route('/')
-@Component({
-  componentAs: 'Dashboard',
-  view: DashboardView,
-  stores: [DashboardStore]
-})
-export default class Dashboard {
-  constructor() {
-    this.title = 'Dashboard';
-  }
-}
-```
-
-You define a component's view with React Component.
-
-```js
-// dashboard.view.jsx
-import React, { Component } from 'react'
-
-export default class DashboardView extends Component {
-  render() {
-    const { data } = this.props.stores.DashboardStore
-    return <section className="container-fluid">
-      <h1>{this.props.Dashboard.title}</h1>
-      <table className="table table-sm table-hover table-striped">
-        <thead>
-          <tr>
-            <th>Status</th>
-            <th className="text-sm-right">Total Records</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data && data.map(item =>
-            <tr>
-              <td>{item[0]}</td>
-              <td className="text-sm-right">{item[1]}</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-    </section>;
-  }
-}
-```
-
-### Stores
+## Stores
 
 Stores load data via a `Proxy`. Creating a `Store` is easy - we just tell it the `Proxy` to use for loading and saving its data:
 
 ```js
+// ./stores/dashboard.js
 import { Store } from 'ext-react'
 
 export default Store({
@@ -236,7 +191,42 @@ export default Store({
 
 In the example above we configured an AJAX proxy to load data from the url `/api/dashboard`.
 
-### Observable
+Now, just bind a store to the `Component`. When store's data changed, it will fire an event to re-render the `Component`:
+
+```js
+// ./components/dashboard/dashboard.js
+import { Component } from '@/rext'
+import DashboardView from './dashboard.view'
+import DashboardStore from '~/stores/dashboard'
+
+@Component({
+  view: DashboardView,
+  stores: [DashboardStore]
+})
+export default class Dashboard {
+  constructor() {
+    this.title = 'Dashboard'
+  }
+}
+```
+
+You can access store's data via `this.props.stores`. For example:
+
+```js
+// ./components/dashboard/dashboard.view.jsx
+import React, { Component } from 'react';
+
+export default class Dashboard extends Component {
+  render() {
+    return <section>
+      <h1>{this.props.vm.title}</h1>
+      <p>{JSON.stringify(this.props.stores.DashboardStore.data)}</p>
+    </section>;
+  }
+}
+```
+
+## Observable
 
 `Observable.create` is an alias for the `Observable` constructor, you can call the `subscribe` function after create the observable. For example:
 
@@ -262,22 +252,48 @@ Just as we can add listeners at any time, we can also remove them. This time we 
 observable.unsubscribe(fn)
 ```
 
-## Examples
-
- * Application: [https://huytrongnguyen.github.io/extension-react/example](https://huytrongnguyen.github.io/extension-react/example)
- * Source code: [https://github.com/huytrongnguyen/extension-react/tree/master/example](https://github.com/huytrongnguyen/extension-react/tree/master/example)
+`Observable` is used in `@Component` to connect Store and View.
 
 ## Core Concepts
 
  * [The Class System](https://huytrongnguyen.github.io/extension-react/docs/guides/the-class-system)
- * [Components](https://huytrongnguyen.github.io/extension-react/docs/guides/components)
  * [Data Package](https://huytrongnguyen.github.io/extension-react/docs/guides/data-package)
  * [Events](https://huytrongnguyen.github.io/extension-react/docs/guides/events)
  * [Layouts and Containers](https://huytrongnguyen.github.io/extension-react/docs/guides/layouts-and-containers)
- * [Widgets](https://huytrongnguyen.github.io/extension-react/docs/guides/widgets)
+ * [Components](https://huytrongnguyen.github.io/extension-react/docs/guides/components)
  * [Application Architecture](https://huytrongnguyen.github.io/extension-react/docs/guides/application-architecture)
  * [Controlling an Application with Router](https://huytrongnguyen.github.io/extension-react/docs/guides/controlling-an-application-with-router)
  * [ViewModel and Data Binding](https://huytrongnguyen.github.io/extension-react/docs/guides/viewmodel-and-data-binding)
+
+## Application Architecture
+
+Although not mandatory, all suggestions listed below should be considered as best-practice guidelines to keep your application well organized, extensible and maintainable. The following is the recommended directory structure for an Extension React application:
+
+```
++-- node_modules: NPM components
++-- src
+|   +-- css
+|   |   +-- _variables.scss: application styles constant values
+|   |   +-- app.scss: application styles
+|   +-- js
+|   |   +-- common: code of shared function
+|   |   +-- components: code (scripts and views) of every feature should be a sub-directory
+|   |   +-- services: code of services
+|   |   +-- stores: code of stores
+|   |   +-- ux: code of shared components
+|   |   +-- main.js: main script
++-- gulpfile.babel.js: build scripts
++-- index.html: application page
++-- package.json: NPM package definition
++-- server.js: code of local web server (ExpressJS)
+```
+
+Based on this seed structure, you're ready to make any change to build your application.
+
+## Examples
+
+ * Application: [https://huytrongnguyen.github.io/extension-react/example](https://huytrongnguyen.github.io/extension-react/example)
+ * Source code: [https://github.com/huytrongnguyen/extension-react/tree/master/example](https://github.com/huytrongnguyen/extension-react/tree/master/example)
 
 ## Release Notes
 

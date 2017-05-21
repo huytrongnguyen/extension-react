@@ -3,8 +3,7 @@ import DashboardView from './dashboard.view'
 
 @Route('/')
 @Component({
-  view: DashboardView,
-  componentAs: 'Dashboard'
+  view: DashboardView
 })
 export default class Dashboard {
   constructor() {
