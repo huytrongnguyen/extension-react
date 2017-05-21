@@ -27,7 +27,7 @@ You define a component's view with React Component.
 // dashboard.view.jsx
 import React, { Component } from 'react'
 
-export default class Dashboard extends Component {
+export default class DashboardView extends Component {
   render() {
     const { data } = this.props.stores.DashboardStore
     return <section className="container-fluid">

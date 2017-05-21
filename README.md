@@ -163,6 +163,105 @@ export default class Details extends Component {
 }
 ```
 
+### Components
+
+A component controls a patch of screen called a view. You define a component's application logic—what it does to support the view—inside a class. The class interacts with the view through an API of properties and methods. For example:
+
+```js
+// dashboard.js
+import { Route, Component } from 'ext-react';
+import DashboardStore from '~/stores/dashboard';
+import DashboardView from './dashboard.view';
+
+@Route('/')
+@Component({
+  componentAs: 'Dashboard',
+  view: DashboardView,
+  stores: [DashboardStore]
+})
+export default class Dashboard {
+  constructor() {
+    this.title = 'Dashboard';
+  }
+}
+```
+
+You define a component's view with React Component.
+
+```js
+// dashboard.view.jsx
+import React, { Component } from 'react'
+
+export default class DashboardView extends Component {
+  render() {
+    const { data } = this.props.stores.DashboardStore
+    return <section className="container-fluid">
+      <h1>{this.props.Dashboard.title}</h1>
+      <table className="table table-sm table-hover table-striped">
+        <thead>
+          <tr>
+            <th>Status</th>
+            <th className="text-sm-right">Total Records</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data && data.map(item =>
+            <tr>
+              <td>{item[0]}</td>
+              <td className="text-sm-right">{item[1]}</td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+    </section>;
+  }
+}
+```
+
+### Stores
+
+Stores load data via a `Proxy`. Creating a `Store` is easy - we just tell it the `Proxy` to use for loading and saving its data:
+
+```js
+import { Store } from 'ext-react'
+
+export default Store({
+  storeId: 'DashboardStore',
+  proxy: {
+    url: '/api/dashboard'
+  },
+  autoLoad: true
+})
+```
+
+In the example above we configured an AJAX proxy to load data from the url `/api/dashboard`.
+
+### Observable
+
+`Observable.create` is an alias for the `Observable` constructor, you can call the `subscribe` function after create the observable. For example:
+
+```js
+const observable = Observable.create()
+
+observable.subscribe(store => {
+  const { stores } = this.state
+  stores[store.name] = store
+  this.setState(() => ({ stores }))
+})
+```
+
+Whenever `Observable` is called, all observers will be called:
+
+```js
+observable.call(/* observer */)
+```
+
+Just as we can add listeners at any time, we can also remove them. This time we use the `ubsubscribe` function. To remove a listener, we need a reference to its function.
+
+```js
+observable.ubsubscribe(fn)
+```
+
 ## Examples
 
  * Application: [https://huytrongnguyen.github.io/extension-react/example](https://huytrongnguyen.github.io/extension-react/example)
