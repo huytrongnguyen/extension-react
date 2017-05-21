@@ -46,15 +46,15 @@ A component in Extension React is the combination of a React Component and a com
 
 ```js
 // ./components/dashboard/dashboard.js
-import { Component } from '@/rext'
-import DashboardView from './dashboard.view'
+import { Component } from 'ext-react';
+import DashboardView from './dashboard.view';
 
 @Component({
   view: DashboardView
 })
 export default class Dashboard {
   constructor() {
-    this.title = 'Dashboard'
+    this.title = 'Dashboard';
   }
 }
 ```
@@ -104,8 +104,8 @@ Rext.launch(<Viewport />);
 
 ```js
 // ./components/viewport/viewport.js
-import React, { Component } from 'react'
-import { Link, HashRouter } from 'ext-react'
+import React, { Component } from 'react';
+import { Link, HashRouter } from 'ext-react';
 
 export default class Viewport extends Component {
   render() {
@@ -114,7 +114,7 @@ export default class Viewport extends Component {
       <Link to="/search">Search</Link>
       <Link to="/details/huynguyen">Details</Link>
       <HashRouter />
-    </section>
+    </section>;
   }
 }
 ```
@@ -178,7 +178,7 @@ Stores load data via a `Proxy`. Creating a `Store` is easy - we just tell it the
 
 ```js
 // ./stores/dashboard.js
-import { Store } from 'ext-react'
+import { Store } from 'ext-react';
 
 export default Store({
   storeId: 'DashboardStore',
@@ -186,7 +186,7 @@ export default Store({
     url: '/api/dashboard'
   },
   autoLoad: true
-})
+});
 ```
 
 In the example above we configured an AJAX proxy to load data from the url `/api/dashboard`.
@@ -195,9 +195,9 @@ Now, just bind a store to the `Component`. When store's data changed, it will fi
 
 ```js
 // ./components/dashboard/dashboard.js
-import { Component } from '@/rext'
-import DashboardView from './dashboard.view'
-import DashboardStore from '~/stores/dashboard'
+import { Component } from 'ext-react';
+import DashboardView from './dashboard.view';
+import DashboardStore from '~/stores/dashboard';
 
 @Component({
   view: DashboardView,
@@ -205,7 +205,7 @@ import DashboardStore from '~/stores/dashboard'
 })
 export default class Dashboard {
   constructor() {
-    this.title = 'Dashboard'
+    this.title = 'Dashboard';
   }
 }
 ```
@@ -231,25 +231,25 @@ export default class Dashboard extends Component {
 `Observable.create` is an alias for the `Observable` constructor, you can call the `subscribe` function after create the observable. For example:
 
 ```js
-const observable = Observable.create()
+const observable = Observable.create();
 
 observable.subscribe(store => {
-  const { stores } = this.state
-  stores[store.name] = store
-  this.setState(() => ({ stores }))
+  const { stores } = this.state;
+  stores[store.name] = store;
+  this.setState(() => ({ stores }));
 })
 ```
 
 Whenever `Observable` is called, all observers will be called:
 
 ```js
-observable.call(/* observer */)
+observable.call(/* observer */);
 ```
 
 Just as we can add listeners at any time, we can also remove them. This time we use the `unsubscribe` function. To remove a listener, we need a reference to its function.
 
 ```js
-observable.unsubscribe(fn)
+observable.unsubscribe(fn);
 ```
 
 `Observable` is used in `@Component` to connect Store and View.
