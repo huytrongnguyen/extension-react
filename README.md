@@ -256,10 +256,10 @@ Whenever `Observable` is called, all observers will be called:
 observable.call(/* observer */)
 ```
 
-Just as we can add listeners at any time, we can also remove them. This time we use the `ubsubscribe` function. To remove a listener, we need a reference to its function.
+Just as we can add listeners at any time, we can also remove them. This time we use the `unsubscribe` function. To remove a listener, we need a reference to its function.
 
 ```js
-observable.ubsubscribe(fn)
+observable.unsubscribe(fn)
 ```
 
 ## Examples
@@ -270,11 +270,14 @@ observable.ubsubscribe(fn)
 ## Core Concepts
 
  * [The Class System](https://huytrongnguyen.github.io/extension-react/docs/guides/the-class-system)
- * [Layouts and Containers](https://huytrongnguyen.github.io/extension-react/docs/guides/layouts-and-containers)
- * [Widgets](https://huytrongnguyen.github.io/extension-react/docs/guides/widgets)
  * [Components](https://huytrongnguyen.github.io/extension-react/docs/guides/components)
  * [Data Package](https://huytrongnguyen.github.io/extension-react/docs/guides/data-package)
  * [Events](https://huytrongnguyen.github.io/extension-react/docs/guides/events)
+ * [Layouts and Containers](https://huytrongnguyen.github.io/extension-react/docs/guides/layouts-and-containers)
+ * [Widgets](https://huytrongnguyen.github.io/extension-react/docs/guides/widgets)
+ * [Application Architecture](https://huytrongnguyen.github.io/extension-react/docs/guides/application-architecture)
+ * [Controlling an Application with Router](https://huytrongnguyen.github.io/extension-react/docs/guides/controlling-an-application-with-router)
+ * [ViewModel and Data Binding](https://huytrongnguyen.github.io/extension-react/docs/guides/viewmodel-and-data-binding)
 
 ## Release Notes
 

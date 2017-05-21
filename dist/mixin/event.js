@@ -19,41 +19,41 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var EventObservable = function () {
-  function EventObservable(target, eventName) {
-    _classCallCheck(this, EventObservable);
+var DomEvent = function () {
+  function DomEvent(target, eventName) {
+    _classCallCheck(this, DomEvent);
 
     this.target = target;
     this.eventName = eventName;
     return this;
   }
 
-  _createClass(EventObservable, [{
+  _createClass(DomEvent, [{
     key: 'subscribe',
     value: function subscribe(subscriber) {
       this.target.addEventListener(this.eventName, subscriber);
     }
   }]);
 
-  return EventObservable;
+  return DomEvent;
 }();
 
-var Observable = function () {
-  function Observable() {
-    _classCallCheck(this, Observable);
+var Event = function () {
+  function Event() {
+    _classCallCheck(this, Event);
 
     this.subscribers = [];
     return this;
   }
 
-  _createClass(Observable, [{
-    key: 'subscribe',
-    value: function subscribe(subscriber) {
+  _createClass(Event, [{
+    key: 'on',
+    value: function on(subscriber) {
       this.subscribers.push(subscriber);
     }
   }, {
-    key: 'unsubscribe',
-    value: function unsubscribe(subscriber) {
+    key: 'un',
+    value: function un(subscriber) {
       _list2.default.of(this.subscribers).each(function (value, index, subscribers) {
         return value === subscriber && subscribers.splice(index, 1);
       });
@@ -74,16 +74,16 @@ var Observable = function () {
   }], [{
     key: 'create',
     value: function create() {
-      return new Observable();
+      return new Event();
     }
   }, {
-    key: 'fromEvent',
-    value: function fromEvent(target, eventName) {
-      return new EventObservable(target, eventName);
+    key: 'listen',
+    value: function listen(target, eventName) {
+      return new DomEvent(target, eventName);
     }
   }]);
 
-  return Observable;
+  return Event;
 }();
 
-exports.default = Observable;
+exports.default = Event;

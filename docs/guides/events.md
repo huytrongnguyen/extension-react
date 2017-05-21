@@ -26,10 +26,10 @@ observable.call(/* observer */)
 
 ## Removing Observers
 
-Just as we can add listeners at any time, we can also remove them. This time we use the `ubsubscribe` function. To remove a listener, we need a reference to its function.
+Just as we can add listeners at any time, we can also remove them. This time we use the `unsubscribe` function. To remove a listener, we need a reference to its function.
 
 ```js
-observable.ubsubscribe(fn)
+observable.unsubscribe(fn)
 ```
 
 ## Listening for DOM Events
