@@ -5,7 +5,7 @@ import DashboardView from './dashboard.view'
 @Component({
   view: DashboardView
 })
-export default class Dashboard {
+export default class {
   constructor() {
     this.title = 'Dashboard'
   }

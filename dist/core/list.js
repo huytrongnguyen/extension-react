@@ -50,14 +50,11 @@ var List = function () {
       });
       return accumulator;
     }
-  }], [{
-    key: "of",
-    value: function of(value) {
-      return new List(value);
-    }
   }]);
 
   return List;
 }();
 
-exports.default = List;
+exports.default = function (value) {
+  return new List(value);
+};

@@ -8,13 +8,11 @@ $size-xxl: $size * 5 / 2;
 $font-size: $size / 6 * 7; /* 14px */
 
 /***** COLOR *****/
-$white: #fff;
-$silver: #c5c5c5;
-$night: #333;
-$black: #000;
+$white: #fefefe;
+$silver: #c0c0c0;
+$black: #333;
 $solitude: #dfe9f6;
 
-$bgcolor: $solitude;
-$border: 1px solid #99bce8;
+$border: 1px solid #d0d0d0;
 $box-shadow: rgba(0, 0, 0, 0.31) 0px 0px 1px, rgba(0, 0, 0, 0.18) 0px 0px 5px, rgba(0, 0, 0, 0.3) 0px 8px 50px;
 $a-tags: 'a, a:active, a:hover, a:visited, a:focus';

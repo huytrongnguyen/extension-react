@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import withProps from '~/mixin/with-props';
 
 export class Field extends Component {
   constructor(props) {
@@ -8,10 +9,9 @@ export class Field extends Component {
     }
   }
 
-  render() {
-    const { value } = this.state,
-          { className = '', onChange, onKeyPress, ...others } = this.props;
-    return <input type="text" value={value} className={`form-control ${className}`}
+  @withProps
+  render({ className = '', onChange, onKeyPress, ...others }) {
+    return <input type="text" value={this.state.value} className={`form-control ${className}`}
                   onChange={(e) => this.onChange(e.target.value)}
                   {...others} />;
   }

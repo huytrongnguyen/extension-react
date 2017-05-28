@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Field = exports.Grid = exports.Container = exports.Link = exports.HashRouter = exports.Route = exports.Observable = exports.Component = exports.Service = exports.Model = exports.Store = exports.Cache = exports.Ajax = exports.Map = exports.List = exports.String = undefined;
+exports.Field = exports.Grid = exports.Container = exports.Link = exports.HashRouter = exports.Route = exports.withProps = exports.Observable = exports.Component = exports.Service = exports.Model = exports.Store = exports.Cache = exports.Ajax = exports.Map = exports.List = exports.String = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -60,10 +60,13 @@ Object.defineProperty(exports, 'Store', {
     return _interopRequireDefault(_store).default;
   }
 });
+
+var _model = require('./data/model');
+
 Object.defineProperty(exports, 'Model', {
   enumerable: true,
   get: function get() {
-    return _interopRequireDefault(_store).default;
+    return _interopRequireDefault(_model).default;
   }
 });
 
@@ -91,6 +94,15 @@ Object.defineProperty(exports, 'Observable', {
   enumerable: true,
   get: function get() {
     return _interopRequireDefault(_observable).default;
+  }
+});
+
+var _withProps = require('./mixin/with-props');
+
+Object.defineProperty(exports, 'withProps', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_withProps).default;
   }
 });
 
@@ -176,40 +188,37 @@ var Rext = function () {
 
   _createClass(Rext, [{
     key: 'launch',
-    value: function launch(viewport) {
-      if (!window.location.hash) {
-        window.location.hash = '/';
-      }
-
-      var root = _ext2.default.createElement('<div id="react-root"></div>');
-      document.body.appendChild(root);
-      _ext2.default.isFunction(viewport) && (viewport = viewport());
-      (0, _reactDom.render)(viewport, root);
-    }
-  }, {
-    key: 'application',
     value: function () {
-      var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(_ref2) {
-        var selector = _ref2.selector,
-            viewport = _ref2.viewport,
-            launch = _ref2.launch;
+      var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(viewport) {
+        var root;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                console.log('This is deprecated function, please use Rext.launch instead.');
                 if (!window.location.hash) {
                   window.location.hash = '/';
                 }
 
-                _context.next = 4;
-                return launch();
+                root = _ext2.default.createElement('<div id="react-root"></div>');
 
-              case 4:
+                document.body.appendChild(root);
+                _context.t0 = _ext2.default.isFunction(viewport);
 
-                (0, _reactDom.render)(_react2.default.createElement(viewport, {}), _ext2.default.getById(selector));
+                if (!_context.t0) {
+                  _context.next = 8;
+                  break;
+                }
 
-              case 5:
+                _context.next = 7;
+                return viewport();
+
+              case 7:
+                viewport = _context.sent;
+
+              case 8:
+                (0, _reactDom.render)(viewport, root);
+
+              case 9:
               case 'end':
                 return _context.stop();
             }
@@ -217,11 +226,11 @@ var Rext = function () {
         }, _callee, this);
       }));
 
-      function application(_x) {
+      function launch(_x) {
         return _ref.apply(this, arguments);
       }
 
-      return application;
+      return launch;
     }()
   }]);
 

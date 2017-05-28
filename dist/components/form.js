@@ -9,9 +9,15 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _desc, _value, _class;
+
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
+
+var _withProps = require('../mixin/with-props');
+
+var _withProps2 = _interopRequireDefault(_withProps);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -23,7 +29,36 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Field = exports.Field = function (_Component) {
+function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {
+  var desc = {};
+  Object['ke' + 'ys'](descriptor).forEach(function (key) {
+    desc[key] = descriptor[key];
+  });
+  desc.enumerable = !!desc.enumerable;
+  desc.configurable = !!desc.configurable;
+
+  if ('value' in desc || desc.initializer) {
+    desc.writable = true;
+  }
+
+  desc = decorators.slice().reverse().reduce(function (desc, decorator) {
+    return decorator(target, property, desc) || desc;
+  }, desc);
+
+  if (context && desc.initializer !== void 0) {
+    desc.value = desc.initializer ? desc.initializer.call(context) : void 0;
+    desc.initializer = undefined;
+  }
+
+  if (desc.initializer === void 0) {
+    Object['define' + 'Property'](target, property, desc);
+    desc = null;
+  }
+
+  return desc;
+}
+
+var Field = exports.Field = (_class = function (_Component) {
   _inherits(Field, _Component);
 
   function Field(props) {
@@ -39,18 +74,16 @@ var Field = exports.Field = function (_Component) {
 
   _createClass(Field, [{
     key: 'render',
-    value: function render() {
+    value: function render(_ref) {
       var _this2 = this;
 
-      var value = this.state.value,
-          _props = this.props,
-          _props$className = _props.className,
-          className = _props$className === undefined ? '' : _props$className,
-          onChange = _props.onChange,
-          onKeyPress = _props.onKeyPress,
-          others = _objectWithoutProperties(_props, ['className', 'onChange', 'onKeyPress']);
+      var _ref$className = _ref.className,
+          className = _ref$className === undefined ? '' : _ref$className,
+          onChange = _ref.onChange,
+          onKeyPress = _ref.onKeyPress,
+          others = _objectWithoutProperties(_ref, ['className', 'onChange', 'onKeyPress']);
 
-      return _react2.default.createElement('input', _extends({ type: 'text', value: value, className: 'form-control ' + className,
+      return _react2.default.createElement('input', _extends({ type: 'text', value: this.state.value, className: 'form-control ' + className,
         onChange: function onChange(e) {
           return _this2.onChange(e.target.value);
         }
@@ -66,4 +99,4 @@ var Field = exports.Field = function (_Component) {
   }]);
 
   return Field;
-}(_react.Component);
+}(_react.Component), (_applyDecoratedDescriptor(_class.prototype, 'render', [_withProps2.default], Object.getOwnPropertyDescriptor(_class.prototype, 'render'), _class.prototype)), _class);

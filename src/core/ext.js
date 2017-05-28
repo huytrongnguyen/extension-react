@@ -1,6 +1,12 @@
+import Component from './component';
+
 class Ext {
   getById(id) {
     return document.getElementById(id);
+  }
+
+  getComp(comp) {
+    return new Component(comp);
   }
 
   extend() {
@@ -13,15 +19,9 @@ class Ext {
     return div.children[0];
   }
 
-  /**
-   * Returns `true` if the passed value is a JavaScript Function, `false` otherwise.
-   * @param {Object} value The value to test.
-   * @return {Boolean}
-   * @method
-   */
   isFunction(value) {
     return !!value && typeof value === 'function';
   }
 }
 
-export default new Ext();
+export default new Ext;

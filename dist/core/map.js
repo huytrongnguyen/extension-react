@@ -3,7 +3,6 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -39,21 +38,18 @@ var Map = function () {
   }, {
     key: 'keys',
     value: function keys() {
-      return _list2.default.of(Object.keys(this.map));
+      return (0, _list2.default)(Object.keys(this.map));
     }
   }, {
     key: 'values',
     value: function values() {
-      return _list2.default.of(Object.values(this.map));
-    }
-  }], [{
-    key: 'of',
-    value: function of(keyValues) {
-      return new Map(keyValues);
+      return (0, _list2.default)(Object.values(this.map));
     }
   }]);
 
   return Map;
 }();
 
-exports.default = Map;
+exports.default = function (keyValues) {
+  return new Map(keyValues);
+};

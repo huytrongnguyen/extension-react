@@ -111,7 +111,8 @@ var Ajax = function () {
           method = _ref3.method,
           params = _ref3.params;
 
-      this.BASE_URL && (url = this.BASE_URL + '/' + url)(method === 'get' && params !== null) && (url = url + '?' + _string2.default.toQueryString(params));
+      this.BASE_URL && (url = this.BASE_URL + '/' + url);
+      method === 'get' && params !== null && (url = url + '?' + _string2.default.toQueryString(params));
       var xhr = this.xhr;
       xhr.open(method, url, true);
       xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');

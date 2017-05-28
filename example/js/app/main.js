@@ -7,7 +7,7 @@ import Dashboard from './components/dashboard/dashboard';
 import Search from './components/search/search';
 import NotFound from './components/notfound/notfound';
 
-Rext.launch(() => {
-  CommonService.initApp();
+Rext.launch(async () => {
+  await CommonService.initApp();
   return <Viewport />;
-})
+});

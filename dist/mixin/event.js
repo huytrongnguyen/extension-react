@@ -19,6 +19,56 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+var _default = function () {
+  function _default() {
+    _classCallCheck(this, _default);
+
+    this.subscribers = [];
+    return this;
+  }
+
+  _createClass(_default, [{
+    key: 'on',
+    value: function on(subscriber) {
+      this.subscribers.push(subscriber);
+    }
+  }, {
+    key: 'un',
+    value: function un(subscriber) {
+      (0, _list2.default)(this.subscribers).each(function (value, index, subscribers) {
+        return value === subscriber && subscribers.splice(index, 1);
+      });
+    }
+  }, {
+    key: 'call',
+    value: function call() {
+      var _this = this;
+
+      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+
+      (0, _list2.default)(this.subscribers).each(function (subscriber) {
+        return subscriber.apply(_this, args);
+      });
+    }
+  }], [{
+    key: 'create',
+    value: function create() {
+      return new Event();
+    }
+  }, {
+    key: 'listen',
+    value: function listen(target, eventName) {
+      return new DomEvent(target, eventName);
+    }
+  }]);
+
+  return _default;
+}();
+
+exports.default = _default;
+
 var DomEvent = function () {
   function DomEvent(target, eventName) {
     _classCallCheck(this, DomEvent);
@@ -37,53 +87,3 @@ var DomEvent = function () {
 
   return DomEvent;
 }();
-
-var Event = function () {
-  function Event() {
-    _classCallCheck(this, Event);
-
-    this.subscribers = [];
-    return this;
-  }
-
-  _createClass(Event, [{
-    key: 'on',
-    value: function on(subscriber) {
-      this.subscribers.push(subscriber);
-    }
-  }, {
-    key: 'un',
-    value: function un(subscriber) {
-      _list2.default.of(this.subscribers).each(function (value, index, subscribers) {
-        return value === subscriber && subscribers.splice(index, 1);
-      });
-    }
-  }, {
-    key: 'call',
-    value: function call() {
-      var _this = this;
-
-      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-        args[_key] = arguments[_key];
-      }
-
-      _list2.default.of(this.subscribers).each(function (subscriber) {
-        return subscriber.apply(_this, args);
-      });
-    }
-  }], [{
-    key: 'create',
-    value: function create() {
-      return new Event();
-    }
-  }, {
-    key: 'listen',
-    value: function listen(target, eventName) {
-      return new DomEvent(target, eventName);
-    }
-  }]);
-
-  return Event;
-}();
-
-exports.default = Event;

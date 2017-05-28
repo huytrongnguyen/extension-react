@@ -62,7 +62,7 @@ exports.default = function (config) {
         value: function componentWillMount() {
           var _this2 = this;
 
-          var stores = _list2.default.of(config.stores).reduce(function (stores, store) {
+          var stores = (0, _list2.default)(config.stores).reduce(function (stores, store) {
             store.subscribe(_this2.onDataChanged.bind(_this2));
             stores[store.storeId] = store;
             return stores;
@@ -122,7 +122,7 @@ exports.default = function (config) {
         value: function componentWillUnmount() {
           var _this3 = this;
 
-          _map2.default.of(this.state.store).each(function (storeId, store) {
+          (0, _map2.default)(this.state.stores).each(function (storeId, store) {
             store.unsubscribe(_this3.onDataChanged);
           });
         }

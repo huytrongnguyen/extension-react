@@ -46,13 +46,13 @@ exports.default = function (config) {
 
     _createClass(DataStore, [{
       key: 'subscribe',
-      value: function subscribe(observer) {
-        this.observable.subscribe(observer);
+      value: function subscribe(subscriber) {
+        this.observable.subscribe(subscriber);
       }
     }, {
       key: 'unsubscribe',
-      value: function unsubscribe(observer) {
-        this.observable.unsubscribe(observer);
+      value: function unsubscribe(subscriber) {
+        this.observable.unsubscribe(subscriber);
       }
     }, {
       key: 'removeAll',
@@ -107,6 +107,11 @@ exports.default = function (config) {
         return load(proxy);
       }
     }, {
+      key: 'getRecords',
+      value: function getRecords() {
+        return this.data;
+      }
+    }, {
       key: 'commitChanges',
       value: function commitChanges() {
         this.modifiedRecords = {};
@@ -126,7 +131,7 @@ exports.default = function (config) {
       value: function rejectChanges() {
         var _this = this;
 
-        _list2.default.of(this.data).each(function (record, index, data) {
+        (0, _list2.default)(this.data).each(function (record, index, data) {
           if (_this.modifiedRecords[record.id]) {
             data[index] = _ext2.default.extend({}, _this.modifiedRecords[record.id].phantom);
           }

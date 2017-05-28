@@ -1,1 +1,1 @@
-export default (Service) => new Service
+export default (Service) => new Service;

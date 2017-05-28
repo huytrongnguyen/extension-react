@@ -5,7 +5,7 @@ import Side from './side';
 import Nav from './nav';
 import Footer from './footer';
 
-export default class Viewport extends Component {
+export default class extends Component {
   render() {
     return <Container>
       <Header />

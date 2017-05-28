@@ -16,37 +16,37 @@ export default (config) => (comp) => {
     }
 
     componentWillMount() {
-      const stores = List.of(config.stores).reduce((stores, store) => {
-        store.subscribe(this.onDataChanged.bind(this))
-        stores[store.storeId] = store
-        return stores
+      const stores = List(config.stores).reduce((stores, store) => {
+        store.subscribe(this.onDataChanged.bind(this));
+        stores[store.storeId] = store;
+        return stores;
       }, {})
-      this.setState(() => ({ stores }))
+      this.setState(() => ({ stores }));
     }
 
     async componentDidMount() {
-      const { stores } = this.state
+      const { stores } = this.state;
       for (let storeId in stores) {
         if (stores[storeId].autoLoad) {
-          await stores[storeId].load()
+          await stores[storeId].load();
         }
       }
     }
 
     componentWillUnmount() {
-      Map.of(this.state.store).each((storeId, store) => {
-        store.unsubscribe(this.onDataChanged)
+      Map(this.state.stores).each((storeId, store) => {
+        store.unsubscribe(this.onDataChanged);
       })
     }
 
     render() {
-      return <WrappedComponent {...this.state} {...this.props} />
+      return <WrappedComponent {...this.state} {...this.props} />;
     }
 
     onDataChanged(store) {
-      const { stores } = this.state
-      stores[store.storeId] = store
-      this.setState(() => ({ stores }))
+      const { stores } = this.state;
+      stores[store.storeId] = store;
+      this.setState(() => ({ stores }));
     }
   }
 }

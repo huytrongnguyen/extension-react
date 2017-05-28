@@ -13,12 +13,13 @@
       .rx-grid-column-header {
         padding: $size-xs;
         border-right: $border;
+        min-height: $size-xl;
       }
     }
   }
   .rx-grid-body {
     background-color: $white;
-    overflow: scroll;
+    overflow: auto;
     .rx-grid-view {
       height: auto;
       .rx-grid-row {
@@ -29,6 +30,7 @@
           padding: $size-xs;
           border-bottom: $border;
           border-right: $border;
+          min-height: $size-xl;
           &:last-child {
             border-right: 0;
           }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Link } from '@/rext';
+import { Link, Cache } from '@/rext';
 
-export default class Header extends Component {
+export default class extends Component {
   render() {
     return <header>
       <div className="brand">React CMS</div>
@@ -12,7 +12,7 @@ export default class Header extends Component {
           <Link to="/reporting" className="nav-item">Reporting</Link>
           <Link to="/admin" className="nav-item">Administration</Link>
         </ul>
-        <div>Hello, <strong>huytrongnguyen</strong></div>
+        <div>Hello, <strong>{Cache.get('configuration').name}</strong></div>
       </div>
     </header>;
   }

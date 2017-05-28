@@ -4,7 +4,7 @@ import SearchForm from './search-form';
 import SearchResult from './search-result';
 
 @Route('/search')
-export default class Search extends Component {
+export default class extends Component {
   render() {
     return <Container className="panel-body">
       <h1>Search</h1>

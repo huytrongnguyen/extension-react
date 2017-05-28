@@ -28,7 +28,7 @@ var Cache = function () {
     key: 'get',
     value: function get(key) {
       if (this.hasLocalStorage()) {
-        return localStorage.getItem(key) || undefined;
+        return JSON.parse(localStorage.getItem(key)) || undefined;
       } else {
         return this._cache[key] || undefined;
       }
@@ -37,7 +37,7 @@ var Cache = function () {
     key: 'set',
     value: function set(key, value) {
       if (this.hasLocalStorage()) {
-        localStorage.setItem(key, value);
+        localStorage.setItem(key, JSON.stringify(value));
       } else {
         this._cache[key] = value;
       }

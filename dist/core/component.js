@@ -7,26 +7,32 @@ exports.default = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _ext = require('../core/ext');
-
-var _ext2 = _interopRequireDefault(_ext);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _reactDom = require('react-dom');
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var _default = function () {
-  function _default(data) {
+  function _default(comp) {
     _classCallCheck(this, _default);
 
-    this.phantom = _ext2.default.extend({}, data);
-    this.data = {};
+    this.comp = (0, _reactDom.findDOMNode)(comp);
   }
 
   _createClass(_default, [{
-    key: 'set',
-    value: function set(fieldName, newValue) {
-      this.data[fieldName] = newValue;
+    key: 'parent',
+    value: function parent() {
+      this.comp = this.comp.parentNode;
+      return this;
+    }
+  }, {
+    key: 'width',
+    value: function width() {
+      return this.comp.clientWidth;
+    }
+  }, {
+    key: 'height',
+    value: function height() {
+      return this.comp.clientHeight;
     }
   }]);
 

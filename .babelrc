@@ -8,6 +8,9 @@
     }, {
       "rootPathPrefix": "@",
       "rootPathSuffix": "dist/"
+    }, {
+      "rootPathPrefix": "#",
+      "rootPathSuffix": "example/js/app/"
     }]]
   ],
   "ignore": "node_modules"

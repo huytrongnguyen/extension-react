@@ -19,25 +19,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var EventObservable = function () {
-  function EventObservable(target, eventName) {
-    _classCallCheck(this, EventObservable);
-
-    this.target = target;
-    this.eventName = eventName;
-    return this;
-  }
-
-  _createClass(EventObservable, [{
-    key: 'subscribe',
-    value: function subscribe(subscriber) {
-      this.target.addEventListener(this.eventName, subscriber);
-    }
-  }]);
-
-  return EventObservable;
-}();
-
 var Observable = function () {
   function Observable() {
     _classCallCheck(this, Observable);
@@ -54,7 +35,7 @@ var Observable = function () {
   }, {
     key: 'unsubscribe',
     value: function unsubscribe(subscriber) {
-      _list2.default.of(this.subscribers).each(function (value, index, subscribers) {
+      (0, _list2.default)(this.subscribers).each(function (value, index, subscribers) {
         return value === subscriber && subscribers.splice(index, 1);
       });
     }
@@ -67,7 +48,7 @@ var Observable = function () {
         args[_key] = arguments[_key];
       }
 
-      _list2.default.of(this.subscribers).each(function (subscriber) {
+      (0, _list2.default)(this.subscribers).each(function (subscriber) {
         return subscriber.apply(_this, args);
       });
     }
@@ -87,3 +68,22 @@ var Observable = function () {
 }();
 
 exports.default = Observable;
+
+var EventObservable = function () {
+  function EventObservable(target, eventName) {
+    _classCallCheck(this, EventObservable);
+
+    this.target = target;
+    this.eventName = eventName;
+    return this;
+  }
+
+  _createClass(EventObservable, [{
+    key: 'subscribe',
+    value: function subscribe(subscriber) {
+      this.target.addEventListener(this.eventName, subscriber);
+    }
+  }]);
+
+  return EventObservable;
+}();

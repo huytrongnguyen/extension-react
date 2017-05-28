@@ -3,12 +3,12 @@ class String {
     sep    = sep === undefined ? '&' : sep;
     encode = encode === false ? function(s) { return s; } : encodeURIComponent;
 
-    let pairs = []
+    let pairs = [];
     for (let key in params) {
-      pairs.push(`${key}=${encode(params[key])}`)
+      pairs.push(`${key}=${encode(params[key])}`);
     }
-    return pairs.join(sep)
+    return pairs.join(sep);
   }
 }
 
-export default new String
+export default new String;
