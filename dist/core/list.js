@@ -50,6 +50,11 @@ var List = function () {
       });
       return accumulator;
     }
+  }, {
+    key: "getAt",
+    value: function getAt(index) {
+      return this.array[index];
+    }
   }]);
 
   return List;

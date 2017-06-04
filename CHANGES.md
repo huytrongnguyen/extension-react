@@ -1,5 +1,5 @@
 ## [1.5.x]
->
+> Jun 04, 2017
 
  * `React.launch` now works with promise function (and `async/await` syntax)
  * Remove `Rext.application` function
@@ -7,6 +7,7 @@
  * Provide `Grid` component and update `Store`, `Model` to support `Grid`
  * Add decorator `withProps` to `render` function
  * Fix issue in `get` and `set` of `Cache`
+ * Update documentation for API
 
 ## [1.4.x]
 > May 20, 2017

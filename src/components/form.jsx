@@ -20,3 +20,10 @@ export class Field extends Component {
     this.setState(() => ({ value }));
   }
 }
+
+export class Button extends Component {
+  @withProps
+  render({ text, children, className = '', ...others }) {
+    return <button className={`${className}`} {...others}>{text || children}</button>
+  }
+}

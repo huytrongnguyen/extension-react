@@ -23,20 +23,20 @@ var Observable = function () {
   function Observable() {
     _classCallCheck(this, Observable);
 
-    this.subscribers = [];
+    this.observers = [];
     return this;
   }
 
   _createClass(Observable, [{
     key: 'subscribe',
-    value: function subscribe(subscriber) {
-      this.subscribers.push(subscriber);
+    value: function subscribe(observer) {
+      this.observers.push(observer);
     }
   }, {
     key: 'unsubscribe',
-    value: function unsubscribe(subscriber) {
-      (0, _list2.default)(this.subscribers).each(function (value, index, subscribers) {
-        return value === subscriber && subscribers.splice(index, 1);
+    value: function unsubscribe(observer) {
+      (0, _list2.default)(this.observers).each(function (value, index, observers) {
+        return value === observer && observers.splice(index, 1);
       });
     }
   }, {
@@ -48,8 +48,8 @@ var Observable = function () {
         args[_key] = arguments[_key];
       }
 
-      (0, _list2.default)(this.subscribers).each(function (subscriber) {
-        return subscriber.apply(_this, args);
+      (0, _list2.default)(this.observers).each(function (observer) {
+        return observer.apply(_this, args);
       });
     }
   }], [{
@@ -80,8 +80,8 @@ var EventObservable = function () {
 
   _createClass(EventObservable, [{
     key: 'subscribe',
-    value: function subscribe(subscriber) {
-      this.target.addEventListener(this.eventName, subscriber);
+    value: function subscribe(observer) {
+      this.target.addEventListener(this.eventName, observer);
     }
   }]);
 

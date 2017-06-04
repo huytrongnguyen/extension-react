@@ -11,26 +11,52 @@ var _ext = require('../core/ext');
 
 var _ext2 = _interopRequireDefault(_ext);
 
+var _observable = require('../mixin/observable');
+
+var _observable2 = _interopRequireDefault(_observable);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var _default = function () {
-  function _default(data) {
-    _classCallCheck(this, _default);
+var Model = function () {
+  function Model(data, store) {
+    _classCallCheck(this, Model);
 
-    this.phantom = _ext2.default.extend({}, data);
-    this.data = {};
+    _ext2.default.extend(this, {
+      data: data,
+      store: store
+    });
+    this.save();
   }
 
-  _createClass(_default, [{
+  _createClass(Model, [{
+    key: 'get',
+    value: function get(fieldName) {
+      return this.data[fieldName];
+    }
+  }, {
     key: 'set',
     value: function set(fieldName, newValue) {
       this.data[fieldName] = newValue;
+      this.store && this.store.observable.call(this.store);
+    }
+  }, {
+    key: 'save',
+    value: function save() {
+      this.phantom = _ext2.default.extend({}, this.data);
+      this.store && this.store.observable.call(this.store);
+    }
+  }, {
+    key: 'reject',
+    value: function reject() {
+      this.data = _ext2.default.extend({}, this.phantom);
+      this.save();
+      this.store && this.store.observable.call(this.store);
     }
   }]);
 
-  return _default;
+  return Model;
 }();
 
-exports.default = _default;
+exports.default = Model;

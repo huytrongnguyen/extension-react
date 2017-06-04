@@ -7,7 +7,7 @@
 
 ## Introduction
 
-Components are the heart of React's powerful, declarative programming model. Extension React is a library that build on top of React to help you build data-intensive, cross-platform web apps for desktops, tablets, and smartphones. Many concepts in this library are based on ExtJS, AngularJS, RxJS concepts.
+Components are the heart of React's powerful, declarative programming model. Extension React is a library that build on top of React to help you build data-intensive, cross-platform web apps for desktops, tablets, and smartphones. Many concepts in this library are based on ExtJS, AngularJS, RxJS concepts. This documentation also copy from ExtJS.
 
 ## Installation
 
@@ -23,6 +23,7 @@ To launch your app, add the following to your `main.js` file
 
 ```js
 import 'babel-polyfill';
+import React from 'react';
 import Rext from 'ext-react';
 import Viewport from './components/viewport/viewport';
 
@@ -40,9 +41,24 @@ Rext.launch(() => {
 });
 ```
 
+You can also work with async/await function before initial render:
+
+```js
+import 'babel-polyfill';
+import React from 'react';
+import Rext from 'ext-react';
+import CommonService from './services/common';
+import Viewport from './components/viewport/viewport';
+
+Rext.launch(async () => {
+  await CommonService.initApp();
+  return <Viewport />;
+});
+```
+
 ## Components
 
-A component in Extension React is the combination of a React Component and a component class that controls a portion of the screen. Here is an example of a component:
+A component in Extension React is the combination of a React Component and a component class that controls a portion of the screen. Here is an example of a component that display a simple string:
 
 ```js
 // ./components/dashboard/dashboard.js
@@ -74,12 +90,12 @@ Every component begins with an `@Component` decorator function that takes a *met
 
 ```js
 @Component({
-  componentAs: 'Dashboard',
+  componentAs: 'dashboard',
   view: DashboardView
 })
 ```
 
-Then you will access properties and methods of component class via `this.props.Dashboard`.
+Then you will access properties and methods of component class via `this.props.dashboard`.
 
 ## Screen Navigation
 
@@ -290,12 +306,26 @@ Although not mandatory, all suggestions listed below should be considered as bes
 
 Based on this seed structure, you're ready to make any change to build your application.
 
+## API
+
+ * [Rext](https://huytrongnguyen.github.io/extension-react/docs/api/rext)
+ * [Model](https://huytrongnguyen.github.io/extension-react/docs/api/model)
+ * [Store](https://huytrongnguyen.github.io/extension-react/docs/api/store)
+
 ## Examples
 
- * Application: [https://huytrongnguyen.github.io/extension-react/example](https://huytrongnguyen.github.io/extension-react/example)
  * Source code: [https://github.com/huytrongnguyen/extension-react/tree/master/example](https://github.com/huytrongnguyen/extension-react/tree/master/example)
 
 ## Release Notes
+
+### 1.5.x
+ * `React.launch` now works with promise function (and `async/await` syntax)
+ * Remove `Rext.application` function
+ * Small refactor in `List` (`List([1,2,3])` instead of `List.of([1,2,3])`) and `Map` (`Map({a:1})` instead of `Map.of({a:1})`)
+ * Provide `Grid` component and update `Store`, `Model` to support `Grid`
+ * Add decorator `withProps` to `render` function
+ * Fix issue in `get` and `set` of `Cache`
+ * Update documentation for API
 
 ### 1.4.x
  * Change `Rext.application` to `Rext.launch`, do not need a separate target `<div id="root"/>` in index.html file.

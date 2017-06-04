@@ -40,9 +40,10 @@ export { default as Component } from './app/component';
 
 export { default as Observable } from './mixin/observable';
 export { default as withProps } from './mixin/with-props';
+export { default as bind } from './mixin/bind';
 
 export { default as Route } from './components/router';
 export { HashRouter, Link } from './components/router';
 export { default as Container } from './components/container';
 export { default as Grid } from './components/grid';
-export { Field } from './components/form';
+export { Field, Button } from './components/form';

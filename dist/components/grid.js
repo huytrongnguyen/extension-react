@@ -19,6 +19,10 @@ var _list = require('../core/list');
 
 var _list2 = _interopRequireDefault(_list);
 
+var _number = require('../core/number');
+
+var _number2 = _interopRequireDefault(_number);
+
 var _ext = require('../core/ext');
 
 var _ext2 = _interopRequireDefault(_ext);
@@ -92,7 +96,11 @@ var _default = (_class = function (_Component) {
       }).collect(),
       width: 0,
       innerWidth: 0,
-      store: props.store
+      headerWidth: 0,
+      bodyWidth: 0
+    };
+    _this.reload = function () {
+      return _this.forceUpdate();
     };
     return _this;
   }
@@ -102,21 +110,29 @@ var _default = (_class = function (_Component) {
     value: function componentDidMount() {
       this.resizeGrid();
       _observable2.default.fromEvent(window, 'resize').subscribe(this.resizeGrid);
+      var node = _ext2.default.getComp(this),
+          header = node.find('.rx-grid-header'),
+          body = node.find('.rx-grid-body');
+      _observable2.default.fromEvent(body, 'scroll').subscribe(function (e) {
+        return header.scrollLeft = body.scrollLeft;
+      });
+      this.props.store.subscribe(this.reload);
+    }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      this.props.store.unsubscribe(this.reload);
     }
   }, {
     key: 'render',
     value: function render() {
-      var _state = this.state,
-          columns = _state.columns,
-          width = _state.width,
-          innerWidth = _state.innerWidth,
-          store = _state.store;
+      var store = this.props.store;
 
       return _react2.default.createElement(
         _container2.default,
-        { className: 'rx-grid', style: { width: width } },
+        { className: 'rx-grid' },
         _react2.default.createElement(GridHeader, this.state),
-        _react2.default.createElement(GridBody, _extends({ data: store.getRecords() }, this.state))
+        _react2.default.createElement(GridBody, _extends({ data: store.getData() }, this.state))
       );
     }
   }, {
@@ -125,31 +141,39 @@ var _default = (_class = function (_Component) {
       var columns = this.state.columns,
           node = _ext2.default.getComp(this),
           parent = node.parent(),
-          width = parent.width(),
-          height = parent.height(),
           flexColumns = [];
 
 
-      var innerWidth = (0, _list2.default)(columns).reduce(function (innerWidth, col) {
+      var width = parent.width(),
+          height = parent.height(),
+          innerWidth = (0, _list2.default)(columns).reduce(function (innerWidth, col) {
         if (col.style && col.style.width) {
           innerWidth += col.style.width;
         } else {
           flexColumns.push(col);
         }
         return innerWidth;
-      }, 0);
+      }, 0),
+          headerWidth = innerWidth + _ext2.default.SCROLL_WIDTH,
+          bodyWidth = innerWidth;
 
-      if (innerWidth < width) {
-        var remainWidth = width - innerWidth;
+      if (innerWidth < width && flexColumns.length > 0) {
+        var remainWidth = width - innerWidth - _ext2.default.SCROLL_WIDTH - _ext2.default.BORDER_WIDTH,
+            remainColumn = flexColumns.length;
         (0, _list2.default)(flexColumns).each(function (col) {
           !col.style && (col.style = {});
-          col.style.width = remainWidth / flexColumns.length;
+          var width = remainColumn === 1 ? remainWidth : _number2.default.round(remainWidth / remainColumn);
+          col.style.width = width;
+          remainWidth -= width;
+          --remainColumn;
         });
         innerWidth = width;
+        headerWidth = width - _ext2.default.BORDER_WIDTH;
+        bodyWidth = width - _ext2.default.SCROLL_WIDTH - _ext2.default.BORDER_WIDTH;
       }
 
       this.setState(function () {
-        return { columns: columns, width: width, innerWidth: innerWidth };
+        return { columns: columns, width: width, innerWidth: innerWidth, headerWidth: headerWidth, bodyWidth: bodyWidth };
       });
     }
   }]);
@@ -171,15 +195,14 @@ var GridHeader = (_class2 = function (_Component2) {
     key: 'render',
     value: function render(_ref) {
       var columns = _ref.columns,
-          width = _ref.width,
-          innerWidth = _ref.innerWidth;
+          headerWidth = _ref.headerWidth;
 
       return _react2.default.createElement(
         'section',
-        { className: 'rx-grid-header', style: { width: width } },
+        { className: 'rx-grid-header' },
         _react2.default.createElement(
           'div',
-          { className: 'rx-grid-header-container d-flex flex-row' },
+          { className: 'rx-grid-header-container d-flex flex-row', style: { width: headerWidth } },
           columns && columns.map(function (col) {
             var text = col.text,
                 className = col.className,
@@ -188,7 +211,7 @@ var GridHeader = (_class2 = function (_Component2) {
 
             return _react2.default.createElement(
               'div',
-              _extends({ className: 'rx-grid-column-header text-sm-center ' + (className || ''), style: style }, others),
+              _extends({ className: 'rx-grid-column-header text-center ' + (className || ''), style: style }, others),
               text || ''
             );
           })
@@ -212,8 +235,7 @@ var GridBody = (_class3 = function (_Component3) {
     key: 'render',
     value: function render(_ref2) {
       var columns = _ref2.columns,
-          width = _ref2.width,
-          innerWidth = _ref2.innerWidth,
+          bodyWidth = _ref2.bodyWidth,
           data = _ref2.data;
 
       return _react2.default.createElement(
@@ -221,10 +243,10 @@ var GridBody = (_class3 = function (_Component3) {
         { className: 'rx-grid-body' },
         _react2.default.createElement(
           'section',
-          { className: 'rx-grid-view' },
-          _react2.default.createElement('div', { style: { width: innerWidth, marginTop: -1 } }),
-          data && data.map(function (record) {
-            return _react2.default.createElement(GridRow, { columns: columns, record: record });
+          { className: 'rx-grid-view', style: { width: bodyWidth } },
+          _react2.default.createElement('div', { style: { height: 1 } }),
+          data && data.map(function (record, rowIndex) {
+            return _react2.default.createElement(GridRow, { columns: columns, record: record, rowIndex: rowIndex });
           })
         )
       );
@@ -246,7 +268,8 @@ var GridRow = (_class4 = function (_Component4) {
     key: 'render',
     value: function render(_ref3) {
       var columns = _ref3.columns,
-          record = _ref3.record;
+          record = _ref3.record,
+          rowIndex = _ref3.rowIndex;
 
       return _react2.default.createElement(
         'div',
@@ -261,7 +284,7 @@ var GridRow = (_class4 = function (_Component4) {
           return _react2.default.createElement(
             'div',
             _extends({ className: 'rx-grid-cell text-sm-center ' + (className || ''), style: style }, others),
-            render ? render(record[dataIndex], record, dataIndex) : record[dataIndex]
+            render ? render(record.get(dataIndex), record, dataIndex, rowIndex) : record.get(dataIndex)
           );
         })
       );

@@ -3,13 +3,13 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Field = undefined;
+exports.Button = exports.Field = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _desc, _value, _class;
+var _desc, _value, _class, _desc2, _value2, _class2;
 
 var _react = require('react');
 
@@ -100,3 +100,31 @@ var Field = exports.Field = (_class = function (_Component) {
 
   return Field;
 }(_react.Component), (_applyDecoratedDescriptor(_class.prototype, 'render', [_withProps2.default], Object.getOwnPropertyDescriptor(_class.prototype, 'render'), _class.prototype)), _class);
+var Button = exports.Button = (_class2 = function (_Component2) {
+  _inherits(Button, _Component2);
+
+  function Button() {
+    _classCallCheck(this, Button);
+
+    return _possibleConstructorReturn(this, (Button.__proto__ || Object.getPrototypeOf(Button)).apply(this, arguments));
+  }
+
+  _createClass(Button, [{
+    key: 'render',
+    value: function render(_ref2) {
+      var text = _ref2.text,
+          children = _ref2.children,
+          _ref2$className = _ref2.className,
+          className = _ref2$className === undefined ? '' : _ref2$className,
+          others = _objectWithoutProperties(_ref2, ['text', 'children', 'className']);
+
+      return _react2.default.createElement(
+        'button',
+        _extends({ className: '' + className }, others),
+        text || children
+      );
+    }
+  }]);
+
+  return Button;
+}(_react.Component), (_applyDecoratedDescriptor(_class2.prototype, 'render', [_withProps2.default], Object.getOwnPropertyDescriptor(_class2.prototype, 'render'), _class2.prototype)), _class2);

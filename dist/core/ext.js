@@ -17,6 +17,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var Ext = function () {
   function Ext() {
     _classCallCheck(this, Ext);
+
+    this.SCROLL_WIDTH = this.getScrollWidth();
+    this.BORDER_WIDTH = 2;
   }
 
   _createClass(Ext, [{
@@ -45,6 +48,32 @@ var Ext = function () {
     key: 'isFunction',
     value: function isFunction(value) {
       return !!value && typeof value === 'function';
+    }
+  }, {
+    key: 'getScrollWidth',
+    value: function getScrollWidth() {
+      var outer = document.createElement("div");
+      outer.style.visibility = "hidden";
+      outer.style.width = "100px";
+      outer.style.msOverflowStyle = "scrollbar"; // needed for WinJS apps
+
+      document.body.appendChild(outer);
+
+      var widthNoScroll = outer.offsetWidth;
+      // force scrollbars
+      outer.style.overflow = "scroll";
+
+      // add innerdiv
+      var inner = document.createElement("div");
+      inner.style.width = "100%";
+      outer.appendChild(inner);
+
+      var widthWithScroll = inner.offsetWidth;
+
+      // remove divs
+      outer.parentNode.removeChild(outer);
+
+      return widthNoScroll - widthWithScroll;
     }
   }]);
 

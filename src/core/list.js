@@ -29,6 +29,10 @@ class List {
     this.each((item, index, array) => accumulator = iteratee(accumulator, item, index, array));
     return accumulator;
   }
+
+  getAt(index) {
+    return this.array[index];
+  }
 }
 
 export default (value) => new List(value);

@@ -19,7 +19,7 @@
   }
   .rx-grid-body {
     background-color: $white;
-    overflow: auto;
+    overflow: scroll;
     .rx-grid-view {
       height: auto;
       .rx-grid-row {
@@ -33,6 +33,11 @@
           min-height: $size-xl;
           &:last-child {
             border-right: 0;
+          }
+        }
+        &:last-child {
+          .rx-grid-cell {
+            border-bottom: 0;
           }
         }
       }

@@ -3,7 +3,7 @@ import List from '~/core/list';
 
 export default class Observable {
   constructor() {
-    this.subscribers = [];
+    this.observers = [];
     return this;
   }
 
@@ -11,16 +11,16 @@ export default class Observable {
     return new Observable();
   }
 
-  subscribe(subscriber) {
-    this.subscribers.push(subscriber);
+  subscribe(observer) {
+    this.observers.push(observer);
   }
 
-  unsubscribe(subscriber) {
-    List(this.subscribers).each((value, index, subscribers) => (value === subscriber) && (subscribers.splice(index, 1)));
+  unsubscribe(observer) {
+    List(this.observers).each((value, index, observers) => (value === observer) && (observers.splice(index, 1)));
   }
 
   call(...args) {
-    List(this.subscribers).each(subscriber => subscriber.apply(this, args));
+    List(this.observers).each(observer => observer.apply(this, args));
   }
 
   static fromEvent(target, eventName) {
@@ -35,7 +35,7 @@ class EventObservable {
     return this;
   }
 
-  subscribe(subscriber) {
-    this.target.addEventListener(this.eventName, subscriber);
+  subscribe(observer) {
+    this.target.addEventListener(this.eventName, observer);
   }
 }

@@ -35,7 +35,7 @@ Stores load data via ```proxy``` with this following structure:
 }
 ```
 
-You have some function to work with store such as: ```subscribe```, ```unsubscribe```, ```removeAll```, ```loadData```, ```load```, ```loadPage```, ```updateRecord```, ```commitChanges```, ```rejectChanges```
+You have some function to work with store such as: `subscribe`, `unsubscribe`, `removeAll`, `loadData`, `load`, `loadPage`, `getData`, `getAt`, `commitChanges`, `rejectChanges`, ...
 
 ## Validations
 

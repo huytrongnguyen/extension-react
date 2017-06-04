@@ -37,32 +37,37 @@ exports.default = function (config) {
     function DataStore() {
       _classCallCheck(this, DataStore);
 
-      _ext2.default.extend(DataStore.prototype, config, {
-        data: [],
-        observable: _observable2.default.create(),
-        modifiedRecords: {}
+      _ext2.default.extend(this, config, {
+        data: config.data || [],
+        observable: _observable2.default.create()
       });
     }
 
     _createClass(DataStore, [{
       key: 'subscribe',
-      value: function subscribe(subscriber) {
-        this.observable.subscribe(subscriber);
+      value: function subscribe(observer) {
+        this.observable.subscribe(observer);
       }
     }, {
       key: 'unsubscribe',
-      value: function unsubscribe(subscriber) {
-        this.observable.unsubscribe(subscriber);
+      value: function unsubscribe(observer) {
+        this.observable.unsubscribe(observer);
       }
     }, {
       key: 'removeAll',
       value: function removeAll() {
         this.data = [];
+        this.observable.call(this);
       }
     }, {
       key: 'loadData',
       value: function loadData(data) {
-        this.data = this.proxy.reader && this.proxy.reader.rootProperty ? data[this.proxy.reader.rootProperty] : data;
+        var _this = this;
+
+        var newData = this.proxy.reader && this.proxy.reader.rootProperty ? data[this.proxy.reader.rootProperty] : data;
+        this.data = (0, _list2.default)(newData).map(function (record) {
+          return new _model2.default(record, _this);
+        }).collect();
         if (this.pageSize) {
           this.page = data;
         }
@@ -77,16 +82,17 @@ exports.default = function (config) {
             while (1) {
               switch (_context.prev = _context.next) {
                 case 0:
-                  _context.next = 2;
-                  return _ajax2.default.request(proxy || this.proxy);
+                  proxy = _ext2.default.extend({}, this.proxy, proxy || {});
+                  _context.next = 3;
+                  return _ajax2.default.request(proxy);
 
-                case 2:
+                case 3:
                   response = _context.sent;
 
                   response && this.loadData(response);
                   return _context.abrupt('return', this);
 
-                case 5:
+                case 6:
                 case 'end':
                   return _context.stop();
               }
@@ -107,36 +113,42 @@ exports.default = function (config) {
         return load(proxy);
       }
     }, {
-      key: 'getRecords',
-      value: function getRecords() {
+      key: 'getData',
+      value: function getData() {
         return this.data;
+      }
+    }, {
+      key: 'count',
+      value: function count() {
+        return this.data.length;
       }
     }, {
       key: 'commitChanges',
       value: function commitChanges() {
-        this.modifiedRecords = {};
-        this.observable.call(this);
-      }
-    }, {
-      key: 'updateRecord',
-      value: function updateRecord(record, fieldName, newValue) {
-        !this.modifiedRecords[record.id] && (this.modifiedRecords[record.id] = new _model2.default(record));
-        var modifiedRecord = this.modifiedRecords[record.id];
-        modifiedRecord.set(fieldName, newValue);
-        record[fieldName] = newValue;
+        (0, _list2.default)(this.data).each(function (record) {
+          return record.save();
+        });
         this.observable.call(this);
       }
     }, {
       key: 'rejectChanges',
       value: function rejectChanges() {
-        var _this = this;
-
-        (0, _list2.default)(this.data).each(function (record, index, data) {
-          if (_this.modifiedRecords[record.id]) {
-            data[index] = _ext2.default.extend({}, _this.modifiedRecords[record.id].phantom);
-          }
+        (0, _list2.default)(this.data).each(function (record) {
+          return record.reject();
         });
-        this.commitChanges();
+        this.observable.call(this);
+      }
+    }, {
+      key: 'getAt',
+      value: function getAt(index) {
+        return this.data[index];
+      }
+    }, {
+      key: 'removeAt',
+      value: function removeAt(index) {
+        var count = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+
+        return this.data.splice(index, count);
       }
     }]);
 

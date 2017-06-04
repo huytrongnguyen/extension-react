@@ -6,7 +6,7 @@ export default class {
   }
 
   parent() {
-    this.comp = this.comp.parentNode;
+    this.comp = this.comp.parentElement;
     return this;
   }
 
@@ -16,5 +16,9 @@ export default class {
 
   height() {
     return this.comp.clientHeight;
+  }
+
+  find(selector) {
+    return this.comp.querySelector(selector);
   }
 }

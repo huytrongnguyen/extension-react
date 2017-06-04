@@ -7,27 +7,28 @@ import Model from './model';
 export default (config) => {
   class DataStore {
     constructor() {
-      Ext.extend(DataStore.prototype, config, {
-        data: [],
-        observable: Observable.create(),
-        modifiedRecords: {}
+      Ext.extend(this, config, {
+        data: config.data || [],
+        observable: Observable.create()
       });
     }
 
-    subscribe(subscriber) {
-      this.observable.subscribe(subscriber);
+    subscribe(observer) {
+      this.observable.subscribe(observer);
     }
 
-    unsubscribe(subscriber) {
-      this.observable.unsubscribe(subscriber);
+    unsubscribe(observer) {
+      this.observable.unsubscribe(observer);
     }
 
     removeAll() {
       this.data = [];
+      this.observable.call(this);
     }
 
     loadData(data) {
-      this.data = this.proxy.reader && this.proxy.reader.rootProperty ? data[this.proxy.reader.rootProperty] : data;
+      const newData = this.proxy.reader && this.proxy.reader.rootProperty ? data[this.proxy.reader.rootProperty] : data;
+      this.data = List(newData).map(record => new Model(record, this)).collect();
       if (this.pageSize) {
         this.page = data;
       }
@@ -35,7 +36,8 @@ export default (config) => {
     }
 
     async load(proxy) {
-      const response = await Ajax.request(proxy || this.proxy);
+      proxy = Ext.extend({}, this.proxy, proxy || {});
+      const response = await Ajax.request(proxy);
       response && this.loadData(response);
       return this;
     }
@@ -45,30 +47,30 @@ export default (config) => {
       return load(proxy);
     }
 
-    getRecords() {
+    getData() {
       return this.data;
     }
 
-    commitChanges() {
-      this.modifiedRecords = {};
-      this.observable.call(this);
+    count() {
+      return this.data.length;
     }
 
-    updateRecord(record, fieldName, newValue) {
-      !this.modifiedRecords[record.id] && (this.modifiedRecords[record.id] = new Model(record));
-      const modifiedRecord = this.modifiedRecords[record.id];
-      modifiedRecord.set(fieldName, newValue);
-      record[fieldName] = newValue;
+    commitChanges() {
+      List(this.data).each(record => record.save());
       this.observable.call(this);
     }
 
     rejectChanges() {
-      List(this.data).each((record, index, data) => {
-        if (this.modifiedRecords[record.id]) {
-          data[index] = Ext.extend({}, this.modifiedRecords[record.id].phantom);
-        }
-      })
-      this.commitChanges();
+      List(this.data).each(record => record.reject());
+      this.observable.call(this);
+    }
+
+    getAt(index) {
+      return this.data[index];
+    }
+
+    removeAt(index, count = 1) {
+      return this.data.splice(index, count);
     }
   }
 
