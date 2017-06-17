@@ -11,7 +11,7 @@
     overflow: hidden;
     .rx-grid-header-container {
       .rx-grid-column-header {
-        padding: $size-xs;
+        padding: $size-sm;
         border-right: $border;
         min-height: $size-xl;
       }
@@ -27,7 +27,7 @@
           background-color: #fafafa;
         }
         .rx-grid-cell {
-          padding: $size-xs;
+          padding: $size-sm;
           border-bottom: $border;
           border-right: $border;
           min-height: $size-xl;

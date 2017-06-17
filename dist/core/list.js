@@ -27,11 +27,44 @@ var List = function () {
       return this.array;
     }
   }, {
+    key: "count",
+    value: function count() {
+      return this.array.length;
+    }
+  }, {
     key: "each",
     value: function each(iteratee) {
       for (var index = 0, item; (item = this.array[index]) != null; ++index) {
         iteratee(item, index, this.array);
       }
+    }
+  }, {
+    key: "findBy",
+    value: function findBy(predicate) {
+      var result = null;
+      for (var index = 0, item; (item = this.array[index]) != null; ++index) {
+        if (predicate(item, index, this.array)) {
+          result = item;
+          break;
+        }
+      }
+      return result;
+    }
+  }, {
+    key: "contains",
+    value: function contains(predicate) {
+      return this.findBy(predicate) !== null;
+    }
+  }, {
+    key: "filter",
+    value: function filter(predicate) {
+      var result = [];
+      this.each(function (item, index, array) {
+        if (predicate(item, index, array)) {
+          result.push(item);
+        }
+      });
+      return new List(result);
     }
   }, {
     key: "map",
@@ -54,6 +87,23 @@ var List = function () {
     key: "getAt",
     value: function getAt(index) {
       return this.array[index];
+    }
+  }, {
+    key: "removeAt",
+    value: function removeAt(index) {
+      var count = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+
+      return this.array.splice(index, count);
+    }
+  }, {
+    key: "add",
+    value: function add(item) {
+      this.array.push(item);
+    }
+  }, {
+    key: "insert",
+    value: function insert(index, item) {
+      this.array.splice(index, 0, item);
     }
   }]);
 

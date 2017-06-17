@@ -10,11 +10,11 @@ exports.default = function (target, name, descriptor) {
   var fn = descriptor.value;
 
   if (typeof fn !== 'function') {
-    throw new Error('@withProps decorator is only applied to functions not: ' + (typeof fn === 'undefined' ? 'undefined' : _typeof(fn)));
+    throw new Error('@withState decorator is only applied to functions not: ' + (typeof fn === 'undefined' ? 'undefined' : _typeof(fn)));
   }
 
   descriptor.value = function () {
-    return fn.bind(this)(this.props);
+    return fn.bind(this)(this.state);
   };
   return descriptor;
 };

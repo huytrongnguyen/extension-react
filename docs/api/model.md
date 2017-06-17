@@ -54,3 +54,5 @@ PARAMETERS:
 #### reject():
 
 Usually called by the `Store` to which this model instance has been joined. Rejects all changes made to the model instance, modified fields are reverted to their original values.
+
+### EVENTS

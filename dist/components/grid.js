@@ -9,7 +9,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _desc, _value, _class, _desc2, _value2, _class2, _desc3, _value3, _class3, _desc4, _value4, _class4;
+var _desc, _value, _class;
 
 var _react = require('react');
 
@@ -43,9 +43,15 @@ var _container = require('./container');
 
 var _container2 = _interopRequireDefault(_container);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _header = require('./grid/header');
 
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+var _header2 = _interopRequireDefault(_header);
+
+var _body = require('./grid/body');
+
+var _body2 = _interopRequireDefault(_body);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -106,17 +112,21 @@ var _default = (_class = function (_Component) {
   }
 
   _createClass(_default, [{
+    key: 'componentWillMount',
+    value: function componentWillMount() {
+      this.props.store.subscribe(this.reload);
+      _observable2.default.fromEvent(window, 'resize').subscribe(this.resizeGrid);
+    }
+  }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
       this.resizeGrid();
-      _observable2.default.fromEvent(window, 'resize').subscribe(this.resizeGrid);
       var node = _ext2.default.getComp(this),
           header = node.find('.rx-grid-header'),
           body = node.find('.rx-grid-body');
       _observable2.default.fromEvent(body, 'scroll').subscribe(function (e) {
         return header.scrollLeft = body.scrollLeft;
       });
-      this.props.store.subscribe(this.reload);
     }
   }, {
     key: 'componentWillUnmount',
@@ -125,14 +135,14 @@ var _default = (_class = function (_Component) {
     }
   }, {
     key: 'render',
-    value: function render() {
-      var store = this.props.store;
+    value: function render(_ref) {
+      var store = _ref.store;
 
       return _react2.default.createElement(
         _container2.default,
         { className: 'rx-grid' },
-        _react2.default.createElement(GridHeader, this.state),
-        _react2.default.createElement(GridBody, _extends({ data: store.getData() }, this.state))
+        _react2.default.createElement(_header2.default, this.state),
+        _react2.default.createElement(_body2.default, _extends({ data: store.getData() }, this.state))
       );
     }
   }, {
@@ -179,117 +189,6 @@ var _default = (_class = function (_Component) {
   }]);
 
   return _default;
-}(_react.Component), (_applyDecoratedDescriptor(_class.prototype, 'resizeGrid', [_bind2.default], Object.getOwnPropertyDescriptor(_class.prototype, 'resizeGrid'), _class.prototype)), _class);
+}(_react.Component), (_applyDecoratedDescriptor(_class.prototype, 'render', [_withProps2.default], Object.getOwnPropertyDescriptor(_class.prototype, 'render'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'resizeGrid', [_bind2.default], Object.getOwnPropertyDescriptor(_class.prototype, 'resizeGrid'), _class.prototype)), _class);
 
 exports.default = _default;
-var GridHeader = (_class2 = function (_Component2) {
-  _inherits(GridHeader, _Component2);
-
-  function GridHeader() {
-    _classCallCheck(this, GridHeader);
-
-    return _possibleConstructorReturn(this, (GridHeader.__proto__ || Object.getPrototypeOf(GridHeader)).apply(this, arguments));
-  }
-
-  _createClass(GridHeader, [{
-    key: 'render',
-    value: function render(_ref) {
-      var columns = _ref.columns,
-          headerWidth = _ref.headerWidth;
-
-      return _react2.default.createElement(
-        'section',
-        { className: 'rx-grid-header' },
-        _react2.default.createElement(
-          'div',
-          { className: 'rx-grid-header-container d-flex flex-row', style: { width: headerWidth } },
-          columns && columns.map(function (col) {
-            var text = col.text,
-                className = col.className,
-                style = col.style,
-                others = _objectWithoutProperties(col, ['text', 'className', 'style']);
-
-            return _react2.default.createElement(
-              'div',
-              _extends({ className: 'rx-grid-column-header text-center ' + (className || ''), style: style }, others),
-              text || ''
-            );
-          })
-        )
-      );
-    }
-  }]);
-
-  return GridHeader;
-}(_react.Component), (_applyDecoratedDescriptor(_class2.prototype, 'render', [_withProps2.default], Object.getOwnPropertyDescriptor(_class2.prototype, 'render'), _class2.prototype)), _class2);
-var GridBody = (_class3 = function (_Component3) {
-  _inherits(GridBody, _Component3);
-
-  function GridBody() {
-    _classCallCheck(this, GridBody);
-
-    return _possibleConstructorReturn(this, (GridBody.__proto__ || Object.getPrototypeOf(GridBody)).apply(this, arguments));
-  }
-
-  _createClass(GridBody, [{
-    key: 'render',
-    value: function render(_ref2) {
-      var columns = _ref2.columns,
-          bodyWidth = _ref2.bodyWidth,
-          data = _ref2.data;
-
-      return _react2.default.createElement(
-        _container2.default,
-        { className: 'rx-grid-body' },
-        _react2.default.createElement(
-          'section',
-          { className: 'rx-grid-view', style: { width: bodyWidth } },
-          _react2.default.createElement('div', { style: { height: 1 } }),
-          data && data.map(function (record, rowIndex) {
-            return _react2.default.createElement(GridRow, { columns: columns, record: record, rowIndex: rowIndex });
-          })
-        )
-      );
-    }
-  }]);
-
-  return GridBody;
-}(_react.Component), (_applyDecoratedDescriptor(_class3.prototype, 'render', [_withProps2.default], Object.getOwnPropertyDescriptor(_class3.prototype, 'render'), _class3.prototype)), _class3);
-var GridRow = (_class4 = function (_Component4) {
-  _inherits(GridRow, _Component4);
-
-  function GridRow() {
-    _classCallCheck(this, GridRow);
-
-    return _possibleConstructorReturn(this, (GridRow.__proto__ || Object.getPrototypeOf(GridRow)).apply(this, arguments));
-  }
-
-  _createClass(GridRow, [{
-    key: 'render',
-    value: function render(_ref3) {
-      var columns = _ref3.columns,
-          record = _ref3.record,
-          rowIndex = _ref3.rowIndex;
-
-      return _react2.default.createElement(
-        'div',
-        { className: 'rx-grid-row d-flex flex-row' },
-        columns && columns.map(function (col) {
-          var dataIndex = col.dataIndex,
-              className = col.className,
-              render = col.render,
-              style = col.style,
-              others = _objectWithoutProperties(col, ['dataIndex', 'className', 'render', 'style']);
-
-          return _react2.default.createElement(
-            'div',
-            _extends({ className: 'rx-grid-cell text-sm-center ' + (className || ''), style: style }, others),
-            render ? render(record.get(dataIndex), record, dataIndex, rowIndex) : record.get(dataIndex)
-          );
-        })
-      );
-    }
-  }]);
-
-  return GridRow;
-}(_react.Component), (_applyDecoratedDescriptor(_class4.prototype, 'render', [_withProps2.default], Object.getOwnPropertyDescriptor(_class4.prototype, 'render'), _class4.prototype)), _class4);

@@ -65,3 +65,5 @@ PARAMETERS:
 
 RETURNS:
   * The response data.
+
+### EVENTS

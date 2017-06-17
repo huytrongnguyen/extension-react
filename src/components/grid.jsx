@@ -6,6 +6,8 @@ import Observable from '~/mixin/observable';
 import withProps from '~/mixin/with-props';
 import bind from '~/mixin/bind';
 import Container from './container';
+import GridHeader from './grid/header';
+import GridBody from './grid/body';
 
 export default class extends Component {
   constructor(props) {
@@ -20,22 +22,26 @@ export default class extends Component {
     this.reload = () => this.forceUpdate();
   }
 
+  componentWillMount() {
+    this.props.store.subscribe(this.reload);
+    Observable.fromEvent(window, 'resize').subscribe(this.resizeGrid);
+
+  }
+
   componentDidMount() {
     this.resizeGrid();
-    Observable.fromEvent(window, 'resize').subscribe(this.resizeGrid);
     const node = Ext.getComp(this),
           header = node.find('.rx-grid-header'),
           body = node.find('.rx-grid-body');
     Observable.fromEvent(body, 'scroll').subscribe(e => header.scrollLeft = body.scrollLeft);
-    this.props.store.subscribe(this.reload);
   }
 
   componentWillUnmount() {
     this.props.store.unsubscribe(this.reload);
   }
 
-  render() {
-    const { store } = this.props;
+  @withProps
+  render({ store }) {
     return <Container className="rx-grid">
       <GridHeader {...this.state} />
       <GridBody data={store.getData()} {...this.state} />
@@ -78,47 +84,5 @@ export default class extends Component {
     }
 
     this.setState(() => ({ columns, width, innerWidth, headerWidth, bodyWidth }));
-  }
-}
-
-class GridHeader extends Component {
-  @withProps
-  render({ columns, headerWidth }) {
-    return <section className="rx-grid-header">
-      <div className="rx-grid-header-container d-flex flex-row" style={{ width:headerWidth }}>
-        {columns && columns.map(col => {
-          const { text, className, style, ...others } = col;
-          return <div className={`rx-grid-column-header text-center ${className || ''}`} style={style} { ...others }>
-            {text || ''}
-          </div>
-        })}
-      </div>
-    </section>;
-  }
-}
-
-class GridBody extends Component {
-  @withProps
-  render({ columns, bodyWidth, data }) {
-    return <Container className="rx-grid-body">
-      <section className="rx-grid-view" style={{ width:bodyWidth }}>
-        <div style={{ height:1 }} />
-        {data && data.map((record, rowIndex) => <GridRow columns={columns} record={record} rowIndex={rowIndex} />)}
-      </section>
-    </Container>;
-  }
-}
-
-class GridRow extends Component {
-  @withProps
-  render({ columns, record, rowIndex }) {
-    return <div className="rx-grid-row d-flex flex-row">
-      {columns && columns.map(col => {
-        const { dataIndex, className, render, style, ...others } = col;
-        return <div className={`rx-grid-cell text-sm-center ${className || ''}`} style={style} { ...others }>
-          {render ? render(record.get(dataIndex), record, dataIndex, rowIndex) : record.get(dataIndex)}
-        </div>
-      })}
-    </div>
   }
 }

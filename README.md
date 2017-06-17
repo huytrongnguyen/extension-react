@@ -7,7 +7,7 @@
 
 ## Introduction
 
-Components are the heart of React's powerful, declarative programming model. Extension React is a library that build on top of React to help you build data-intensive, cross-platform web apps for desktops, tablets, and smartphones. Many concepts in this library are based on ExtJS, AngularJS, RxJS concepts. This documentation also copy from ExtJS.
+Components are the heart of React's powerful, declarative programming model. Extension React is a library that build on top of React to help you build data-intensive, cross-platform web apps for desktops, tablets, and smartphones. Many concepts in this library are based on ExtJS, AngularJS, RxJS concepts. This documentation is also copied and re-composed from ExtJS.
 
 ## Installation
 
@@ -19,9 +19,27 @@ You'll also need `babel-polyfill` to use async/await function and `babel-preset-
 
 ## Quick Start
 
+```html
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>React CMS</title>
+  <link href="/node-modules/ext-react/css/rext.css" rel="stylesheet" />
+</head>
+<body>
+  <script src="/node-modules/ext-react/js/framework.min.js"></script>
+  <script src="/js/app.min.js"></script>
+</body>
+</html>
+```
+
 To launch your app, add the following to your `main.js` file
 
 ```js
+// main.js
 import 'babel-polyfill';
 import React from 'react';
 import Rext from 'ext-react';
@@ -272,14 +290,14 @@ observable.unsubscribe(fn);
 
 ## Core Concepts
 
- * [The Class System](https://huytrongnguyen.github.io/extension-react/docs/guides/the-class-system)
- * [Data Package](https://huytrongnguyen.github.io/extension-react/docs/guides/data-package)
- * [Events](https://huytrongnguyen.github.io/extension-react/docs/guides/events)
- * [Layouts and Containers](https://huytrongnguyen.github.io/extension-react/docs/guides/layouts-and-containers)
- * [Components](https://huytrongnguyen.github.io/extension-react/docs/guides/components)
- * [Application Architecture](https://huytrongnguyen.github.io/extension-react/docs/guides/application-architecture)
- * [Controlling an Application with Router](https://huytrongnguyen.github.io/extension-react/docs/guides/controlling-an-application-with-router)
- * [ViewModel and Data Binding](https://huytrongnguyen.github.io/extension-react/docs/guides/viewmodel-and-data-binding)
+  * [The Class System](https://huytrongnguyen.github.io/extension-react/docs/guides/the-class-system)
+  * [Data Package](https://huytrongnguyen.github.io/extension-react/docs/guides/data-package)
+  * [Events](https://huytrongnguyen.github.io/extension-react/docs/guides/events)
+  * [Layouts and Containers](https://huytrongnguyen.github.io/extension-react/docs/guides/layouts-and-containers)
+  * [Components](https://huytrongnguyen.github.io/extension-react/docs/guides/components)
+  * [Application Architecture](https://huytrongnguyen.github.io/extension-react/docs/guides/application-architecture)
+  * [Controlling an Application with Router](https://huytrongnguyen.github.io/extension-react/docs/guides/controlling-an-application-with-router)
+  * [ViewModel and Data Binding](https://huytrongnguyen.github.io/extension-react/docs/guides/viewmodel-and-data-binding)
 
 ## Application Architecture
 
@@ -308,53 +326,59 @@ Based on this seed structure, you're ready to make any change to build your appl
 
 ## API
 
- * [Rext](https://huytrongnguyen.github.io/extension-react/docs/api/rext)
- * [Model](https://huytrongnguyen.github.io/extension-react/docs/api/model)
- * [Store](https://huytrongnguyen.github.io/extension-react/docs/api/store)
+  * [Rext](https://huytrongnguyen.github.io/extension-react/docs/api/rext)
+  * [Model](https://huytrongnguyen.github.io/extension-react/docs/api/model)
+  * [Store](https://huytrongnguyen.github.io/extension-react/docs/api/store)
 
 ## Examples
 
- * Source code: [https://github.com/huytrongnguyen/extension-react/tree/master/example](https://github.com/huytrongnguyen/extension-react/tree/master/example)
+  * Source code: [https://github.com/huytrongnguyen/react-cms/tree/master/src](https://github.com/huytrongnguyen/react-cms/tree/master/src)
+  * Example: [https://huytrongnguyen.github.io/react-cms/dist/](https://huytrongnguyen.github.io/react-cms/dist/)
 
 ## Release Notes
 
+### 1.6.x
+
+  * Provide `Dropdown` component
+  * Update documentation for API
+
 ### 1.5.x
- * `React.launch` now works with promise function (and `async/await` syntax)
- * Remove `Rext.application` function
- * Small refactor in `List` (`List([1,2,3])` instead of `List.of([1,2,3])`) and `Map` (`Map({a:1})` instead of `Map.of({a:1})`)
- * Provide `Grid` component and update `Store`, `Model` to support `Grid`
- * Add decorator `withProps` to `render` function
- * Fix issue in `get` and `set` of `Cache`
- * Update documentation for API
+  * `React.launch` now works with promise function (and `async/await` syntax)
+  * Remove `Rext.application` function
+  * Small refactor in `List` (`List([1,2,3])` instead of `List.of([1,2,3])`) and `Map` (`Map({a:1})` instead of `Map.of({a:1})`)
+  * Provide `Grid` component and update `Store`, `Model` to support `Grid`
+  * Add decorator `withProps` to `render` function
+  * Fix issue in `get` and `set` of `Cache`
+  * Update documentation for API
 
 ### 1.4.x
- * Change `Rext.application` to `Rext.launch`, do not need a separate target `<div id="root"/>` in index.html file.
- * Revise `Container` concept and change to `Component`
- * Provide `Container` component and CSS
+  * Change `Rext.application` to `Rext.launch`, do not need a separate target `<div id="root"/>` in index.html file.
+  * Revise `Container` concept and change to `Component`
+  * Provide `Container` component and CSS
 
 ### 1.3.x
- * Correct `List`, `Map`
- * Change `Rext.bootstrap` to `Rext.application` and `init` to `launch`
- * Provide `HashRouter` component and `Router` decorator
- * Revise `Store` with new implementation
- * Update README.md
+  * Correct `List`, `Map`
+  * Change `Rext.bootstrap` to `Rext.application` and `init` to `launch`
+  * Provide `HashRouter` component and `Router` decorator
+  * Revise `Store` with new implementation
+  * Update README.md
 
 ### 1.2.x
- * Fix issue in `router` component
- * Update README.md
- * Improve `Store` and `Observable`
- * Implement `Model`
+  * Fix issue in `router` component
+  * Update README.md
+  * Improve `Store` and `Observable`
+  * Implement `Model`
 
 ### 1.1.x
- * Implement `Observable`
+  * Implement `Observable`
 
 ### 1.0.x
- * Change params in `bootstrap` function
- * Implement `Store`, `Container` and `Router`
+  * Change params in `bootstrap` function
+  * Implement `Store`, `Container` and `Router`
 
 ### 0.0.1
- * Define Architecture Overview
- * Implement `bootstrap` function to launch the app
+  * Define Architecture Overview
+  * Implement `bootstrap` function to launch the app
 
 ## License
 

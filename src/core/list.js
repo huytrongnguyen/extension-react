@@ -13,10 +13,39 @@ class List {
     return this.array;
   }
 
+  count() {
+    return this.array.length;
+  }
+
   each(iteratee) {
     for (let index = 0, item; (item = this.array[index]) != null; ++index) {
       iteratee(item, index, this.array);
     }
+  }
+
+  findBy(predicate) {
+    let result = null;
+    for (let index = 0, item; (item = this.array[index]) != null; ++index) {
+      if (predicate(item, index, this.array)) {
+        result = item;
+        break;
+      }
+    }
+    return result;
+  }
+
+  contains(predicate) {
+    return this.findBy(predicate) !== null;
+  }
+
+  filter(predicate) {
+    const result = [];
+    this.each((item, index, array) => {
+      if (predicate(item, index, array)) {
+        result.push(item);
+      }
+    });
+    return new List(result);
   }
 
   map(iteratee) {
@@ -32,6 +61,18 @@ class List {
 
   getAt(index) {
     return this.array[index];
+  }
+
+  removeAt(index, count = 1) {
+    return this.array.splice(index, count);
+  }
+
+  add(item) {
+    this.array.push(item);
+  }
+
+  insert(index, item) {
+    this.array.splice(index, 0, item);
   }
 }
 

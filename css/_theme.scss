@@ -3,7 +3,7 @@
 body {
   font-size: $font-size;
   background-color: #e8e8e8;
-  font-family: tahoma, arial, verdana, sans-serif;
+  font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif;
   -webkit-font-smoothing: subpixel-antialiased;
   color: $black;
 }
@@ -54,7 +54,6 @@ footer {
   color: $black;
   font-size: $font-size;
   padding: $size-xs $size;
-  margin: 0 $size-xs;
   border: 1px solid #d1d1d1;
   border-radius: $size-xs;
   height: $size-xl;

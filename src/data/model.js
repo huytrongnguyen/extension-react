@@ -21,7 +21,7 @@ export default class Model {
 
   save() {
     this.phantom = Ext.extend({}, this.data);
-  this.store && this.store.observable.call(this.store);
+    this.store && this.store.observable.call(this.store);
   }
 
   reject() {

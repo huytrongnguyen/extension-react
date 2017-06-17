@@ -28,6 +28,16 @@ class Ext {
     return !!value && typeof value === 'function';
   }
 
+  className(expression) {
+    const cls = [];
+    for (let key of Object.keys(expression)) {
+      if (expression[key]) {
+        cls.push(key);
+      }
+    }
+    return cls.join(' ');
+  }
+
   getScrollWidth() {
     var outer = document.createElement("div");
     outer.style.visibility = "hidden";

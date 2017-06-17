@@ -35,45 +35,19 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 exports.default = function (config) {
   var DataStore = function () {
     function DataStore() {
+      var _this = this;
+
       _classCallCheck(this, DataStore);
 
       _ext2.default.extend(this, config, {
-        data: config.data || [],
         observable: _observable2.default.create()
+      });
+      this.data = (0, _list2.default)(config.data || []).map(function (record) {
+        return new _model2.default(record, _this);
       });
     }
 
     _createClass(DataStore, [{
-      key: 'subscribe',
-      value: function subscribe(observer) {
-        this.observable.subscribe(observer);
-      }
-    }, {
-      key: 'unsubscribe',
-      value: function unsubscribe(observer) {
-        this.observable.unsubscribe(observer);
-      }
-    }, {
-      key: 'removeAll',
-      value: function removeAll() {
-        this.data = [];
-        this.observable.call(this);
-      }
-    }, {
-      key: 'loadData',
-      value: function loadData(data) {
-        var _this = this;
-
-        var newData = this.proxy.reader && this.proxy.reader.rootProperty ? data[this.proxy.reader.rootProperty] : data;
-        this.data = (0, _list2.default)(newData).map(function (record) {
-          return new _model2.default(record, _this);
-        }).collect();
-        if (this.pageSize) {
-          this.page = data;
-        }
-        this.observable.call(this);
-      }
-    }, {
       key: 'load',
       value: function () {
         var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(proxy) {
@@ -107,20 +81,65 @@ exports.default = function (config) {
         return load;
       }()
     }, {
+      key: 'loadData',
+      value: function loadData(data) {
+        var _this2 = this;
+
+        var newData = this.proxy.reader && this.proxy.reader.rootProperty ? data[this.proxy.reader.rootProperty] : data;
+        this.data = (0, _list2.default)(newData).map(function (record) {
+          return new _model2.default(record, _this2);
+        });
+        if (this.pageSize) {
+          this.page = data;
+        }
+        this.observable.call(this);
+      }
+    }, {
       key: 'loadPage',
       value: function loadPage(page) {
         var proxy = _ext2.default.extend({}, this.proxy, { url: this.proxy.url + '?page=' + page });
         return load(proxy);
       }
     }, {
-      key: 'getData',
-      value: function getData() {
-        return this.data;
-      }
-    }, {
       key: 'count',
       value: function count() {
-        return this.data.length;
+        return this.data.count();
+      }
+    }, {
+      key: 'getData',
+      value: function getData() {
+        return this.data.collect();
+      }
+    }, {
+      key: 'getAt',
+      value: function getAt(index) {
+        return this.data.getAt(index);
+      }
+    }, {
+      key: 'removeAt',
+      value: function removeAt(index, count) {
+        return this.data.removeAt(index, count);
+      }
+    }, {
+      key: 'removeAll',
+      value: function removeAll() {
+        this.data = [];
+        this.observable.call(this);
+      }
+    }, {
+      key: 'filterBy',
+      value: function filterBy(predicate) {
+        return this.data.filter(predicate);
+      }
+    }, {
+      key: 'subscribe',
+      value: function subscribe(observer) {
+        this.observable.subscribe(observer);
+      }
+    }, {
+      key: 'unsubscribe',
+      value: function unsubscribe(observer) {
+        this.observable.unsubscribe(observer);
       }
     }, {
       key: 'commitChanges',
@@ -137,18 +156,6 @@ exports.default = function (config) {
           return record.reject();
         });
         this.observable.call(this);
-      }
-    }, {
-      key: 'getAt',
-      value: function getAt(index) {
-        return this.data[index];
-      }
-    }, {
-      key: 'removeAt',
-      value: function removeAt(index) {
-        var count = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
-
-        return this.data.splice(index, count);
       }
     }]);
 

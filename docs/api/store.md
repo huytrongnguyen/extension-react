@@ -132,7 +132,7 @@ RETURNS:
 
 The Record at the passed index. Returns null if not found.
 
-### removeAt(index, count):
+#### removeAt(index, count):
 
 Removes the model instance(s) at the given index
 
@@ -143,6 +143,10 @@ PARAMETERS:
 RETURNS:
 
 The removed record.
+
+#### removeAll():
+
+Removes all unfiltered items from the store.
 
 #### subscribe(observer):
 
@@ -186,6 +190,14 @@ Commits all Records with outstanding changes.
 
 Rejects outstanding changes on all modified records.
 
-#### removeAll():
+#### filterBy(predicate):
 
-Removes all unfiltered items from the store.
+Filters by a function. The specified function will be called for each Record in this Store. If the function returns true the Record is included, otherwise it is filtered out.
+
+PARAMETERS:
+  * predicate: The function to be called. It will be passed the following parameters:
+    * record: The record to test for filtering. Access field values using `get`.
+    * index: Index of the record
+    * data: The whole store's data that's being iterated.
+
+### EVENTS
