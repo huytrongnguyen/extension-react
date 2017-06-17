@@ -2,6 +2,7 @@
 > Jun 18, 2017
 
   * Provide `Dropdown` component
+  * Fix issue in routes
   * Update documentation for API
 
 ## [1.5.x]

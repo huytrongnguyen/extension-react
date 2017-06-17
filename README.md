@@ -333,13 +333,13 @@ Based on this seed structure, you're ready to make any change to build your appl
 ## Examples
 
   * Source code: [https://github.com/huytrongnguyen/react-cms/tree/master/src](https://github.com/huytrongnguyen/react-cms/tree/master/src)
-  * Example: [https://huytrongnguyen.github.io/react-cms/dist/](https://huytrongnguyen.github.io/react-cms/dist/)
 
 ## Release Notes
 
 ### 1.6.x
 
   * Provide `Dropdown` component
+  * Fix issue in routes
   * Update documentation for API
 
 ### 1.5.x
