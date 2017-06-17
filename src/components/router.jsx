@@ -19,7 +19,7 @@ const ROUTES = {},
           const route = ROUTES[key],
                 routePath = route.path;
           let matched = true;
-          List.of(routePath).each((routeName, index) => {
+          List(routePath).each((routeName, index) => {
             if (routeName !== currentPath[index]) {
               if (isParam(routeName)) {
                 params[routeName.substring(1)] = currentPath[index];

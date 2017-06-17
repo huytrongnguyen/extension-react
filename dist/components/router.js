@@ -54,7 +54,7 @@ var ROUTES = {},
     var route = ROUTES[key],
         routePath = route.path;
     var matched = true;
-    _list2.default.of(routePath).each(function (routeName, index) {
+    (0, _list2.default)(routePath).each(function (routeName, index) {
       if (routeName !== currentPath[index]) {
         if (isParam(routeName)) {
           params[routeName.substring(1)] = currentPath[index];
