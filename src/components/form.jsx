@@ -41,11 +41,12 @@ export class Dropdown extends Component {
   constructor(props) {
     super(props);
     const data = [],
-          selection = List(props.value || data);
+          selection = List(props.value ? [props.value] : data);
     this.state = {
       data,
       selection,
       searchFilter: '',
+      multiple: false,
       show: false
     }
   }
@@ -62,7 +63,7 @@ export class Dropdown extends Component {
   render({ className = '', fieldLabel, displayField = 'name', ...others }) {
     const { show, data, selection, searchFilter } = this.state;
     return <section className={`dropdown ${className}`}>
-      <Field className="dropdown-text" value={selection.map(rec => rec.get(displayField)).collect().join(',') || fieldLabel} readOnly />
+      <Field className="dropdown-text" value={selection.map(rec => (rec.get ? rec.get(displayField) : rec)).collect().join(',') || fieldLabel} readOnly />
       <Button className="dropdown-toggle" onClick={this.toggle} />
       {show && <div className="dropdown-menu">
         <div className="dropdown-action">
@@ -71,9 +72,9 @@ export class Dropdown extends Component {
         <div className="dropdown-list">
           {data.map(rec => {
             return <div className={Ext.className({'dropdown-item': true,
-                                                  'selected': selection.contains(selected => selected.get(displayField) === rec.get(displayField))})}
+                                                  'selected': selection.contains(selected => (selected.get ? selected.get(displayField) : selected) === rec.get(displayField))})}
                         onClick={() => this.select(rec)}>
-              {rec.get(displayField)}
+              {rec.get ? rec.get(displayField) : rec}
             </div>
           })}
         </div>
@@ -87,8 +88,9 @@ export class Dropdown extends Component {
     show = !show;
     this.setState(() => ({ show }));
     if (!show) {
-      const { onCollapse, store } = this.props;
-      onCollapse && onCollapse(this.state.selection.collect());
+      const { onCollapse, store } = this.props,
+            { multiple, selection } = this.state;
+      onCollapse && onCollapse(multiple ? selection.map(rec => rec.data).collect() : selection.collect()[0].data);
       this.setState(() => ({ searchFilter: '', data: store.getData() }));
     } else {
       const { store, queryMode } = this.props;
@@ -107,8 +109,7 @@ export class Dropdown extends Component {
   select(rec) {
     const { onSelect } = this.props;
     onSelect && onSelect(rec);
-    this.setState(() => ({ selection: List([rec]) }));
-    this.toggle();
+    this.setState({ selection: List([rec]) }, this.toggle);
   }
 
   @bind
@@ -123,23 +124,29 @@ export class Dropdown extends Component {
   @bind
   closeOnBlur(e) {
     if (this.state.show) {
+      let node = null;
       try {
-        let target = e.target.parentElement,
-          parentFound = false,
-          node = findDOMNode(this);
-        while (target != null) {
-          if (target === node) {
-            parentFound = true;
-            break;
-          }
-          target = target.parentElement;
-        }
-
-        if (!parentFound) {
-          this.toggle();
-        }
+        node = findDOMNode(this)
       } catch (e) {
-        console.error(e);
+        node = null;
+      }
+
+      if (node === null) {
+        return;
+      }
+
+      let target = e.target.parentElement,
+        parentFound = false;
+      while (target != null) {
+        if (target === node) {
+          parentFound = true;
+          break;
+        }
+        target = target.parentElement;
+      }
+
+      if (!parentFound) {
+        this.toggle();
       }
     }
   }

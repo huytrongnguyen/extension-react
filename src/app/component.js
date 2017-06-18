@@ -6,7 +6,7 @@ import Observable from '~/mixin/observable';
 
 export default (config) => (comp) => {
   const WrappedComponent = config.view;
-  return class extends Component {
+  return class HocComponent extends Component {
     constructor(props) {
       super(props)
       this.state = {

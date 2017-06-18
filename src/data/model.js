@@ -11,16 +11,23 @@ export default class Model {
   }
 
   get(fieldName) {
+    if (!fieldName || Ext.isPrimitive(this.data)) {
+      return this.data;
+    }
     return this.data[fieldName];
   }
 
   set(fieldName, newValue) {
-    this.data[fieldName] = newValue;
+    if (!fieldName || Ext.isPrimitive(this.data)) {
+      this.data = newValue;
+    } else {
+      this.data[fieldName] = newValue;
+    }
     this.store && this.store.observable.call(this.store);
   }
 
   save() {
-    this.phantom = Ext.extend({}, this.data);
+    this.phantom = Ext.isPrimitive(this.data) ? this.data : Ext.extend({}, this.data);
     this.store && this.store.observable.call(this.store);
   }
 

@@ -6,7 +6,7 @@ import SearchFormView from './search-form.view';
   componentAs: 'searchForm',
   view: SearchFormView
 })
-export default class {
+export default class SearchForm {
   search() {
     CardStore.load();
   }

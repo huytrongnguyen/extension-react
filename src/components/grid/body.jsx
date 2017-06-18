@@ -3,7 +3,7 @@ import withProps from '~/mixin/with-props';
 import Container from '~/components/container';
 import GridRow from './row';
 
-export default class extends Component {
+export default class GridBody extends Component {
   @withProps
   render({ columns, bodyWidth, data }) {
     return <Container className="rx-grid-body">

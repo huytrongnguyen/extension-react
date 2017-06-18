@@ -23,16 +23,16 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _default = function (_Component) {
-  _inherits(_default, _Component);
+var Container = function (_Component) {
+  _inherits(Container, _Component);
 
-  function _default() {
-    _classCallCheck(this, _default);
+  function Container() {
+    _classCallCheck(this, Container);
 
-    return _possibleConstructorReturn(this, (_default.__proto__ || Object.getPrototypeOf(_default)).apply(this, arguments));
+    return _possibleConstructorReturn(this, (Container.__proto__ || Object.getPrototypeOf(Container)).apply(this, arguments));
   }
 
-  _createClass(_default, [{
+  _createClass(Container, [{
     key: 'render',
     value: function render() {
       var _props = this.props,
@@ -50,7 +50,7 @@ var _default = function (_Component) {
     }
   }]);
 
-  return _default;
+  return Container;
 }(_react.Component);
 
-exports.default = _default;
+exports.default = Container;

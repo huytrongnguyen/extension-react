@@ -5,8 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _desc, _value, _class;
@@ -18,10 +16,6 @@ var _react2 = _interopRequireDefault(_react);
 var _withProps = require('../../mixin/with-props');
 
 var _withProps2 = _interopRequireDefault(_withProps);
-
-var _cell = require('./cell');
-
-var _cell2 = _interopRequireDefault(_cell);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -60,32 +54,36 @@ function _applyDecoratedDescriptor(target, property, decorators, descriptor, con
   return desc;
 }
 
-var GridRow = (_class = function (_Component) {
-  _inherits(GridRow, _Component);
+var GridPagingToolbar = (_class = function (_Component) {
+  _inherits(GridPagingToolbar, _Component);
 
-  function GridRow() {
-    _classCallCheck(this, GridRow);
+  function GridPagingToolbar() {
+    _classCallCheck(this, GridPagingToolbar);
 
-    return _possibleConstructorReturn(this, (GridRow.__proto__ || Object.getPrototypeOf(GridRow)).apply(this, arguments));
+    return _possibleConstructorReturn(this, (GridPagingToolbar.__proto__ || Object.getPrototypeOf(GridPagingToolbar)).apply(this, arguments));
   }
 
-  _createClass(GridRow, [{
+  _createClass(GridPagingToolbar, [{
     key: 'render',
     value: function render(_ref) {
-      var columns = _ref.columns,
-          record = _ref.record,
-          rowIndex = _ref.rowIndex;
+      var _ref$store$page = _ref.store.page,
+          totalElements = _ref$store$page.totalElements,
+          firstIndex = _ref$store$page.firstIndex,
+          lastIndex = _ref$store$page.lastIndex;
 
       return _react2.default.createElement(
-        'div',
-        { className: 'rx-grid-row d-flex flex-row' },
-        columns && columns.map(function (col) {
-          return _react2.default.createElement(_cell2.default, _extends({ record: record, rowIndex: rowIndex }, col));
-        })
+        'section',
+        { className: 'toolbar top row' },
+        _react2.default.createElement(
+          'div',
+          { className: 'col-6' },
+          totalElements && 'Displaying ' + firstIndex + ' - ' + lastIndex + ' of ' + totalElements
+        ),
+        _react2.default.createElement('div', { className: 'col-6 pagination' })
       );
     }
   }]);
 
-  return GridRow;
+  return GridPagingToolbar;
 }(_react.Component), (_applyDecoratedDescriptor(_class.prototype, 'render', [_withProps2.default], Object.getOwnPropertyDescriptor(_class.prototype, 'render'), _class.prototype)), _class);
-exports.default = GridRow;
+exports.default = GridPagingToolbar;

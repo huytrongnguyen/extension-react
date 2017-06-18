@@ -36,6 +36,10 @@ class EventObservable {
   }
 
   subscribe(observer) {
-    this.target.addEventListener(this.eventName, observer);
+    this.target.addEventListener(this.eventName, observer, false);
+  }
+
+  unsubscribe(observer) {
+    this.target.removeEventListener(this.eventName, observer, false);
   }
 }

@@ -15,7 +15,7 @@ You'll need both React and Extension React:
 
 [![ext-react](https://nodei.co/npm/ext-react.png?downloadRank=true&downloads=true)](https://npmjs.org/package/ext-react)
 
-You'll also need `babel-polyfill` to use async/await function and `babel-preset-es2017` to use decorator
+You'll also need `babel-polyfill` to use async/await function, `babel-preset-es2017` to use decorator.
 
 ## Quick Start
 
@@ -97,7 +97,7 @@ export default class Dashboard {
 // ./components/dashboard/dashboard.view.jsx
 import React, { Component } from 'react';
 
-export default class Dashboard extends Component {
+export default class DashboardView extends Component {
   render() {
     return <h1>{this.props.vm.title}</h1>;
   }
@@ -199,7 +199,7 @@ import React, { Component } from 'react';
 import { Route } from 'ext-react';
 
 @Route('/details/:name')
-export default class Details extends Component {
+export default class Detail extends Component {
   render() {
     return <h1>{this.props.params.name}</h1>;
   }
@@ -250,7 +250,7 @@ You can access store's data via `this.props.stores`. For example:
 // ./components/dashboard/dashboard.view.jsx
 import React, { Component } from 'react';
 
-export default class Dashboard extends Component {
+export default class DashboardView extends Component {
   render() {
     return <section>
       <h1>{this.props.vm.title}</h1>
@@ -287,6 +287,115 @@ observable.unsubscribe(fn);
 ```
 
 `Observable` is used in `@Component` to connect Store and View.
+
+## Replace `setState` with a setter
+
+Instead of create a function like: `(value) => this.setState(() => ({ value })`, now you can use `this.setValue(value)` to replace for `setState` by using `Rext.generateSetter` function. For example:
+
+```js
+import React, { Component } from 'react';
+import Rext, { withProps, Field } from 'ext-react';
+
+export default class GridCell extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: '',
+      readOnly: true
+    }
+    Ext.generateSetter(this.state, this);
+  }
+
+  @withProps
+  render({ className, style, ...others }) {
+    const { value, readOnly } = this.state;
+    return <div className={`rx-grid-cell ${className || ''}`} style={style} { ...others }>
+      <Field value={value} onChange={value => this.setValue(value)} onBlur={() => this.setReadOnly(!readOnly)} />
+    </div>
+  }
+}
+```
+
+## Built-in Components
+
+Extension React has several build-in components to support for building responsive web. For example:
+
+### Grid
+
+`Grid` are an excellent way of showing large amounts of tabular data on the client side. Essentially a supercharged <table>, `Grid` makes it easy to fetch, sort and filter large amounts of data.
+
+`Grid` are composed of two main pieces - a `Store` full of data and a set of columns to render.
+
+```js
+// app/stores/user.js
+import { Store } from 'ext-react'
+
+export default Store({
+  storeId: 'UserStore',
+  data: [
+    { 'name': 'Lisa',  "email":"lisa@simpsons.com",  "phone":"555-111-1224" },
+    { 'name': 'Bart',  "email":"bart@simpsons.com",  "phone":"555-222-1234" },
+    { 'name': 'Homer', "email":"home@simpsons.com",  "phone":"555-222-1244" },
+    { 'name': 'Marge', "email":"marge@simpsons.com", "phone":"555-222-1254" }
+  ]
+});
+```
+
+```js
+// app/components//search-result.jsx
+import React, { Component } from 'react';
+import { Container, Grid } from 'ext-react';
+import UserStore from '~/stores/user';
+
+export default class SearchResult extends Component {
+  render() {
+    return <Container>
+      <Grid store={UserStore}>
+        <div text="Name" dataIndex="name" />
+        <div text="Email" dataIndex="email" />
+        <div text="Phone" dataIndex="phone" />
+      </Grid>
+    </Container>;
+  }
+}
+```
+
+### Dropdown
+
+A `Dropdown` is like a combination of a traditional HTML text `<input>` field and a `<select>` field; the user is able to type freely into the field, and/or pick values from a dropdown selection list.
+
+
+```js
+// app/stores/card-type.js
+import { Store } from '@/rext'
+
+export default Store({
+  storeId: 'CardTypeStore',
+  data: [
+    { id: null, code: 'MELEE', name: 'Melee' },
+    { id: null, code: 'SHOOT', name: 'Shoot' },
+    { id: null, code: 'MAGIC', name: 'Magic' },
+  ]
+});
+```
+
+```js
+// app/components//search-form.view.jsx
+import React, { Component } from 'react';
+import { withProps, Field, Dropdown, Button } from 'ext-react';
+import { CardTypeStore } from '~/app/stores/card-type';
+
+export default class SearchFormView extends Component {
+  @withProps
+  render({ searchForm }) {
+    return <section className="form-group form-inline">
+      <Field className="mr-sm" />
+      <Dropdown store={CardTypeStore} displayField="name" fieldLabel="Card Type" />
+      <Button className="primary mr-sm" text="Search" onClick={searchForm.search} />
+    </section>;
+  }
+}
+```
 
 ## Core Concepts
 
@@ -329,6 +438,8 @@ Based on this seed structure, you're ready to make any change to build your appl
   * [Rext](https://huytrongnguyen.github.io/extension-react/docs/api/rext)
   * [Model](https://huytrongnguyen.github.io/extension-react/docs/api/model)
   * [Store](https://huytrongnguyen.github.io/extension-react/docs/api/store)
+  * [Grid](https://huytrongnguyen.github.io/extension-react/docs/api/grid)
+  * [Dropdown](https://huytrongnguyen.github.io/extension-react/docs/api/dropdown)
 
 ## Examples
 
@@ -337,8 +448,9 @@ Based on this seed structure, you're ready to make any change to build your appl
 ## Release Notes
 
 ### 1.6.x
-
   * Provide `Dropdown` component
+  * Support `editable` for `Grid`
+  * Add function `Rext.generateSetter` to handle `setState` for each field in state
   * Fix issue in routes
   * Update documentation for API
 

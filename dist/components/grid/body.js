@@ -62,16 +62,16 @@ function _applyDecoratedDescriptor(target, property, decorators, descriptor, con
   return desc;
 }
 
-var _default = (_class = function (_Component) {
-  _inherits(_default, _Component);
+var GridBody = (_class = function (_Component) {
+  _inherits(GridBody, _Component);
 
-  function _default() {
-    _classCallCheck(this, _default);
+  function GridBody() {
+    _classCallCheck(this, GridBody);
 
-    return _possibleConstructorReturn(this, (_default.__proto__ || Object.getPrototypeOf(_default)).apply(this, arguments));
+    return _possibleConstructorReturn(this, (GridBody.__proto__ || Object.getPrototypeOf(GridBody)).apply(this, arguments));
   }
 
-  _createClass(_default, [{
+  _createClass(GridBody, [{
     key: 'render',
     value: function render(_ref) {
       var columns = _ref.columns,
@@ -93,7 +93,6 @@ var _default = (_class = function (_Component) {
     }
   }]);
 
-  return _default;
+  return GridBody;
 }(_react.Component), (_applyDecoratedDescriptor(_class.prototype, 'render', [_withProps2.default], Object.getOwnPropertyDescriptor(_class.prototype, 'render'), _class.prototype)), _class);
-
-exports.default = _default;
+exports.default = GridBody;

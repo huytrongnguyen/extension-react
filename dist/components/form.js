@@ -160,11 +160,12 @@ var Dropdown = exports.Dropdown = (_class3 = function (_Component3) {
     var _this3 = _possibleConstructorReturn(this, (Dropdown.__proto__ || Object.getPrototypeOf(Dropdown)).call(this, props));
 
     var data = [],
-        selection = (0, _list2.default)(props.value || data);
+        selection = (0, _list2.default)(props.value ? [props.value] : data);
     _this3.state = {
       data: data,
       selection: selection,
       searchFilter: '',
+      multiple: false,
       show: false
     };
     return _this3;
@@ -202,7 +203,7 @@ var Dropdown = exports.Dropdown = (_class3 = function (_Component3) {
         'section',
         { className: 'dropdown ' + className },
         _react2.default.createElement(Field, { className: 'dropdown-text', value: selection.map(function (rec) {
-            return rec.get(displayField);
+            return rec.get ? rec.get(displayField) : rec;
           }).collect().join(',') || fieldLabel, readOnly: true }),
         _react2.default.createElement(Button, { className: 'dropdown-toggle', onClick: this.toggle }),
         show && _react2.default.createElement(
@@ -221,12 +222,12 @@ var Dropdown = exports.Dropdown = (_class3 = function (_Component3) {
                 'div',
                 { className: _ext2.default.className({ 'dropdown-item': true,
                     'selected': selection.contains(function (selected) {
-                      return selected.get(displayField) === rec.get(displayField);
+                      return (selected.get ? selected.get(displayField) : selected) === rec.get(displayField);
                     }) }),
                   onClick: function onClick() {
                     return _this4.select(rec);
                   } },
-                rec.get(displayField)
+                rec.get ? rec.get(displayField) : rec
               );
             })
           )
@@ -237,7 +238,7 @@ var Dropdown = exports.Dropdown = (_class3 = function (_Component3) {
     key: 'toggle',
     value: function () {
       var _ref4 = _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
-        var show, _props, onCollapse, store, _props2, _store, queryMode, data;
+        var show, _props, onCollapse, store, _state2, multiple, selection, _props2, _store, queryMode, data;
 
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
@@ -255,9 +256,11 @@ var Dropdown = exports.Dropdown = (_class3 = function (_Component3) {
                   break;
                 }
 
-                _props = this.props, onCollapse = _props.onCollapse, store = _props.store;
+                _props = this.props, onCollapse = _props.onCollapse, store = _props.store, _state2 = this.state, multiple = _state2.multiple, selection = _state2.selection;
 
-                onCollapse && onCollapse(this.state.selection.collect());
+                onCollapse && onCollapse(multiple ? selection.map(function (rec) {
+                  return rec.data;
+                }).collect() : selection.collect()[0].data);
                 this.setState(function () {
                   return { searchFilter: '', data: store.getData() };
                 });
@@ -307,10 +310,7 @@ var Dropdown = exports.Dropdown = (_class3 = function (_Component3) {
       var onSelect = this.props.onSelect;
 
       onSelect && onSelect(rec);
-      this.setState(function () {
-        return { selection: (0, _list2.default)([rec]) };
-      });
-      this.toggle();
+      this.setState({ selection: (0, _list2.default)([rec]) }, this.toggle);
     }
   }, {
     key: 'filter',
@@ -332,23 +332,29 @@ var Dropdown = exports.Dropdown = (_class3 = function (_Component3) {
     key: 'closeOnBlur',
     value: function closeOnBlur(e) {
       if (this.state.show) {
+        var node = null;
         try {
-          var _target = e.target.parentElement,
-              parentFound = false,
-              node = (0, _reactDom.findDOMNode)(this);
-          while (_target != null) {
-            if (_target === node) {
-              parentFound = true;
-              break;
-            }
-            _target = _target.parentElement;
-          }
-
-          if (!parentFound) {
-            this.toggle();
-          }
+          node = (0, _reactDom.findDOMNode)(this);
         } catch (e) {
-          console.error(e);
+          node = null;
+        }
+
+        if (node === null) {
+          return;
+        }
+
+        var _target = e.target.parentElement,
+            parentFound = false;
+        while (_target != null) {
+          if (_target === node) {
+            parentFound = true;
+            break;
+          }
+          _target = _target.parentElement;
+        }
+
+        if (!parentFound) {
+          this.toggle();
         }
       }
     }

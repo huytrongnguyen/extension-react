@@ -249,7 +249,8 @@ h6 {
   .dropdown .dropdown-text {
     flex: 0 1 auto;
     border-top-right-radius: 0;
-    border-bottom-right-radius: 0; }
+    border-bottom-right-radius: 0;
+    width: 100%; }
   .dropdown .dropdown-toggle {
     margin-left: -1px;
     border-top-left-radius: 0;
@@ -317,5 +318,8 @@ h6 {
         min-height: 1.5rem; }
         .rx-grid .rx-grid-body .rx-grid-view .rx-grid-row .rx-grid-cell:last-child {
           border-right: 0; }
+        .rx-grid .rx-grid-body .rx-grid-view .rx-grid-row .rx-grid-cell > .form-control, .rx-grid .rx-grid-body .rx-grid-view .rx-grid-row .rx-grid-cell > .dropdown {
+          width: 100%;
+          margin: -0.5rem; }
       .rx-grid .rx-grid-body .rx-grid-view .rx-grid-row:last-child .rx-grid-cell {
         border-bottom: 0; }

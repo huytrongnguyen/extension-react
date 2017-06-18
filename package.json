@@ -38,6 +38,7 @@
     "babelify": "7.3.0",
     "browserify": "14.4.0",
     "express": "4.15.3",
+    "font-awesome": "4.7.0",
     "gulp": "3.9.1",
     "gulp-sass": "3.1.0",
     "gulp-streamify": "1.0.2",

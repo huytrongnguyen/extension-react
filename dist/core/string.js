@@ -27,6 +27,11 @@ var String = function () {
       }
       return pairs.join(sep);
     }
+  }, {
+    key: 'capitalize',
+    value: function capitalize(string) {
+      return string.charAt(0).toUpperCase() + string.slice(1);
+    }
   }]);
 
   return String;

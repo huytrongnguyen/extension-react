@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import withProps from '~/mixin/with-props';
 
-export default class extends Component {
+export default class GridHeader extends Component {
   @withProps
   render({ columns, headerWidth }) {
     return <section className="rx-grid-header">

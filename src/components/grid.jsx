@@ -8,8 +8,9 @@ import bind from '~/mixin/bind';
 import Container from './container';
 import GridHeader from './grid/header';
 import GridBody from './grid/body';
+import GridPagingToolbar from './grid/paging-toolbar';
 
-export default class extends Component {
+export default class Grid extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -41,8 +42,9 @@ export default class extends Component {
   }
 
   @withProps
-  render({ store }) {
+  render({ store, paging }) {
     return <Container className="rx-grid">
+      {paging && <GridPagingToolbar store={store} />}
       <GridHeader {...this.state} />
       <GridBody data={store.getData()} {...this.state} />
     </Container>;

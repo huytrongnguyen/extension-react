@@ -44,12 +44,12 @@ exports.default = function (config) {
   return function (comp) {
     var WrappedComponent = config.view;
     return function (_Component) {
-      _inherits(_class, _Component);
+      _inherits(HocComponent, _Component);
 
-      function _class(props) {
-        _classCallCheck(this, _class);
+      function HocComponent(props) {
+        _classCallCheck(this, HocComponent);
 
-        var _this = _possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (HocComponent.__proto__ || Object.getPrototypeOf(HocComponent)).call(this, props));
 
         _this.state = _defineProperty({
           stores: {}
@@ -57,7 +57,7 @@ exports.default = function (config) {
         return _this;
       }
 
-      _createClass(_class, [{
+      _createClass(HocComponent, [{
         key: 'componentWillMount',
         value: function componentWillMount() {
           var _this2 = this;
@@ -143,7 +143,7 @@ exports.default = function (config) {
         }
       }]);
 
-      return _class;
+      return HocComponent;
     }(_react.Component);
   };
 };

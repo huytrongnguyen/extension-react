@@ -4,13 +4,21 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _component = require('./component');
 
 var _component2 = _interopRequireDefault(_component);
 
+var _string = require('./string');
+
+var _string2 = _interopRequireDefault(_string);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -50,6 +58,22 @@ var Ext = function () {
       return !!value && typeof value === 'function';
     }
   }, {
+    key: 'isObject',
+    value: function isObject(value) {
+      return toString.call(value) === '[object Object]';
+    }
+  }, {
+    key: 'isArray',
+    value: function isArray(value) {
+      return toString.call(value) === '[object Array]';
+    }
+  }, {
+    key: 'isPrimitive',
+    value: function isPrimitive(value) {
+      var type = typeof value === 'undefined' ? 'undefined' : _typeof(value);
+      return type === 'string' || type === 'number' || type === 'boolean';
+    }
+  }, {
     key: 'className',
     value: function className(expression) {
       var cls = [];
@@ -81,6 +105,42 @@ var Ext = function () {
       }
 
       return cls.join(' ');
+    }
+  }, {
+    key: 'generateSetter',
+    value: function generateSetter(state, comp) {
+      var _iteratorNormalCompletion2 = true;
+      var _didIteratorError2 = false;
+      var _iteratorError2 = undefined;
+
+      try {
+        var _loop = function _loop() {
+          var field = _step2.value;
+
+          comp['set' + _string2.default.capitalize(field)] = function (value) {
+            return comp.setState(function () {
+              return _defineProperty({}, field, value);
+            });
+          };
+        };
+
+        for (var _iterator2 = Object.keys(state)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+          _loop();
+        }
+      } catch (err) {
+        _didIteratorError2 = true;
+        _iteratorError2 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion2 && _iterator2.return) {
+            _iterator2.return();
+          }
+        } finally {
+          if (_didIteratorError2) {
+            throw _iteratorError2;
+          }
+        }
+      }
     }
   }, {
     key: 'getScrollWidth',

@@ -81,7 +81,12 @@ var EventObservable = function () {
   _createClass(EventObservable, [{
     key: 'subscribe',
     value: function subscribe(observer) {
-      this.target.addEventListener(this.eventName, observer);
+      this.target.addEventListener(this.eventName, observer, false);
+    }
+  }, {
+    key: 'unsubscribe',
+    value: function unsubscribe(observer) {
+      this.target.removeEventListener(this.eventName, observer, false);
     }
   }]);
 

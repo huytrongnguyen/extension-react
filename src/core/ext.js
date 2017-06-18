@@ -1,4 +1,5 @@
 import Component from './component';
+import String from './string';
 
 class Ext {
   constructor() {
@@ -28,6 +29,19 @@ class Ext {
     return !!value && typeof value === 'function';
   }
 
+  isObject(value) {
+    return toString.call(value) === '[object Object]';
+  }
+
+  isArray(value) {
+    return toString.call(value) === '[object Array]';
+  }
+
+  isPrimitive(value) {
+    const type = typeof value;
+    return type === 'string' || type === 'number' || type === 'boolean';
+  }
+
   className(expression) {
     const cls = [];
     for (let key of Object.keys(expression)) {
@@ -36,6 +50,12 @@ class Ext {
       }
     }
     return cls.join(' ');
+  }
+
+  generateSetter(state, comp) {
+    for (let field of Object.keys(state)) {
+      comp[`set${String.capitalize(field)}`] = (value) => comp.setState(() => ({ [field]: value }));
+    }
   }
 
   getScrollWidth() {

@@ -33,18 +33,25 @@ var Model = function () {
   _createClass(Model, [{
     key: 'get',
     value: function get(fieldName) {
+      if (!fieldName || _ext2.default.isPrimitive(this.data)) {
+        return this.data;
+      }
       return this.data[fieldName];
     }
   }, {
     key: 'set',
     value: function set(fieldName, newValue) {
-      this.data[fieldName] = newValue;
+      if (!fieldName || _ext2.default.isPrimitive(this.data)) {
+        this.data = newValue;
+      } else {
+        this.data[fieldName] = newValue;
+      }
       this.store && this.store.observable.call(this.store);
     }
   }, {
     key: 'save',
     value: function save() {
-      this.phantom = _ext2.default.extend({}, this.data);
+      this.phantom = _ext2.default.isPrimitive(this.data) ? this.data : _ext2.default.extend({}, this.data);
       this.store && this.store.observable.call(this.store);
     }
   }, {

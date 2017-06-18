@@ -205,6 +205,7 @@ var Rext = function () {
     this.ajax = function (settings) {
       return _ajax2.default.request(settings);
     };
+    this.generateSetter = _ext2.default.generateSetter;
   }
 
   _createClass(Rext, [{

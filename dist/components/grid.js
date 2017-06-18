@@ -51,6 +51,10 @@ var _body = require('./grid/body');
 
 var _body2 = _interopRequireDefault(_body);
 
+var _pagingToolbar = require('./grid/paging-toolbar');
+
+var _pagingToolbar2 = _interopRequireDefault(_pagingToolbar);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -88,13 +92,13 @@ function _applyDecoratedDescriptor(target, property, decorators, descriptor, con
   return desc;
 }
 
-var _default = (_class = function (_Component) {
-  _inherits(_default, _Component);
+var Grid = (_class = function (_Component) {
+  _inherits(Grid, _Component);
 
-  function _default(props) {
-    _classCallCheck(this, _default);
+  function Grid(props) {
+    _classCallCheck(this, Grid);
 
-    var _this = _possibleConstructorReturn(this, (_default.__proto__ || Object.getPrototypeOf(_default)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (Grid.__proto__ || Object.getPrototypeOf(Grid)).call(this, props));
 
     _this.state = {
       columns: (0, _list2.default)(props.children).map(function (child) {
@@ -111,7 +115,7 @@ var _default = (_class = function (_Component) {
     return _this;
   }
 
-  _createClass(_default, [{
+  _createClass(Grid, [{
     key: 'componentWillMount',
     value: function componentWillMount() {
       this.props.store.subscribe(this.reload);
@@ -136,11 +140,13 @@ var _default = (_class = function (_Component) {
   }, {
     key: 'render',
     value: function render(_ref) {
-      var store = _ref.store;
+      var store = _ref.store,
+          paging = _ref.paging;
 
       return _react2.default.createElement(
         _container2.default,
         { className: 'rx-grid' },
+        paging && _react2.default.createElement(_pagingToolbar2.default, { store: store }),
         _react2.default.createElement(_header2.default, this.state),
         _react2.default.createElement(_body2.default, _extends({ data: store.getData() }, this.state))
       );
@@ -188,7 +194,6 @@ var _default = (_class = function (_Component) {
     }
   }]);
 
-  return _default;
+  return Grid;
 }(_react.Component), (_applyDecoratedDescriptor(_class.prototype, 'render', [_withProps2.default], Object.getOwnPropertyDescriptor(_class.prototype, 'render'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'resizeGrid', [_bind2.default], Object.getOwnPropertyDescriptor(_class.prototype, 'resizeGrid'), _class.prototype)), _class);
-
-exports.default = _default;
+exports.default = Grid;

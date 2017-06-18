@@ -2,6 +2,8 @@
 > Jun 18, 2017
 
   * Provide `Dropdown` component
+  * Support `editable` for `Grid`
+  * Add function `Rext.generateSetter` to handle `setState` for each field in state
   * Fix issue in routes
   * Update documentation for API
 

@@ -34,6 +34,10 @@
           &:last-child {
             border-right: 0;
           }
+          >.form-control, >.dropdown {
+            width: 100%;
+            margin: (-$size-sm);
+          }
         }
         &:last-child {
           .rx-grid-cell {
