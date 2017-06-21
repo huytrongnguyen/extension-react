@@ -17,6 +17,12 @@ var _withProps = require('../../mixin/with-props');
 
 var _withProps2 = _interopRequireDefault(_withProps);
 
+var _bind = require('../../mixin/bind');
+
+var _bind2 = _interopRequireDefault(_bind);
+
+var _form = require('../form');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -57,19 +63,45 @@ function _applyDecoratedDescriptor(target, property, decorators, descriptor, con
 var GridPagingToolbar = (_class = function (_Component) {
   _inherits(GridPagingToolbar, _Component);
 
-  function GridPagingToolbar() {
+  function GridPagingToolbar(props) {
     _classCallCheck(this, GridPagingToolbar);
 
-    return _possibleConstructorReturn(this, (GridPagingToolbar.__proto__ || Object.getPrototypeOf(GridPagingToolbar)).apply(this, arguments));
+    var _this = _possibleConstructorReturn(this, (GridPagingToolbar.__proto__ || Object.getPrototypeOf(GridPagingToolbar)).call(this, props));
+
+    var _props$store = props.store,
+        totalCount = _props$store.totalCount,
+        currentPage = _props$store.currentPage;
+
+    _this.state = {
+      page: totalCount === 0 ? 0 : currentPage
+    };
+    Ext.generateSetter(_this.state, _this);
+    return _this;
   }
 
   _createClass(GridPagingToolbar, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      this.props.store.subscribe(this.reload);
+    }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      this.props.store.unsubscribe(this.reload);
+    }
+  }, {
     key: 'render',
     value: function render(_ref) {
-      var _ref$store$page = _ref.store.page,
-          totalElements = _ref$store$page.totalElements,
-          firstIndex = _ref$store$page.firstIndex,
-          lastIndex = _ref$store$page.lastIndex;
+      var _this2 = this;
+
+      var _ref$store = _ref.store,
+          totalCount = _ref$store.totalCount,
+          pageSize = _ref$store.pageSize,
+          currentPage = _ref$store.currentPage;
+      var page = this.state.page,
+          firstIndex = (currentPage - 1) * pageSize + 1,
+          lastIndex = currentPage * pageSize,
+          totalPages = Math.ceil(totalCount / pageSize) || 0;
 
       return _react2.default.createElement(
         'section',
@@ -77,13 +109,110 @@ var GridPagingToolbar = (_class = function (_Component) {
         _react2.default.createElement(
           'div',
           { className: 'col-6' },
-          totalElements && 'Displaying ' + firstIndex + ' - ' + lastIndex + ' of ' + totalElements
+          totalCount > 0 && 'Displaying ' + firstIndex + ' - ' + lastIndex + ' of ' + totalCount
         ),
-        _react2.default.createElement('div', { className: 'col-6 pagination' })
+        _react2.default.createElement(
+          'div',
+          { className: 'col-6' },
+          _react2.default.createElement(
+            'div',
+            { className: 'float-sm-right' },
+            _react2.default.createElement(
+              'div',
+              { className: 'input-group input-group-sm' },
+              _react2.default.createElement(
+                'span',
+                { className: 'input-group-btn' },
+                _react2.default.createElement(
+                  _form.Btn,
+                  { disabled: totalCount === 0, onClick: function onClick() {
+                      return _this2.loadPage(currentPage);
+                    } },
+                  _react2.default.createElement('i', { className: 'fa fa-refresh' })
+                )
+              ),
+              _react2.default.createElement(
+                'span',
+                { className: 'input-group-btn' },
+                _react2.default.createElement(
+                  _form.Btn,
+                  { disabled: currentPage === 1, onClick: function onClick() {
+                      return _this2.loadPage(1);
+                    } },
+                  _react2.default.createElement('i', { className: 'fa fa-fast-backward' })
+                )
+              ),
+              _react2.default.createElement(
+                'span',
+                { className: 'input-group-btn' },
+                _react2.default.createElement(
+                  _form.Btn,
+                  { disabled: currentPage === 1, onClick: function onClick() {
+                      return _this2.loadPage(currentPage - 1);
+                    } },
+                  _react2.default.createElement('i', { className: 'fa fa-backward' })
+                )
+              ),
+              _react2.default.createElement(
+                'span',
+                { className: 'input-group-addon' },
+                'Page'
+              ),
+              _react2.default.createElement(_form.Field, { value: page, className: 'w5 text-sm-center', disabled: page === 0, onChange: this.setPage, onEnter: function onEnter(page) {
+                  return _this2.loadPage(page);
+                } }),
+              _react2.default.createElement(
+                'span',
+                { className: 'input-group-addon' },
+                'of ',
+                totalPages
+              ),
+              _react2.default.createElement(
+                'span',
+                { className: 'input-group-btn' },
+                _react2.default.createElement(
+                  _form.Btn,
+                  { disabled: totalPages === 0 || currentPage === totalPages, onClick: function onClick() {
+                      return _this2.loadPage(currentPage + 1);
+                    } },
+                  _react2.default.createElement('i', { className: 'fa fa-forward' })
+                )
+              ),
+              _react2.default.createElement(
+                'span',
+                { className: 'input-group-btn' },
+                _react2.default.createElement(
+                  _form.Btn,
+                  { disabled: totalPages === 0 || currentPage === totalPages, onClick: function onClick() {
+                      return _this2.loadPage(totalPages);
+                    } },
+                  _react2.default.createElement('i', { className: 'fa fa-fast-forward' })
+                )
+              )
+            )
+          )
+        )
       );
+    }
+  }, {
+    key: 'reload',
+    value: function reload(store) {
+      this.setPage(store.totalCount === 0 ? 0 : store.currentPage);
+    }
+  }, {
+    key: 'loadPage',
+    value: function loadPage(number) {
+      var store = this.props.store,
+          totalPages = Math.ceil(store.totalCount / store.pageSize) || 0;
+
+      if (0 < number && number <= totalPages) {
+        store.loadPage(number);
+      } else {
+        this.setPage(store.currentPage);
+      }
     }
   }]);
 
   return GridPagingToolbar;
-}(_react.Component), (_applyDecoratedDescriptor(_class.prototype, 'render', [_withProps2.default], Object.getOwnPropertyDescriptor(_class.prototype, 'render'), _class.prototype)), _class);
+}(_react.Component), (_applyDecoratedDescriptor(_class.prototype, 'render', [_withProps2.default], Object.getOwnPropertyDescriptor(_class.prototype, 'render'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'reload', [_bind2.default], Object.getOwnPropertyDescriptor(_class.prototype, 'reload'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'loadPage', [_bind2.default], Object.getOwnPropertyDescriptor(_class.prototype, 'loadPage'), _class.prototype)), _class);
 exports.default = GridPagingToolbar;

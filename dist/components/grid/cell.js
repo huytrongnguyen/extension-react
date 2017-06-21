@@ -76,8 +76,11 @@ var GridCell = (_class = function (_Component) {
 
     var _this = _possibleConstructorReturn(this, (GridCell.__proto__ || Object.getPrototypeOf(GridCell)).call(this, props));
 
+    var record = props.record,
+        dataIndex = props.dataIndex;
+
     _this.state = {
-      value: props.record.get(props.dataIndex),
+      value: dataIndex ? record.get(dataIndex) : '',
       readOnly: true
     };
     _ext2.default.generateSetter(_this.state, _this);
@@ -85,70 +88,83 @@ var GridCell = (_class = function (_Component) {
   }
 
   _createClass(GridCell, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      this.props.record.store.subscribe(this.reload);
+    }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      this.props.record.store.unsubscribe(this.reload);
+    }
+  }, {
     key: 'render',
     value: function render(_ref) {
       var _this2 = this;
 
-      var record = _ref.record,
-          rowIndex = _ref.rowIndex,
-          dataIndex = _ref.dataIndex,
-          className = _ref.className,
+      var _ref$className = _ref.className,
+          className = _ref$className === undefined ? '' : _ref$className,
+          _ref$style = _ref.style,
+          style = _ref$style === undefined ? {} : _ref$style,
           _render = _ref.render,
-          style = _ref.style,
+          record = _ref.record,
+          dataIndex = _ref.dataIndex,
+          rowIndex = _ref.rowIndex,
           editable = _ref.editable,
-          others = _objectWithoutProperties(_ref, ['record', 'rowIndex', 'dataIndex', 'className', 'render', 'style', 'editable']);
+          others = _objectWithoutProperties(_ref, ['className', 'style', 'render', 'record', 'dataIndex', 'rowIndex', 'editable']);
 
       var _state = this.state,
           value = _state.value,
-          readOnly = _state.readOnly;
+          readOnly = _state.readOnly,
+          cls = _ext2.default.className(['rx-grid-cell', className, { 'modified': dataIndex && record.isModified(dataIndex) }]);
 
       if (editable) {
         if (readOnly) {
           return _react2.default.createElement(
             'div',
-            _extends({ className: 'rx-grid-cell ' + (className || ''), style: style,
-              onClick: function onClick() {
+            _extends({ className: cls, style: style, onClick: function onClick() {
                 return _this2.setReadOnly(false);
               } }, others),
             _render ? _render(value, record, dataIndex, rowIndex) : value
           );
-        }
-
-        if (editable.type === 'dropdown') {
+        } else if (editable.type === 'dropdown') {
           return _react2.default.createElement(
             'div',
-            _extends({ className: 'rx-grid-cell ' + (className || ''), style: style }, others),
-            _react2.default.createElement(_form.Dropdown, { value: value, store: editable.store, fieldLabel: 'Card Type', onSelect: function onSelect(rec) {
+            _extends({ className: cls, style: style }, others),
+            _react2.default.createElement(_form.Dropdown, { value: value, store: editable.store, fieldLabel: editable.fieldLabel, onSelect: function onSelect(rec) {
                 return _this2.setValue(rec.data);
-              }, onCollapse: function onCollapse(value) {
-                return _this2.afterEdit(value);
-              } })
+              }, onCollapse: this.afterEdit })
+          );
+        } else {
+          return _react2.default.createElement(
+            'div',
+            _extends({ className: cls, style: style }, others),
+            _react2.default.createElement(_form.Field, { value: value, autoFocus: true, onChange: this.setValue, onBlur: this.afterEdit })
           );
         }
-
-        return _react2.default.createElement(
-          'div',
-          _extends({ className: 'rx-grid-cell ' + (className || ''), style: style }, others),
-          _react2.default.createElement(_form.Field, { value: value, autoFocus: true, onChange: function onChange(value) {
-              return _this2.setValue(value);
-            }, onBlur: function onBlur(value) {
-              return _this2.afterEdit(value);
-            } })
-        );
       }
 
       return _react2.default.createElement(
         'div',
-        _extends({ className: 'rx-grid-cell ' + (className || ''), style: style }, others),
+        _extends({ className: cls, style: style }, others),
         _render ? _render(value, record, dataIndex, rowIndex) : value
       );
     }
   }, {
-    key: 'afterEdit',
-    value: function afterEdit(value) {
+    key: 'reload',
+    value: function reload() {
       var _props = this.props,
           record = _props.record,
           dataIndex = _props.dataIndex;
+
+      this.setValue(dataIndex ? record.get(dataIndex) : '');
+    }
+  }, {
+    key: 'afterEdit',
+    value: function afterEdit(value) {
+      var _props2 = this.props,
+          record = _props2.record,
+          dataIndex = _props2.dataIndex;
 
       record.set(dataIndex, value);
       this.setReadOnly(true);
@@ -156,5 +172,5 @@ var GridCell = (_class = function (_Component) {
   }]);
 
   return GridCell;
-}(_react.Component), (_applyDecoratedDescriptor(_class.prototype, 'render', [_withProps2.default], Object.getOwnPropertyDescriptor(_class.prototype, 'render'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'afterEdit', [_bind2.default], Object.getOwnPropertyDescriptor(_class.prototype, 'afterEdit'), _class.prototype)), _class);
+}(_react.Component), (_applyDecoratedDescriptor(_class.prototype, 'render', [_withProps2.default], Object.getOwnPropertyDescriptor(_class.prototype, 'render'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'reload', [_bind2.default], Object.getOwnPropertyDescriptor(_class.prototype, 'reload'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'afterEdit', [_bind2.default], Object.getOwnPropertyDescriptor(_class.prototype, 'afterEdit'), _class.prototype)), _class);
 exports.default = GridCell;

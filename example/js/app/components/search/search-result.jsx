@@ -9,7 +9,7 @@ export default class SearchResult extends Component {
       <Grid store={CardStore}>
         <div text="ID" dataIndex="Id" className="text-center" style={{width:150}} />
         <div text="Name" dataIndex="Name" className="text-center" style={{width:250}} editable />
-        <div text="Type" dataIndex="Type" className="text-center" style={{width:100}} editable={{type:'dropdown',store:CardTypeStore}} />
+        <div text="Type" dataIndex="Type" className="text-center" style={{width:100}} editable={{type:'dropdown',store:CardTypeStore,fieldLabel:'Card Type'}} />
         <div text="Introduction" dataIndex="Introduction" className="text-center" style={{width:1000}} />
         <div text="STR" dataIndex="STR" className="text-center" style={{width:50}} />
         <div text="AGI" dataIndex="AGI" className="text-center" style={{width:50}} />

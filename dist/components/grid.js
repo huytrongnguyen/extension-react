@@ -101,7 +101,7 @@ var Grid = (_class = function (_Component) {
     var _this = _possibleConstructorReturn(this, (Grid.__proto__ || Object.getPrototypeOf(Grid)).call(this, props));
 
     _this.state = {
-      columns: (0, _list2.default)(props.children).map(function (child) {
+      columns: (0, _list2.default)(_react2.default.Children.toArray(props.children)).map(function (child) {
         return child.props;
       }).collect(),
       width: 0,
@@ -117,25 +117,21 @@ var Grid = (_class = function (_Component) {
 
   _createClass(Grid, [{
     key: 'componentWillMount',
-    value: function componentWillMount() {
-      this.props.store.subscribe(this.reload);
-      _observable2.default.fromEvent(window, 'resize').subscribe(this.resizeGrid);
-    }
+    value: function componentWillMount() {}
   }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
       this.resizeGrid();
-      var node = _ext2.default.getComp(this),
-          header = node.find('.rx-grid-header'),
-          body = node.find('.rx-grid-body');
-      _observable2.default.fromEvent(body, 'scroll').subscribe(function (e) {
-        return header.scrollLeft = body.scrollLeft;
-      });
+      this.props.store.subscribe(this.reload);
+      _observable2.default.fromEvent(window, 'resize').subscribe(this.resizeGrid);
+      _observable2.default.fromEvent(_ext2.default.getComp(this).find('.rx-grid-body'), 'scroll').subscribe(this.onScroll);
     }
   }, {
     key: 'componentWillUnmount',
     value: function componentWillUnmount() {
       this.props.store.unsubscribe(this.reload);
+      _observable2.default.fromEvent(window, 'resize').unsubscribe(this.resizeGrid);
+      _observable2.default.fromEvent(_ext2.default.getComp(this).find('.rx-grid-body'), 'scroll').unsubscribe(this.onScroll);
     }
   }, {
     key: 'render',
@@ -145,10 +141,14 @@ var Grid = (_class = function (_Component) {
 
       return _react2.default.createElement(
         _container2.default,
-        { className: 'rx-grid' },
+        null,
         paging && _react2.default.createElement(_pagingToolbar2.default, { store: store }),
-        _react2.default.createElement(_header2.default, this.state),
-        _react2.default.createElement(_body2.default, _extends({ data: store.getData() }, this.state))
+        _react2.default.createElement(
+          _container2.default,
+          { className: 'rx-grid' },
+          _react2.default.createElement(_header2.default, _extends({ total: store.count() }, this.state)),
+          _react2.default.createElement(_body2.default, _extends({ data: store.getData() }, this.state))
+        )
       );
     }
   }, {
@@ -192,8 +192,14 @@ var Grid = (_class = function (_Component) {
         return { columns: columns, width: width, innerWidth: innerWidth, headerWidth: headerWidth, bodyWidth: bodyWidth };
       });
     }
+  }, {
+    key: 'onScroll',
+    value: function onScroll() {
+      var node = _ext2.default.getComp(this);
+      node.find('.rx-grid-header').scrollLeft = node.find('.rx-grid-body').scrollLeft;
+    }
   }]);
 
   return Grid;
-}(_react.Component), (_applyDecoratedDescriptor(_class.prototype, 'render', [_withProps2.default], Object.getOwnPropertyDescriptor(_class.prototype, 'render'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'resizeGrid', [_bind2.default], Object.getOwnPropertyDescriptor(_class.prototype, 'resizeGrid'), _class.prototype)), _class);
+}(_react.Component), (_applyDecoratedDescriptor(_class.prototype, 'render', [_withProps2.default], Object.getOwnPropertyDescriptor(_class.prototype, 'render'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'resizeGrid', [_bind2.default], Object.getOwnPropertyDescriptor(_class.prototype, 'resizeGrid'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'onScroll', [_bind2.default], Object.getOwnPropertyDescriptor(_class.prototype, 'onScroll'), _class.prototype)), _class);
 exports.default = Grid;

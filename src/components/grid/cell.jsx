@@ -7,38 +7,51 @@ import bind from '~/mixin/bind';
 export default class GridCell extends Component {
   constructor(props) {
     super(props);
+    const { record, dataIndex } = props;
     this.state = {
-      value: props.record.get(props.dataIndex),
+      value: dataIndex ? record.get(dataIndex) : '',
       readOnly: true
     }
     Ext.generateSetter(this.state, this);
   }
 
+  componentDidMount() {
+    this.props.record.store.subscribe(this.reload);
+  }
+
+  componentWillUnmount() {
+    this.props.record.store.unsubscribe(this.reload);
+  }
+
   @withProps
-  render({ record, rowIndex, dataIndex, className, render, style, editable, ...others }) {
-    const { value, readOnly } = this.state;
+  render({ className = '', style = {}, render, record, dataIndex, rowIndex, editable, ...others }) {
+    const { value, readOnly } = this.state,
+          cls = Ext.className(['rx-grid-cell', className, {'modified': dataIndex && record.isModified(dataIndex)}]);
     if (editable) {
       if (readOnly) {
-        return <div className={`rx-grid-cell ${className || ''}`} style={style}
-                    onClick={() => this.setReadOnly(false)} { ...others }>
+        return <div className={cls} style={style} onClick={() => this.setReadOnly(false)} {...others}>
           {render ? render(value, record, dataIndex, rowIndex) : value}
         </div>
-      }
-
-      if (editable.type === 'dropdown') {
-        return <div className={`rx-grid-cell ${className || ''}`} style={style} { ...others }>
-          <Dropdown value={value} store={editable.store} fieldLabel="Card Type" onSelect={rec => this.setValue(rec.data)} onCollapse={value => this.afterEdit(value)} />
+      } else if (editable.type === 'dropdown') {
+        return <div className={cls} style={style} { ...others }>
+          <Dropdown value={value} store={editable.store} fieldLabel={editable.fieldLabel} onSelect={rec => this.setValue(rec.data)} onCollapse={this.afterEdit} />
+        </div>
+      } else {
+        return <div className={cls} style={style} {...others}>
+          <Field value={value} autoFocus onChange={this.setValue} onBlur={this.afterEdit} />
         </div>
       }
-
-      return <div className={`rx-grid-cell ${className || ''}`} style={style} { ...others }>
-        <Field value={value} autoFocus onChange={value => this.setValue(value)} onBlur={value => this.afterEdit(value)} />
-      </div>
     }
 
-    return <div className={`rx-grid-cell ${className || ''}`} style={style} { ...others }>
+    return <div className={cls} style={style} {...others}>
       {render ? render(value, record, dataIndex, rowIndex) : value}
     </div>
+  }
+
+  @bind
+  reload() {
+    const { record, dataIndex } = this.props;
+    this.setValue(dataIndex ? record.get(dataIndex) : '');
   }
 
   @bind

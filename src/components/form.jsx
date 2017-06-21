@@ -16,9 +16,9 @@ export class Field extends Component {
   }
 
   @withProps
-  render({ className = '', onChange, onKeyPress, ...others }) {
+  render({ className = '', onChange, onKeyPress, onBlur, ...others }) {
     return <input type="text" value={this.state.value} className={`form-control ${className}`}
-                  onChange={this.onChange}
+                  onChange={this.onChange} onKeyPress={this.onEnter} onBlur={this.onBlur}
                   {...others} />;
   }
 
@@ -27,6 +27,21 @@ export class Field extends Component {
     const { value } = e.target;
     this.setState(() => ({ value }));
     this.props.onChange && this.props.onChange(value);
+  }
+
+  @bind
+  onEnter(e) {
+    const { value } = e.target;
+    if (e.key === 'Enter') {
+      this.props.onEnter && this.props.onEnter(value);
+      this.props.onBlur && this.props.onBlur(value);
+    }
+  }
+
+  @bind
+  onBlur(e) {
+    const { value } = e.target;
+    this.props.onBlur && this.props.onBlur(value);
   }
 }
 
@@ -71,8 +86,9 @@ export class Dropdown extends Component {
         </div>
         <div className="dropdown-list">
           {data.map(rec => {
-            return <div className={Ext.className({'dropdown-item': true,
-                                                  'selected': selection.contains(selected => (selected.get ? selected.get(displayField) : selected) === rec.get(displayField))})}
+            const className = Ext.className(['dropdown-item',
+                {'selected': selection.contains(selected => (selected.get ? selected.get(displayField) : selected) === rec.get(displayField))}]);
+            return <div className={className}
                         onClick={() => this.select(rec)}>
               {rec.get ? rec.get(displayField) : rec}
             </div>
@@ -149,5 +165,29 @@ export class Dropdown extends Component {
         this.toggle();
       }
     }
+  }
+}
+
+export class Checkbox extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      checked: props.checked
+    };
+  }
+
+  render() {
+    const { checked } = this.state,
+          { ...others } = this.props;
+    return <input type="checkbox" checked={checked} onChange={this.toggleCheck} {...others} />;
+  }
+
+  @bind
+  toggleCheck() {
+    let { checked } = this.state;
+    checked = !checked;
+    this.setState(() => ({ checked }));
+    const { onCheckChange, model } = this.props;
+    onCheckChange && onCheckChange(checked, model);
   }
 }

@@ -19,6 +19,8 @@ var _withProps = require('../../mixin/with-props');
 
 var _withProps2 = _interopRequireDefault(_withProps);
 
+var _form = require('../form');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
@@ -70,25 +72,34 @@ var GridHeader = (_class = function (_Component) {
   _createClass(GridHeader, [{
     key: 'render',
     value: function render(_ref) {
-      var columns = _ref.columns,
-          headerWidth = _ref.headerWidth;
+      var width = _ref.width,
+          headerWidth = _ref.headerWidth,
+          checkColumn = _ref.checkColumn,
+          total = _ref.total,
+          columns = _ref.columns;
 
       return _react2.default.createElement(
         'section',
-        { className: 'rx-grid-header' },
+        { className: 'rx-grid-header', style: { width: width } },
         _react2.default.createElement(
           'div',
           { className: 'rx-grid-header-container d-flex flex-row', style: { width: headerWidth } },
+          checkColumn && _react2.default.createElement(
+            'div',
+            { className: 'rx-grid-column-header text-sm-center', style: { width: 26 } },
+            checkColumn === 'multiple' && _react2.default.createElement(_form.Checkbox, { disabled: total === 0 })
+          ),
           columns && columns.map(function (col) {
-            var text = col.text,
-                className = col.className,
-                style = col.style,
-                others = _objectWithoutProperties(col, ['text', 'className', 'style']);
+            var _col$text = col.text,
+                text = _col$text === undefined ? '' : _col$text,
+                _col$className = col.className,
+                className = _col$className === undefined ? '' : _col$className,
+                others = _objectWithoutProperties(col, ['text', 'className']);
 
             return _react2.default.createElement(
               'div',
-              _extends({ className: 'rx-grid-column-header text-center ' + (className || ''), style: style }, others),
-              text || ''
+              _extends({ className: 'rx-grid-column-header text-center ' + className }, others),
+              text
             );
           })
         )

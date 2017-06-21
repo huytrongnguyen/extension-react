@@ -3,13 +3,13 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Dropdown = exports.Button = exports.Field = undefined;
+exports.Checkbox = exports.Dropdown = exports.Button = exports.Field = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _desc, _value, _class, _desc2, _value2, _class2, _desc3, _value3, _class3;
+var _desc, _value, _class, _desc2, _value2, _class2, _desc3, _value3, _class3, _desc4, _value4, _class4;
 
 var _react = require('react');
 
@@ -103,10 +103,11 @@ var Field = exports.Field = (_class = function (_Component) {
           className = _ref$className === undefined ? '' : _ref$className,
           onChange = _ref.onChange,
           onKeyPress = _ref.onKeyPress,
-          others = _objectWithoutProperties(_ref, ['className', 'onChange', 'onKeyPress']);
+          onBlur = _ref.onBlur,
+          others = _objectWithoutProperties(_ref, ['className', 'onChange', 'onKeyPress', 'onBlur']);
 
       return _react2.default.createElement('input', _extends({ type: 'text', value: this.state.value, className: 'form-control ' + className,
-        onChange: this.onChange
+        onChange: this.onChange, onKeyPress: this.onEnter, onBlur: this.onBlur
       }, others));
     }
   }, {
@@ -119,10 +120,27 @@ var Field = exports.Field = (_class = function (_Component) {
       });
       this.props.onChange && this.props.onChange(value);
     }
+  }, {
+    key: 'onEnter',
+    value: function onEnter(e) {
+      var value = e.target.value;
+
+      if (e.key === 'Enter') {
+        this.props.onEnter && this.props.onEnter(value);
+        this.props.onBlur && this.props.onBlur(value);
+      }
+    }
+  }, {
+    key: 'onBlur',
+    value: function onBlur(e) {
+      var value = e.target.value;
+
+      this.props.onBlur && this.props.onBlur(value);
+    }
   }]);
 
   return Field;
-}(_react.Component), (_applyDecoratedDescriptor(_class.prototype, 'render', [_withProps2.default], Object.getOwnPropertyDescriptor(_class.prototype, 'render'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'onChange', [_bind2.default], Object.getOwnPropertyDescriptor(_class.prototype, 'onChange'), _class.prototype)), _class);
+}(_react.Component), (_applyDecoratedDescriptor(_class.prototype, 'render', [_withProps2.default], Object.getOwnPropertyDescriptor(_class.prototype, 'render'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'onChange', [_bind2.default], Object.getOwnPropertyDescriptor(_class.prototype, 'onChange'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'onEnter', [_bind2.default], Object.getOwnPropertyDescriptor(_class.prototype, 'onEnter'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'onBlur', [_bind2.default], Object.getOwnPropertyDescriptor(_class.prototype, 'onBlur'), _class.prototype)), _class);
 var Button = exports.Button = (_class2 = function (_Component2) {
   _inherits(Button, _Component2);
 
@@ -218,12 +236,12 @@ var Dropdown = exports.Dropdown = (_class3 = function (_Component3) {
             'div',
             { className: 'dropdown-list' },
             data.map(function (rec) {
+              var className = _ext2.default.className(['dropdown-item', { 'selected': selection.contains(function (selected) {
+                  return (selected.get ? selected.get(displayField) : selected) === rec.get(displayField);
+                }) }]);
               return _react2.default.createElement(
                 'div',
-                { className: _ext2.default.className({ 'dropdown-item': true,
-                    'selected': selection.contains(function (selected) {
-                      return (selected.get ? selected.get(displayField) : selected) === rec.get(displayField);
-                    }) }),
+                { className: className,
                   onClick: function onClick() {
                     return _this4.select(rec);
                   } },
@@ -362,3 +380,44 @@ var Dropdown = exports.Dropdown = (_class3 = function (_Component3) {
 
   return Dropdown;
 }(_react.Component), (_applyDecoratedDescriptor(_class3.prototype, 'render', [_withProps2.default], Object.getOwnPropertyDescriptor(_class3.prototype, 'render'), _class3.prototype), _applyDecoratedDescriptor(_class3.prototype, 'toggle', [_bind2.default], Object.getOwnPropertyDescriptor(_class3.prototype, 'toggle'), _class3.prototype), _applyDecoratedDescriptor(_class3.prototype, 'select', [_bind2.default], Object.getOwnPropertyDescriptor(_class3.prototype, 'select'), _class3.prototype), _applyDecoratedDescriptor(_class3.prototype, 'filter', [_bind2.default], Object.getOwnPropertyDescriptor(_class3.prototype, 'filter'), _class3.prototype), _applyDecoratedDescriptor(_class3.prototype, 'closeOnBlur', [_bind2.default], Object.getOwnPropertyDescriptor(_class3.prototype, 'closeOnBlur'), _class3.prototype)), _class3);
+var Checkbox = exports.Checkbox = (_class4 = function (_Component4) {
+  _inherits(Checkbox, _Component4);
+
+  function Checkbox(props) {
+    _classCallCheck(this, Checkbox);
+
+    var _this5 = _possibleConstructorReturn(this, (Checkbox.__proto__ || Object.getPrototypeOf(Checkbox)).call(this, props));
+
+    _this5.state = {
+      checked: props.checked
+    };
+    return _this5;
+  }
+
+  _createClass(Checkbox, [{
+    key: 'render',
+    value: function render() {
+      var checked = this.state.checked,
+          others = _objectWithoutProperties(this.props, []);
+
+      return _react2.default.createElement('input', _extends({ type: 'checkbox', checked: checked, onChange: this.toggleCheck }, others));
+    }
+  }, {
+    key: 'toggleCheck',
+    value: function toggleCheck() {
+      var checked = this.state.checked;
+
+      checked = !checked;
+      this.setState(function () {
+        return { checked: checked };
+      });
+      var _props4 = this.props,
+          onCheckChange = _props4.onCheckChange,
+          model = _props4.model;
+
+      onCheckChange && onCheckChange(checked, model);
+    }
+  }]);
+
+  return Checkbox;
+}(_react.Component), (_applyDecoratedDescriptor(_class4.prototype, 'toggleCheck', [_bind2.default], Object.getOwnPropertyDescriptor(_class4.prototype, 'toggleCheck'), _class4.prototype)), _class4);

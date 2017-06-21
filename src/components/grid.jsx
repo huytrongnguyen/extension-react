@@ -14,7 +14,7 @@ export default class Grid extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      columns: List(props.children).map(child => child.props).collect(),
+      columns: List(React.Children.toArray(props.children)).map(child => child.props).collect(),
       width: 0,
       innerWidth: 0,
       headerWidth: 0,
@@ -24,30 +24,32 @@ export default class Grid extends Component {
   }
 
   componentWillMount() {
-    this.props.store.subscribe(this.reload);
-    Observable.fromEvent(window, 'resize').subscribe(this.resizeGrid);
+
 
   }
 
   componentDidMount() {
     this.resizeGrid();
-    const node = Ext.getComp(this),
-          header = node.find('.rx-grid-header'),
-          body = node.find('.rx-grid-body');
-    Observable.fromEvent(body, 'scroll').subscribe(e => header.scrollLeft = body.scrollLeft);
+    this.props.store.subscribe(this.reload);
+    Observable.fromEvent(window, 'resize').subscribe(this.resizeGrid);
+    Observable.fromEvent(Ext.getComp(this).find('.rx-grid-body'), 'scroll').subscribe(this.onScroll);
   }
 
   componentWillUnmount() {
     this.props.store.unsubscribe(this.reload);
+    Observable.fromEvent(window, 'resize').unsubscribe(this.resizeGrid);
+    Observable.fromEvent(Ext.getComp(this).find('.rx-grid-body'), 'scroll').unsubscribe(this.onScroll);
   }
 
   @withProps
   render({ store, paging }) {
-    return <Container className="rx-grid">
+    return <Container>
       {paging && <GridPagingToolbar store={store} />}
-      <GridHeader {...this.state} />
-      <GridBody data={store.getData()} {...this.state} />
-    </Container>;
+      <Container className="rx-grid">
+        <GridHeader total={store.count()} {...this.state} />
+        <GridBody data={store.getData()} {...this.state} />
+      </Container>
+    </Container>
   }
 
   @bind
@@ -86,5 +88,11 @@ export default class Grid extends Component {
     }
 
     this.setState(() => ({ columns, width, innerWidth, headerWidth, bodyWidth }));
+  }
+
+  @bind
+  onScroll() {
+    const node = Ext.getComp(this);
+    node.find('.rx-grid-header').scrollLeft = node.find('.rx-grid-body').scrollLeft;
   }
 }

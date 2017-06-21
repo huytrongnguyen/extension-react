@@ -39,15 +39,35 @@ exports.default = function (config) {
 
       _classCallCheck(this, DataStore);
 
+      this.totalCount = 0;
+      this.pageSize = 0;
+      this.currentPage = 1;
       _ext2.default.extend(this, config, {
         observable: _observable2.default.create()
       });
-      this.data = (0, _list2.default)(config.data || []).map(function (record) {
+      this.createRecord = function (record) {
         return new _model2.default(record, _this);
-      });
+      };
+      this.data = (0, _list2.default)(config.data || []).map(this.createRecord);
+      this.subscribe = function (observer) {
+        return _this.observable.subscribe(observer);
+      };
+      this.unsubscribe = function (observer) {
+        return _this.observable.unsubscribe(observer);
+      };
     }
 
     _createClass(DataStore, [{
+      key: 'clearData',
+      value: function clearData() {
+        var silent = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+
+        this.data = (0, _list2.default)([]);
+        if (!silent) {
+          this.observable.call(this);
+        }
+      }
+    }, {
       key: 'load',
       value: function () {
         var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(proxy) {
@@ -64,9 +84,8 @@ exports.default = function (config) {
                   response = _context.sent;
 
                   response && this.loadData(response);
-                  return _context.abrupt('return', this);
 
-                case 6:
+                case 5:
                 case 'end':
                   return _context.stop();
               }
@@ -74,7 +93,7 @@ exports.default = function (config) {
           }, _callee, this);
         }));
 
-        function load(_x) {
+        function load(_x2) {
           return _ref.apply(this, arguments);
         }
 
@@ -83,21 +102,18 @@ exports.default = function (config) {
     }, {
       key: 'loadData',
       value: function loadData(data) {
-        var _this2 = this;
-
-        var newData = this.proxy.reader && this.proxy.reader.rootProperty ? data[this.proxy.reader.rootProperty] : data;
-        this.data = (0, _list2.default)(newData).map(function (record) {
-          return new _model2.default(record, _this2);
-        });
-        if (this.pageSize) {
-          this.page = data;
+        this.clearData(true);
+        this.data = (0, _list2.default)((this.proxy && this.proxy.reader && this.proxy.reader.rootProperty ? data[this.proxy.reader.rootProperty] : data) || []).map(this.createRecord);
+        if (this.pageSize && data) {
+          this.totalCount = data[this.proxy.reader.totalProperty] || this.count();
         }
         this.observable.call(this);
       }
     }, {
       key: 'loadPage',
       value: function loadPage(page) {
-        var proxy = _ext2.default.extend({}, this.proxy, { url: this.proxy.url + '?page=' + page });
+        this.currentPage = page;
+        var proxy = _ext2.default.extend({}, this.proxy, { url: this.proxy.url + '?page=' + this.currentPage });
         return load(proxy);
       }
     }, {
@@ -156,6 +172,49 @@ exports.default = function (config) {
           return record.reject();
         });
         this.observable.call(this);
+      }
+    }, {
+      key: 'sync',
+      value: function () {
+        var _ref2 = _asyncToGenerator(regeneratorRuntime.mark(function _callee2(proxy) {
+          return regeneratorRuntime.wrap(function _callee2$(_context2) {
+            while (1) {
+              switch (_context2.prev = _context2.next) {
+                case 0:
+                  proxy = _ext2.default.extend({}, this.proxy, proxy || {});
+                  proxy.method = 'post';
+                  proxy.params = (0, _list2.default)(this.getModifiedRecords()).map(function (record) {
+                    return record.data;
+                  }).collect();
+                  if (proxy.writter && proxy.writter.transform) {
+                    proxy.params = proxy.writter.transform(proxy.params);
+                  }
+                  _context2.next = 6;
+                  return _ajax2.default.request(proxy);
+
+                case 6:
+                  return _context2.abrupt('return', _context2.sent);
+
+                case 7:
+                case 'end':
+                  return _context2.stop();
+              }
+            }
+          }, _callee2, this);
+        }));
+
+        function sync(_x3) {
+          return _ref2.apply(this, arguments);
+        }
+
+        return sync;
+      }()
+    }, {
+      key: 'getModifiedRecords',
+      value: function getModifiedRecords() {
+        return this.data.filter(function (record) {
+          return record.isModified();
+        });
       }
     }]);
 

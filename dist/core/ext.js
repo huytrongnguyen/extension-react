@@ -6,6 +6,8 @@ Object.defineProperty(exports, "__esModule", {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _component = require('./component');
@@ -15,6 +17,10 @@ var _component2 = _interopRequireDefault(_component);
 var _string = require('./string');
 
 var _string2 = _interopRequireDefault(_string);
+
+var _list = require('./list');
+
+var _list2 = _interopRequireDefault(_list);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -46,6 +52,11 @@ var Ext = function () {
       return Object.assign.apply(null, arguments); // immutable object
     }
   }, {
+    key: 'clone',
+    value: function clone(o) {
+      return _extends({}, o); // new object, not by ref
+    }
+  }, {
     key: 'createElement',
     value: function createElement(html) {
       var div = document.createElement('div');
@@ -75,19 +86,48 @@ var Ext = function () {
     }
   }, {
     key: 'className',
-    value: function className(expression) {
+    value: function className(expressions) {
+      var _this = this;
+
       var cls = [];
+
+      (0, _list2.default)(expressions).each(function (exp) {
+        if (!exp) {
+          return;
+        }
+
+        if (typeof exp === 'string') {
+          cls.push(exp);
+        } else if (_this.isObject(exp)) {
+          for (var key in exp) {
+            if (exp[key] === true) {
+              cls.push(key);
+            }
+          }
+        }
+      });
+      return cls.join(' ');
+    }
+  }, {
+    key: 'generateSetter',
+    value: function generateSetter(state, comp) {
       var _iteratorNormalCompletion = true;
       var _didIteratorError = false;
       var _iteratorError = undefined;
 
       try {
-        for (var _iterator = Object.keys(expression)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var key = _step.value;
+        var _loop = function _loop() {
+          var field = _step.value;
 
-          if (expression[key]) {
-            cls.push(key);
-          }
+          comp['set' + _string2.default.capitalize(field)] = function (value) {
+            return comp.setState(function () {
+              return _defineProperty({}, field, value);
+            });
+          };
+        };
+
+        for (var _iterator = Object.keys(state)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          _loop();
         }
       } catch (err) {
         _didIteratorError = true;
@@ -100,44 +140,6 @@ var Ext = function () {
         } finally {
           if (_didIteratorError) {
             throw _iteratorError;
-          }
-        }
-      }
-
-      return cls.join(' ');
-    }
-  }, {
-    key: 'generateSetter',
-    value: function generateSetter(state, comp) {
-      var _iteratorNormalCompletion2 = true;
-      var _didIteratorError2 = false;
-      var _iteratorError2 = undefined;
-
-      try {
-        var _loop = function _loop() {
-          var field = _step2.value;
-
-          comp['set' + _string2.default.capitalize(field)] = function (value) {
-            return comp.setState(function () {
-              return _defineProperty({}, field, value);
-            });
-          };
-        };
-
-        for (var _iterator2 = Object.keys(state)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-          _loop();
-        }
-      } catch (err) {
-        _didIteratorError2 = true;
-        _iteratorError2 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion2 && _iterator2.return) {
-            _iterator2.return();
-          }
-        } finally {
-          if (_didIteratorError2) {
-            throw _iteratorError2;
           }
         }
       }

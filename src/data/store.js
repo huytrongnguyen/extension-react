@@ -7,30 +7,43 @@ import Model from './model';
 export default (config) => {
   class DataStore {
     constructor() {
+      this.totalCount = 0;
+      this.pageSize = 0;
+      this.currentPage = 1;
       Ext.extend(this, config, {
         observable: Observable.create()
       });
-      this.data = List(config.data || []).map(record => new Model(record, this));
+      this.createRecord = record => new Model(record, this);
+      this.data = List(config.data || []).map(this.createRecord);
+      this.subscribe = observer => this.observable.subscribe(observer);
+      this.unsubscribe = observer => this.observable.unsubscribe(observer);
+    }
+
+    clearData(silent = false) {
+      this.data = List([]);
+      if (!silent) {
+        this.observable.call(this);
+      }
     }
 
     async load(proxy) {
       proxy = Ext.extend({}, this.proxy, proxy || {});
       const response = await Ajax.request(proxy);
       response && this.loadData(response);
-      return this;
     }
 
     loadData(data) {
-      const newData = this.proxy.reader && this.proxy.reader.rootProperty ? data[this.proxy.reader.rootProperty] : data;
-      this.data = List(newData).map(record => new Model(record, this));
-      if (this.pageSize) {
-        this.page = data;
+      this.clearData(true);
+      this.data = List((this.proxy && this.proxy.reader && this.proxy.reader.rootProperty ? data[this.proxy.reader.rootProperty] : data) || []).map(this.createRecord);
+      if (this.pageSize && data) {
+        this.totalCount = data[this.proxy.reader.totalProperty] || this.count();
       }
       this.observable.call(this);
     }
 
     loadPage(page) {
-      const proxy = Ext.extend({}, this.proxy, { url: `${this.proxy.url}?page=${page}` });
+      this.currentPage = page;
+      const proxy = Ext.extend({}, this.proxy, { url: `${this.proxy.url}?page=${this.currentPage}` });
       return load(proxy);
     }
 
@@ -75,6 +88,20 @@ export default (config) => {
     rejectChanges() {
       List(this.data).each(record => record.reject());
       this.observable.call(this);
+    }
+
+    async sync(proxy) {
+      proxy = Ext.extend({}, this.proxy, proxy || {});
+      proxy.method = 'post';
+      proxy.params = List(this.getModifiedRecords()).map(record => record.data).collect();
+      if (proxy.writter && proxy.writter.transform) {
+        proxy.params = proxy.writter.transform(proxy.params);
+      }
+      return await Ajax.request(proxy);
+    }
+
+    getModifiedRecords() {
+      return this.data.filter(record => record.isModified());
     }
   }
 

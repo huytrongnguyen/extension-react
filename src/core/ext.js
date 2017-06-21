@@ -1,5 +1,6 @@
 import Component from './component';
 import String from './string';
+import List from './list';
 
 class Ext {
   constructor() {
@@ -17,6 +18,10 @@ class Ext {
 
   extend() {
     return Object.assign.apply(null, arguments); // immutable object
+  }
+
+  clone(o) {
+    return {...o}; // new object, not by ref
   }
 
   createElement(html) {
@@ -42,13 +47,24 @@ class Ext {
     return type === 'string' || type === 'number' || type === 'boolean';
   }
 
-  className(expression) {
+  className(expressions) {
     const cls = [];
-    for (let key of Object.keys(expression)) {
-      if (expression[key]) {
-        cls.push(key);
+
+    List(expressions).each(exp => {
+      if (!exp) {
+        return;
       }
-    }
+
+      if (typeof exp === 'string') {
+        cls.push(exp);
+      } else if (this.isObject(exp)) {
+        for (let key in exp) {
+          if (exp[key] === true) {
+            cls.push(key);
+          }
+        }
+      }
+    });
     return cls.join(' ');
   }
 

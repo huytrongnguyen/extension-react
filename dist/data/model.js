@@ -11,6 +11,14 @@ var _ext = require('../core/ext');
 
 var _ext2 = _interopRequireDefault(_ext);
 
+var _list = require('../core/list');
+
+var _list2 = _interopRequireDefault(_list);
+
+var _map = require('../core/map');
+
+var _map2 = _interopRequireDefault(_map);
+
 var _observable = require('../mixin/observable');
 
 var _observable2 = _interopRequireDefault(_observable);
@@ -23,10 +31,9 @@ var Model = function () {
   function Model(data, store) {
     _classCallCheck(this, Model);
 
-    _ext2.default.extend(this, {
-      data: data,
-      store: store
-    });
+    this.data = data;
+    this.store = store;
+    this.fields = this.createFields(store && store.fields ? store.fields : Object.keys(this.data));
     this.save();
   }
 
@@ -52,14 +59,42 @@ var Model = function () {
     key: 'save',
     value: function save() {
       this.phantom = _ext2.default.isPrimitive(this.data) ? this.data : _ext2.default.extend({}, this.data);
-      this.store && this.store.observable.call(this.store);
     }
   }, {
     key: 'reject',
     value: function reject() {
       this.data = _ext2.default.extend({}, this.phantom);
       this.save();
-      this.store && this.store.observable.call(this.store);
+    }
+  }, {
+    key: 'isModified',
+    value: function isModified(fieldName) {
+      var _this = this;
+
+      if (fieldName) {
+        return !this.isEqual(this.fields[fieldName]);
+      }
+
+      return (0, _map2.default)(this.fields).values().contains(function (field) {
+        return !_this.isEqual(field);
+      });
+    }
+  }, {
+    key: 'isEqual',
+    value: function isEqual(field) {
+      return !field ? true : field.equals ? field.equals(this.data[field.name], this.phantom[field.name]) : this.data[field.name] === this.phantom[field.name];
+    }
+  }, {
+    key: 'createFields',
+    value: function createFields(fields) {
+      return (0, _list2.default)(fields).reduce(function (fieldByName, field) {
+        if (_ext2.default.isObject(field)) {
+          fieldByName[field.name] = field;
+        } else {
+          fieldByName[field] = { name: field };
+        }
+        return fieldByName;
+      }, {});
     }
   }]);
 

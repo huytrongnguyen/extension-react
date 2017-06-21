@@ -19,6 +19,8 @@ var _withProps = require('../../mixin/with-props');
 
 var _withProps2 = _interopRequireDefault(_withProps);
 
+var _form = require('../form');
+
 var _cell = require('./cell');
 
 var _cell2 = _interopRequireDefault(_cell);
@@ -72,13 +74,19 @@ var GridRow = (_class = function (_Component) {
   _createClass(GridRow, [{
     key: 'render',
     value: function render(_ref) {
-      var columns = _ref.columns,
+      var checkColumn = _ref.checkColumn,
+          columns = _ref.columns,
           record = _ref.record,
           rowIndex = _ref.rowIndex;
 
       return _react2.default.createElement(
-        'div',
+        'article',
         { className: 'rx-grid-row d-flex flex-row' },
+        checkColumn && _react2.default.createElement(
+          'div',
+          { className: 'rx-grid-cell text-sm-center', style: { width: 26 } },
+          _react2.default.createElement(_form.Checkbox, null)
+        ),
         columns && columns.map(function (col) {
           return _react2.default.createElement(_cell2.default, _extends({ record: record, rowIndex: rowIndex }, col));
         })

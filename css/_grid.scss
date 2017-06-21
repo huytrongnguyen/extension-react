@@ -31,6 +31,9 @@
           border-bottom: $border;
           border-right: $border;
           min-height: $size-xl;
+          &.modified {
+            background-color: $yellow !important;
+          }
           &:last-child {
             border-right: 0;
           }
