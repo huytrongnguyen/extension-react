@@ -34,6 +34,7 @@ var Model = function () {
     this.data = data;
     this.store = store;
     this.fields = this.createFields(store && store.fields ? store.fields : Object.keys(this.data));
+    this.selected = false;
     this.save();
   }
 
@@ -58,12 +59,12 @@ var Model = function () {
   }, {
     key: 'save',
     value: function save() {
-      this.phantom = _ext2.default.isPrimitive(this.data) ? this.data : _ext2.default.extend({}, this.data);
+      this.phantom = _ext2.default.clone(this.data);
     }
   }, {
     key: 'reject',
     value: function reject() {
-      this.data = _ext2.default.extend({}, this.phantom);
+      this.data = _ext2.default.clone(this.phantom);
       this.save();
     }
   }, {
@@ -72,10 +73,13 @@ var Model = function () {
       var _this = this;
 
       if (fieldName) {
-        return !this.isEqual(this.fields[fieldName]);
+        var field = this.fields.find(function (field) {
+          return field.name === fieldName;
+        });
+        return !field ? false : !this.isEqual(field);
       }
 
-      return (0, _map2.default)(this.fields).values().contains(function (field) {
+      return this.fields.contains(function (field) {
         return !_this.isEqual(field);
       });
     }
@@ -87,14 +91,25 @@ var Model = function () {
   }, {
     key: 'createFields',
     value: function createFields(fields) {
-      return (0, _list2.default)(fields).reduce(function (fieldByName, field) {
-        if (_ext2.default.isObject(field)) {
-          fieldByName[field.name] = field;
+      return (0, _list2.default)(fields).map(function (field) {
+        if (_ext2.default.isString(field)) {
+          return { name: field };
         } else {
-          fieldByName[field] = { name: field };
+          return field;
         }
-        return fieldByName;
-      }, {});
+      });
+    }
+  }, {
+    key: 'setSelected',
+    value: function setSelected(selected) {
+      this.selected = selected;
+      this.store && this.store.observable.call(this.store);
+    }
+  }, {
+    key: 'isNewlyCreated',
+    value: function isNewlyCreated() {
+      var idProperty = this.store && this.store.idProperty ? this.store.idProperty : id;
+      return !this.phantom[idProperty];
     }
   }]);
 

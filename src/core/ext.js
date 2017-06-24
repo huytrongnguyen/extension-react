@@ -6,6 +6,7 @@ class Ext {
   constructor() {
     this.SCROLL_WIDTH = this.getScrollWidth();
     this.BORDER_WIDTH = 2;
+    this.CHECK_COLUMN_WIDTH = 33;
   }
 
   getById(id) {
@@ -16,18 +17,24 @@ class Ext {
     return new Component(comp);
   }
 
-  extend() {
-    return Object.assign.apply(null, arguments); // immutable object
-  }
-
-  clone(o) {
-    return {...o}; // new object, not by ref
-  }
-
   createElement(html) {
     const div = document.createElement('div');
     div.innerHTML = html;
     return div.children[0];
+  }
+
+  append(html) {
+    const dom = this.createElement(html);
+    document.body.appendChild(dom);
+    return dom;
+  }
+
+  extend() {
+    return Object.assign.apply(null, arguments); // immutable object
+  }
+
+  clone(obj) {
+    return JSON.parse(JSON.stringify(obj)); // deep clone
   }
 
   isFunction(value) {
@@ -45,6 +52,10 @@ class Ext {
   isPrimitive(value) {
     const type = typeof value;
     return type === 'string' || type === 'number' || type === 'boolean';
+  }
+
+  isString(value) {
+    return typeof value === 'string';
   }
 
   className(expressions) {

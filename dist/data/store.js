@@ -28,6 +28,8 @@ var _model2 = _interopRequireDefault(_model);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -105,7 +107,7 @@ exports.default = function (config) {
         this.clearData(true);
         this.data = (0, _list2.default)((this.proxy && this.proxy.reader && this.proxy.reader.rootProperty ? data[this.proxy.reader.rootProperty] : data) || []).map(this.createRecord);
         if (this.pageSize && data) {
-          this.totalCount = data[this.proxy.reader.totalProperty] || this.count();
+          this.totalCount = this.proxy && this.proxy.reader && this.proxy.reader.totalProperty ? data[this.proxy.reader.totalProperty] : this.count();
         }
         this.observable.call(this);
       }
@@ -114,7 +116,13 @@ exports.default = function (config) {
       value: function loadPage(page) {
         this.currentPage = page;
         var proxy = _ext2.default.extend({}, this.proxy, { url: this.proxy.url + '?page=' + this.currentPage });
-        return load(proxy);
+        return this.load(proxy);
+      }
+    }, {
+      key: 'reloadPage',
+      value: function reloadPage() {
+        var proxy = _ext2.default.extend({}, this.proxy, { url: this.proxy.url + '?page=' + (this.currentPage - 1) });
+        return this.load(proxy);
       }
     }, {
       key: 'count',
@@ -177,6 +185,8 @@ exports.default = function (config) {
       key: 'sync',
       value: function () {
         var _ref2 = _asyncToGenerator(regeneratorRuntime.mark(function _callee2(proxy) {
+          var _proxy$params;
+
           return regeneratorRuntime.wrap(function _callee2$(_context2) {
             while (1) {
               switch (_context2.prev = _context2.next) {
@@ -186,16 +196,19 @@ exports.default = function (config) {
                   proxy.params = (0, _list2.default)(this.getModifiedRecords()).map(function (record) {
                     return record.data;
                   }).collect();
+                  (_proxy$params = proxy.params).push.apply(_proxy$params, _toConsumableArray(this.getNewRecords().map(function (record) {
+                    return record.data;
+                  }).collect()));
                   if (proxy.writter && proxy.writter.transform) {
                     proxy.params = proxy.writter.transform(proxy.params);
                   }
-                  _context2.next = 6;
+                  _context2.next = 7;
                   return _ajax2.default.request(proxy);
 
-                case 6:
+                case 7:
                   return _context2.abrupt('return', _context2.sent);
 
-                case 7:
+                case 8:
                 case 'end':
                   return _context2.stop();
               }
@@ -215,6 +228,42 @@ exports.default = function (config) {
         return this.data.filter(function (record) {
           return record.isModified();
         });
+      }
+    }, {
+      key: 'getSelectedRecords',
+      value: function getSelectedRecords() {
+        return this.data.filter(function (record) {
+          return record.selected;
+        });
+      }
+    }, {
+      key: 'getNewRecords',
+      value: function getNewRecords() {
+        return this.data.filter(function (record) {
+          return record.isNewlyCreated();
+        });
+      }
+    }, {
+      key: 'toggleSelectAll',
+      value: function toggleSelectAll() {
+        if (this.getSelectedRecords().count() === this.count()) {
+          this.data.each(function (record) {
+            return record.selected = false;
+          });
+        } else {
+          this.data.each(function (record) {
+            return record.selected = true;
+          });
+        }
+        this.observable.call(this);
+      }
+    }, {
+      key: 'add',
+      value: function add(record) {
+        record = this.createRecord(record);
+        this.data.add(record);
+        this.observable.call(this);
+        return record;
       }
     }]);
 

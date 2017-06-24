@@ -39,21 +39,27 @@ var List = function () {
       }
     }
   }, {
-    key: "findBy",
-    value: function findBy(predicate) {
-      var result = null;
-      for (var index = 0, item; (item = this.array[index]) != null; ++index) {
-        if (predicate(item, index, this.array)) {
-          result = item;
+    key: "findIndex",
+    value: function findIndex(predicate) {
+      var index = -1;
+      for (var idx = 0, item; (item = this.array[idx]) != null; ++idx) {
+        if (predicate(item, idx, this.array)) {
+          index = idx;
           break;
         }
       }
-      return result;
+      return index;
+    }
+  }, {
+    key: "find",
+    value: function find(predicate) {
+      var index = this.findIndex(predicate);
+      return index > -1 ? this.array[index] : null;
     }
   }, {
     key: "contains",
     value: function contains(predicate) {
-      return this.findBy(predicate) !== null;
+      return this.find(predicate) !== null;
     }
   }, {
     key: "filter",
@@ -104,6 +110,11 @@ var List = function () {
     key: "insert",
     value: function insert(index, item) {
       this.array.splice(index, 0, item);
+    }
+  }, {
+    key: "join",
+    value: function join(separator) {
+      return this.array.join(separator);
     }
   }]);
 

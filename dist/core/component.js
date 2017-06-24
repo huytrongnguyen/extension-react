@@ -11,14 +11,14 @@ var _reactDom = require('react-dom');
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var _default = function () {
-  function _default(comp) {
-    _classCallCheck(this, _default);
+var Component = function () {
+  function Component(comp) {
+    _classCallCheck(this, Component);
 
     this.comp = (0, _reactDom.findDOMNode)(comp);
   }
 
-  _createClass(_default, [{
+  _createClass(Component, [{
     key: 'parent',
     value: function parent() {
       this.comp = this.comp.parentElement;
@@ -41,7 +41,7 @@ var _default = function () {
     }
   }]);
 
-  return _default;
+  return Component;
 }();
 
-exports.default = _default;
+exports.default = Component;

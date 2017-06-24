@@ -6,8 +6,6 @@ Object.defineProperty(exports, "__esModule", {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _component = require('./component');
@@ -34,6 +32,7 @@ var Ext = function () {
 
     this.SCROLL_WIDTH = this.getScrollWidth();
     this.BORDER_WIDTH = 2;
+    this.CHECK_COLUMN_WIDTH = 33;
   }
 
   _createClass(Ext, [{
@@ -47,21 +46,28 @@ var Ext = function () {
       return new _component2.default(comp);
     }
   }, {
+    key: 'createElement',
+    value: function createElement(html) {
+      var div = document.createElement('div');
+      div.innerHTML = html;
+      return div.children[0];
+    }
+  }, {
+    key: 'append',
+    value: function append(html) {
+      var dom = this.createElement(html);
+      document.body.appendChild(dom);
+      return dom;
+    }
+  }, {
     key: 'extend',
     value: function extend() {
       return Object.assign.apply(null, arguments); // immutable object
     }
   }, {
     key: 'clone',
-    value: function clone(o) {
-      return _extends({}, o); // new object, not by ref
-    }
-  }, {
-    key: 'createElement',
-    value: function createElement(html) {
-      var div = document.createElement('div');
-      div.innerHTML = html;
-      return div.children[0];
+    value: function clone(obj) {
+      return JSON.parse(JSON.stringify(obj)); // deep clone
     }
   }, {
     key: 'isFunction',
@@ -83,6 +89,11 @@ var Ext = function () {
     value: function isPrimitive(value) {
       var type = typeof value === 'undefined' ? 'undefined' : _typeof(value);
       return type === 'string' || type === 'number' || type === 'boolean';
+    }
+  }, {
+    key: 'isString',
+    value: function isString(value) {
+      return typeof value === 'string';
     }
   }, {
     key: 'className',

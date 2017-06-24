@@ -13,6 +13,10 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _ext = require('../../core/ext');
+
+var _ext2 = _interopRequireDefault(_ext);
+
 var _withProps = require('../../mixin/with-props');
 
 var _withProps2 = _interopRequireDefault(_withProps);
@@ -75,7 +79,7 @@ var GridPagingToolbar = (_class = function (_Component) {
     _this.state = {
       page: totalCount === 0 ? 0 : currentPage
     };
-    Ext.generateSetter(_this.state, _this);
+    _ext2.default.generateSetter(_this.state, _this);
     return _this;
   }
 
@@ -95,12 +99,13 @@ var GridPagingToolbar = (_class = function (_Component) {
       var _this2 = this;
 
       var _ref$store = _ref.store,
+          data = _ref$store.data,
           totalCount = _ref$store.totalCount,
           pageSize = _ref$store.pageSize,
           currentPage = _ref$store.currentPage;
       var page = this.state.page,
           firstIndex = (currentPage - 1) * pageSize + 1,
-          lastIndex = currentPage * pageSize,
+          lastIndex = firstIndex + data.count() - 1,
           totalPages = Math.ceil(totalCount / pageSize) || 0;
 
       return _react2.default.createElement(
@@ -116,49 +121,25 @@ var GridPagingToolbar = (_class = function (_Component) {
           { className: 'col-6' },
           _react2.default.createElement(
             'div',
-            { className: 'float-sm-right' },
+            { className: 'float-right' },
             _react2.default.createElement(
               'div',
-              { className: 'input-group input-group-sm' },
-              _react2.default.createElement(
-                'span',
-                { className: 'input-group-btn' },
-                _react2.default.createElement(
-                  _form.Btn,
-                  { disabled: totalCount === 0, onClick: function onClick() {
-                      return _this2.loadPage(currentPage);
-                    } },
-                  _react2.default.createElement('i', { className: 'fa fa-refresh' })
-                )
-              ),
-              _react2.default.createElement(
-                'span',
-                { className: 'input-group-btn' },
-                _react2.default.createElement(
-                  _form.Btn,
-                  { disabled: currentPage === 1, onClick: function onClick() {
-                      return _this2.loadPage(1);
-                    } },
-                  _react2.default.createElement('i', { className: 'fa fa-fast-backward' })
-                )
-              ),
-              _react2.default.createElement(
-                'span',
-                { className: 'input-group-btn' },
-                _react2.default.createElement(
-                  _form.Btn,
-                  { disabled: currentPage === 1, onClick: function onClick() {
-                      return _this2.loadPage(currentPage - 1);
-                    } },
-                  _react2.default.createElement('i', { className: 'fa fa-backward' })
-                )
-              ),
+              { className: 'input-group' },
+              _react2.default.createElement(_form.Button, { className: 'input-group-addon', disabled: totalCount === 0, onClick: function onClick() {
+                  return _this2.loadPage(currentPage);
+                }, text: 'Refresh' }),
+              _react2.default.createElement(_form.Button, { className: 'input-group-addon', disabled: currentPage === 1, onClick: function onClick() {
+                  return _this2.loadPage(1);
+                }, text: 'First' }),
+              _react2.default.createElement(_form.Button, { className: 'input-group-addon', disabled: currentPage === 1, onClick: function onClick() {
+                  return _this2.loadPage(currentPage - 1);
+                }, text: 'Previous' }),
               _react2.default.createElement(
                 'span',
                 { className: 'input-group-addon' },
                 'Page'
               ),
-              _react2.default.createElement(_form.Field, { value: page, className: 'w5 text-sm-center', disabled: page === 0, onChange: this.setPage, onEnter: function onEnter(page) {
+              _react2.default.createElement(_form.Field, { value: page, className: 'w5 text-center input-group-addon', disabled: page === 0, onChange: this.setPage, onEnter: function onEnter(page) {
                   return _this2.loadPage(page);
                 } }),
               _react2.default.createElement(
@@ -167,28 +148,12 @@ var GridPagingToolbar = (_class = function (_Component) {
                 'of ',
                 totalPages
               ),
-              _react2.default.createElement(
-                'span',
-                { className: 'input-group-btn' },
-                _react2.default.createElement(
-                  _form.Btn,
-                  { disabled: totalPages === 0 || currentPage === totalPages, onClick: function onClick() {
-                      return _this2.loadPage(currentPage + 1);
-                    } },
-                  _react2.default.createElement('i', { className: 'fa fa-forward' })
-                )
-              ),
-              _react2.default.createElement(
-                'span',
-                { className: 'input-group-btn' },
-                _react2.default.createElement(
-                  _form.Btn,
-                  { disabled: totalPages === 0 || currentPage === totalPages, onClick: function onClick() {
-                      return _this2.loadPage(totalPages);
-                    } },
-                  _react2.default.createElement('i', { className: 'fa fa-fast-forward' })
-                )
-              )
+              _react2.default.createElement(_form.Button, { className: 'input-group-addon', disabled: totalPages === 0 || currentPage === totalPages, onClick: function onClick() {
+                  return _this2.loadPage(currentPage + 1);
+                }, text: 'Next' }),
+              _react2.default.createElement(_form.Button, { className: 'input-group-addon', disabled: totalPages === 0 || currentPage === totalPages, onClick: function onClick() {
+                  return _this2.loadPage(totalPages);
+                }, text: 'Last' })
             )
           )
         )

@@ -23,19 +23,24 @@ class List {
     }
   }
 
-  findBy(predicate) {
-    let result = null;
-    for (let index = 0, item; (item = this.array[index]) != null; ++index) {
-      if (predicate(item, index, this.array)) {
-        result = item;
+  findIndex(predicate) {
+    let index = -1;
+    for (let idx = 0, item; (item = this.array[idx]) != null; ++idx) {
+      if (predicate(item, idx, this.array)) {
+        index = idx;
         break;
       }
     }
-    return result;
+    return index;
+  }
+
+  find(predicate) {
+    let index = this.findIndex(predicate);
+    return index > -1 ? this.array[index] : null;
   }
 
   contains(predicate) {
-    return this.findBy(predicate) !== null;
+    return this.find(predicate) !== null;
   }
 
   filter(predicate) {
@@ -73,6 +78,10 @@ class List {
 
   insert(index, item) {
     this.array.splice(index, 0, item);
+  }
+
+  join(separator) {
+    return this.array.join(separator);
   }
 }
 

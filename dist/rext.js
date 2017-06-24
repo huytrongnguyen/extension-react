@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Dropdown = exports.Button = exports.Field = exports.Grid = exports.Container = exports.Link = exports.HashRouter = exports.Route = exports.bind = exports.withProps = exports.Observable = exports.Component = exports.Service = exports.Model = exports.Store = exports.Cache = exports.Ajax = exports.Map = exports.List = exports.String = undefined;
+exports.MsgBox = exports.Toast = exports.Dialog = exports.DialogManager = exports.Dropdown = exports.Button = exports.Field = exports.Grid = exports.Container = exports.Link = exports.HashRouter = exports.Route = exports.bind = exports.withProps = exports.Observable = exports.Component = exports.Service = exports.Model = exports.Store = exports.Cache = exports.Ajax = exports.Map = exports.List = exports.String = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -172,6 +172,33 @@ Object.defineProperty(exports, 'Dropdown', {
   enumerable: true,
   get: function get() {
     return _form.Dropdown;
+  }
+});
+
+var _dialog = require('./components/dialog');
+
+Object.defineProperty(exports, 'DialogManager', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_dialog).default;
+  }
+});
+Object.defineProperty(exports, 'Dialog', {
+  enumerable: true,
+  get: function get() {
+    return _dialog.Dialog;
+  }
+});
+Object.defineProperty(exports, 'Toast', {
+  enumerable: true,
+  get: function get() {
+    return _dialog.Toast;
+  }
+});
+Object.defineProperty(exports, 'MsgBox', {
+  enumerable: true,
+  get: function get() {
+    return _dialog.MsgBox;
   }
 });
 

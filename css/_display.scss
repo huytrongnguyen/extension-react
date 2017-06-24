@@ -18,12 +18,18 @@
 
 .row {
   margin: 0 auto;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
 }
 
 @for $i from 1 to 12 {
   .col-#{$i} {
     margin: 0 $size-sm;
-    width: 100% / $i;
+    width: 100% / #{$i};
+    flex-basis: 0;
+    flex-grow: 1;
   }
 }
 
@@ -37,4 +43,16 @@
 .form-inline {
   display: flex;
   flex-flow: row wrap;
+}
+
+@each $direction in left, right {
+  .float-#{$direction} {
+    float: #{$direction} !important;
+  }
+}
+
+@for $i from 1 to 5 {
+  .w#{$i} {
+    width: #{$i}rem;
+  }
 }

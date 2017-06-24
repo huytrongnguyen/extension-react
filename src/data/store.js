@@ -36,7 +36,7 @@ export default (config) => {
       this.clearData(true);
       this.data = List((this.proxy && this.proxy.reader && this.proxy.reader.rootProperty ? data[this.proxy.reader.rootProperty] : data) || []).map(this.createRecord);
       if (this.pageSize && data) {
-        this.totalCount = data[this.proxy.reader.totalProperty] || this.count();
+        this.totalCount = (this.proxy && this.proxy.reader && this.proxy.reader.totalProperty) ? data[this.proxy.reader.totalProperty] : this.count();
       }
       this.observable.call(this);
     }
@@ -44,7 +44,12 @@ export default (config) => {
     loadPage(page) {
       this.currentPage = page;
       const proxy = Ext.extend({}, this.proxy, { url: `${this.proxy.url}?page=${this.currentPage}` });
-      return load(proxy);
+      return this.load(proxy);
+    }
+
+    reloadPage() {
+      const proxy = Ext.extend({}, this.proxy, { url: `${this.proxy.url}?page=${this.currentPage - 1}` });
+      return this.load(proxy);
     }
 
     count() {
@@ -94,6 +99,7 @@ export default (config) => {
       proxy = Ext.extend({}, this.proxy, proxy || {});
       proxy.method = 'post';
       proxy.params = List(this.getModifiedRecords()).map(record => record.data).collect();
+      proxy.params.push(...this.getNewRecords().map(record => record.data).collect());
       if (proxy.writter && proxy.writter.transform) {
         proxy.params = proxy.writter.transform(proxy.params);
       }
@@ -102,6 +108,30 @@ export default (config) => {
 
     getModifiedRecords() {
       return this.data.filter(record => record.isModified());
+    }
+
+    getSelectedRecords() {
+      return this.data.filter(record => record.selected);
+    }
+
+    getNewRecords() {
+      return this.data.filter(record => record.isNewlyCreated());
+    }
+
+    toggleSelectAll() {
+      if (this.getSelectedRecords().count() === this.count()) {
+        this.data.each(record => record.selected = false);
+      } else {
+        this.data.each(record => record.selected = true);
+      }
+      this.observable.call(this);
+    }
+
+    add(record) {
+      record = this.createRecord(record);
+      this.data.add(record);
+      this.observable.call(this);
+      return record;
     }
   }
 

@@ -15,9 +15,17 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _ext = require('../../core/ext');
+
+var _ext2 = _interopRequireDefault(_ext);
+
 var _withProps = require('../../mixin/with-props');
 
 var _withProps2 = _interopRequireDefault(_withProps);
+
+var _bind = require('../../mixin/bind');
+
+var _bind2 = _interopRequireDefault(_bind);
 
 var _form = require('../form');
 
@@ -81,19 +89,37 @@ var GridRow = (_class = function (_Component) {
 
       return _react2.default.createElement(
         'article',
-        { className: 'rx-grid-row d-flex flex-row' },
+        { className: _ext2.default.className(['rx-grid-row d-flex flex-row', { 'selected': record.selected }]) },
         checkColumn && _react2.default.createElement(
           'div',
-          { className: 'rx-grid-cell text-sm-center', style: { width: 26 } },
-          _react2.default.createElement(_form.Checkbox, null)
+          { className: 'rx-grid-cell text-sm-center', style: { width: _ext2.default.CHECK_COLUMN_WIDTH } },
+          _react2.default.createElement(_form.Checkbox, { checked: record.selected, onCheckChange: this.toggleSelect })
         ),
         columns && columns.map(function (col) {
           return _react2.default.createElement(_cell2.default, _extends({ record: record, rowIndex: rowIndex }, col));
         })
       );
     }
+  }, {
+    key: 'toggleSelect',
+    value: function toggleSelect() {
+      var _props = this.props,
+          record = _props.record,
+          checkColumn = _props.checkColumn;
+
+      if (record.selected) {
+        record.setSelected(false);
+      } else {
+        if (checkColumn !== 'multiple') {
+          record.store.getSelectedRecords().each(function (record) {
+            return record.setSelected(false);
+          });
+        }
+        record.setSelected(true);
+      }
+    }
   }]);
 
   return GridRow;
-}(_react.Component), (_applyDecoratedDescriptor(_class.prototype, 'render', [_withProps2.default], Object.getOwnPropertyDescriptor(_class.prototype, 'render'), _class.prototype)), _class);
+}(_react.Component), (_applyDecoratedDescriptor(_class.prototype, 'render', [_withProps2.default], Object.getOwnPropertyDescriptor(_class.prototype, 'render'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'toggleSelect', [_bind2.default], Object.getOwnPropertyDescriptor(_class.prototype, 'toggleSelect'), _class.prototype)), _class);
 exports.default = GridRow;

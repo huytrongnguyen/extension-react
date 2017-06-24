@@ -74,4 +74,48 @@ footer {
   &.primary {
     font-weight: bold;
   }
+  &:disabled {
+    cursor: default;
+    opacity: .65;
+  }
+}
+
+.toolbar {
+  background-color: #d8d8d8;
+  background-image: -webkit-linear-gradient(top, #e6e6e6, #efefef);
+  border: $border;
+  width: 100%;
+  padding: $size-sm;
+  &.top {
+    margin-bottom: -1px;
+  }
+  &.bottom {
+    margin-top: -1px;
+  }
+}
+
+.input-group {
+  .input-group-addon {
+    padding: .15625rem $size-xs;
+    border: 1px solid #d1d1d1 !important;
+    border-right: 0 !important;
+    border-radius: 0;
+    &:first-child {
+      border-top-left-radius: $size-xs !important;
+      border-bottom-left-radius: $size-xs !important;
+    }
+    &:last-child {
+      border-top-right-radius: $size-xs !important;
+      border-bottom-right-radius: $size-xs !important;
+      border-right: 1px solid #d1d1d1 !important;
+    }
+    &.btn {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      &:hover {
+        background-color: #f8f8f8;
+        background-image: -webkit-linear-gradient(top, #fbfbfb, #e9e9e9);
+      }
+    }
+  }
 }

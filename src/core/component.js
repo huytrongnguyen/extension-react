@@ -1,6 +1,6 @@
 import { findDOMNode } from 'react-dom';
 
-export default class {
+export default class Component {
   constructor(comp) {
     this.comp = findDOMNode(comp);
   }

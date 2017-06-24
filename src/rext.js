@@ -48,3 +48,5 @@ export { HashRouter, Link } from './components/router';
 export { default as Container } from './components/container';
 export { default as Grid } from './components/grid';
 export { Field, Button, Dropdown } from './components/form';
+export { default as DialogManager } from './components/dialog';
+export { Dialog, Toast, MsgBox } from './components/dialog';

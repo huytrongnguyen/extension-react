@@ -5,5 +5,6 @@ export default Store({
   proxy: {
     url: '/api/cards',
     method: 'post'
-  }
+  },
+  pageSize: 100
 });

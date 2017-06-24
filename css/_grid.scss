@@ -14,6 +14,16 @@
         padding: $size-sm;
         border-right: $border;
         min-height: $size-xl;
+        .inner-table {
+          margin: (-$size-xs);
+          .header-group {
+            border-bottom: $border;
+            border-right: none;
+          }
+          .rx-grid-column-header:last-child {
+            border-right: none;
+          }
+        }
       }
     }
   }
@@ -25,6 +35,17 @@
       .rx-grid-row {
         &:nth-of-type(odd) {
           background-color: #fafafa;
+        }
+        &:hover {
+          background-color: #efefef;
+        }
+        &.selected {
+          background-color: #e0e0e0;
+        }
+        &:last-child {
+          .rx-grid-cell {
+            border-bottom: 0;
+          }
         }
         .rx-grid-cell {
           padding: $size-sm;
@@ -40,11 +61,6 @@
           >.form-control, >.dropdown {
             width: 100%;
             margin: (-$size-sm);
-          }
-        }
-        &:last-child {
-          .rx-grid-cell {
-            border-bottom: 0;
           }
         }
       }

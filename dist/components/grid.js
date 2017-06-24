@@ -101,6 +101,8 @@ var Grid = (_class = function (_Component) {
     var _this = _possibleConstructorReturn(this, (Grid.__proto__ || Object.getPrototypeOf(Grid)).call(this, props));
 
     _this.state = {
+      checkColumn: props.checkColumn,
+      headerTpl: props.headerTpl,
       columns: (0, _list2.default)(_react2.default.Children.toArray(props.children)).map(function (child) {
         return child.props;
       }).collect(),
@@ -169,7 +171,7 @@ var Grid = (_class = function (_Component) {
           flexColumns.push(col);
         }
         return innerWidth;
-      }, 0),
+      }, this.props.checkColumn ? _ext2.default.CHECK_COLUMN_WIDTH : 0),
           headerWidth = innerWidth + _ext2.default.SCROLL_WIDTH,
           bodyWidth = innerWidth;
 

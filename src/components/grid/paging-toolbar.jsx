@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+import Ext from '~/core/ext';
 import withProps from '~/mixin/with-props';
 import bind from '~/mixin/bind';
-import { Field, Btn } from '~/components/form';
+import { Field, Button } from '~/components/form';
 
 export default class GridPagingToolbar extends Component {
   constructor(props) {
@@ -22,28 +23,28 @@ export default class GridPagingToolbar extends Component {
   }
 
   @withProps
-  render({ store: { totalCount, pageSize, currentPage } }) {
+  render({ store: { data, totalCount, pageSize, currentPage } }) {
     const { page } = this.state,
           firstIndex = (currentPage - 1) * pageSize + 1,
-          lastIndex = currentPage * pageSize,
+          lastIndex = firstIndex + data.count() - 1,
           totalPages = Math.ceil(totalCount / pageSize) || 0;
     return <section className="toolbar top row">
       <div className="col-6">{(totalCount > 0) && `Displaying ${firstIndex} - ${lastIndex} of ${totalCount}`}</div>
-        <div className="col-6">
-          <div className="float-sm-right">
-            <div className="input-group input-group-sm">
-              <span className="input-group-btn"><Btn disabled={totalCount === 0} onClick={() => this.loadPage(currentPage)}><i className="fa fa-refresh" /></Btn></span>
-              <span className="input-group-btn"><Btn disabled={currentPage === 1} onClick={() => this.loadPage(1)}><i className="fa fa-fast-backward" /></Btn></span>
-              <span className="input-group-btn"><Btn disabled={currentPage === 1} onClick={() => this.loadPage(currentPage - 1)}><i className="fa fa-backward" /></Btn></span>
-              <span className="input-group-addon">Page</span>
-              <Field value={page} className="w5 text-sm-center" disabled={page === 0} onChange={this.setPage} onEnter={page => this.loadPage(page)} />
-              <span className="input-group-addon">of {totalPages}</span>
-              <span className="input-group-btn"><Btn disabled={totalPages === 0 || currentPage === totalPages} onClick={() => this.loadPage(currentPage + 1)}><i className="fa fa-forward" /></Btn></span>
-              <span className="input-group-btn"><Btn disabled={totalPages === 0 || currentPage === totalPages} onClick={() => this.loadPage(totalPages)}><i className="fa fa-fast-forward" /></Btn></span>
-            </div>
+      <div className="col-6">
+        <div className="float-right">
+          <div className="input-group">
+            <Button className="input-group-addon" disabled={totalCount === 0} onClick={() => this.loadPage(currentPage)} text="Refresh" />
+            <Button className="input-group-addon" disabled={currentPage === 1} onClick={() => this.loadPage(1)} text="First" />
+            <Button className="input-group-addon" disabled={currentPage === 1} onClick={() => this.loadPage(currentPage - 1)} text="Previous" />
+            <span className="input-group-addon">Page</span>
+            <Field value={page} className="w5 text-center input-group-addon" disabled={page === 0} onChange={this.setPage} onEnter={page => this.loadPage(page)} />
+            <span className="input-group-addon">of {totalPages}</span>
+            <Button className="input-group-addon" disabled={totalPages === 0 || currentPage === totalPages} onClick={() => this.loadPage(currentPage + 1)} text="Next" />
+            <Button className="input-group-addon" disabled={totalPages === 0 || currentPage === totalPages} onClick={() => this.loadPage(totalPages)} text="Last" />
           </div>
         </div>
-    </section>;
+      </div>
+    </section>
   }
 
   @bind

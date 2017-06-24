@@ -15,6 +15,10 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _ext = require('../../core/ext');
+
+var _ext2 = _interopRequireDefault(_ext);
+
 var _withProps = require('../../mixin/with-props');
 
 var _withProps2 = _interopRequireDefault(_withProps);
@@ -75,8 +79,9 @@ var GridHeader = (_class = function (_Component) {
       var width = _ref.width,
           headerWidth = _ref.headerWidth,
           checkColumn = _ref.checkColumn,
-          total = _ref.total,
-          columns = _ref.columns;
+          store = _ref.store,
+          columns = _ref.columns,
+          headerTpl = _ref.headerTpl;
 
       return _react2.default.createElement(
         'section',
@@ -86,10 +91,13 @@ var GridHeader = (_class = function (_Component) {
           { className: 'rx-grid-header-container d-flex flex-row', style: { width: headerWidth } },
           checkColumn && _react2.default.createElement(
             'div',
-            { className: 'rx-grid-column-header text-sm-center', style: { width: 26 } },
-            checkColumn === 'multiple' && _react2.default.createElement(_form.Checkbox, { disabled: total === 0 })
+            { className: 'rx-grid-column-header text-sm-center', style: { width: _ext2.default.CHECK_COLUMN_WIDTH } },
+            checkColumn === 'multiple' && _react2.default.createElement(_form.Checkbox, { disabled: store.count() === 0, onClick: function onClick() {
+                return store.toggleSelectAll();
+              } })
           ),
-          columns && columns.map(function (col) {
+          headerTpl && _react2.default.createElement(headerTpl, { columns: columns }),
+          !headerTpl && columns && columns.map(function (col) {
             var _col$text = col.text,
                 text = _col$text === undefined ? '' : _col$text,
                 _col$className = col.className,

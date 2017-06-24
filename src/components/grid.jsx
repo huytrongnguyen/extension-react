@@ -14,6 +14,8 @@ export default class Grid extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      checkColumn: props.checkColumn,
+      headerTpl: props.headerTpl,
       columns: List(React.Children.toArray(props.children)).map(child => child.props).collect(),
       width: 0,
       innerWidth: 0,
@@ -68,7 +70,7 @@ export default class Grid extends Component {
             flexColumns.push(col);
           }
           return innerWidth;
-        }, 0),
+        }, this.props.checkColumn ? Ext.CHECK_COLUMN_WIDTH : 0),
         headerWidth = innerWidth + Ext.SCROLL_WIDTH,
         bodyWidth = innerWidth;
 

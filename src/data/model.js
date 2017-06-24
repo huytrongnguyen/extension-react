@@ -8,6 +8,7 @@ export default class Model {
     this.data = data;
     this.store = store;
     this.fields = this.createFields((store && store.fields) ? store.fields : Object.keys(this.data));
+    this.selected = false;
     this.save();
   }
 
@@ -28,20 +29,21 @@ export default class Model {
   }
 
   save() {
-    this.phantom = Ext.isPrimitive(this.data) ? this.data : Ext.extend({}, this.data);
+    this.phantom = Ext.clone(this.data);
   }
 
   reject() {
-    this.data = Ext.extend({}, this.phantom);
+    this.data = Ext.clone(this.phantom);
     this.save();
   }
 
   isModified(fieldName) {
     if (fieldName) {
-      return !this.isEqual(this.fields[fieldName]);
+      const field = this.fields.find(field => field.name === fieldName);
+      return !field ? false : !this.isEqual(field);
     }
 
-    return Map(this.fields).values().contains(field => !this.isEqual(field));
+    return this.fields.contains(field => !this.isEqual(field));
   }
 
   isEqual(field) {
@@ -51,13 +53,22 @@ export default class Model {
   }
 
   createFields(fields) {
-    return List(fields).reduce((fieldByName, field) => {
-      if (Ext.isObject(field)) {
-        fieldByName[field.name] = field;
+    return List(fields).map(field => {
+      if (Ext.isString(field)) {
+        return { name: field };
       } else {
-        fieldByName[field] = { name: field };
+        return field;
       }
-      return fieldByName;
-    }, {});
+    });
+  }
+
+  setSelected(selected) {
+    this.selected = selected;
+    this.store && this.store.observable.call(this.store);
+  }
+
+  isNewlyCreated() {
+    const idProperty = (this.store && this.store.idProperty) ? this.store.idProperty : id;
+    return !this.phantom[idProperty];
   }
 }
