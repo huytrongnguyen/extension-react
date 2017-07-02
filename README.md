@@ -5,19 +5,51 @@
 [![npm download](https://img.shields.io/npm/dm/ext-react.svg?style=flat-square)](https://npmjs.org/package/ext-react)
 [![npm license](https://img.shields.io/npm/l/ext-react.svg)](https://npmjs.org/package/ext-react)
 
-## Introduction
-
-Components are the heart of React's powerful, declarative programming model. Extension React is a library that build on top of React to help you build data-intensive, cross-platform web apps for desktops, tablets, and smartphones. Many concepts in this library are based on ExtJS, AngularJS, RxJS concepts. This documentation is also copied and re-composed from ExtJS.
-
-## Installation
-
-You'll need both React and Extension React:
-
 [![ext-react](https://nodei.co/npm/ext-react.png?downloadRank=true&downloads=true)](https://npmjs.org/package/ext-react)
 
-You'll also need `babel-polyfill` to use async/await function, `babel-preset-es2017` to use decorator.
+Extension React is a library that build on top of React, helping you build data-intensive, cross-platform web apps for desktops, tablets, and smartphones.
 
 ## Quick Start
+
+### Setup a development enviroment
+
+Use `npm` or `yarn` to install following dependencies:
+
+  * `babel-polyfill`
+  * `babel-preset-env`
+  * `babel-preset-react`
+  * `d3`
+  * `font-awesome`
+  * `react`
+  * `ext-react`
+
+### Create a new project
+
+The following is the recommended directory structure for an Extension React application:
+
+```
++-- node_modules: NPM components
++-- dist
+|   +-- app.min.css
+|   +-- app.min.js
+|   +-- framework.min.js
++-- src
+|   +-- css
+|   |   +-- _variables.scss: application styles constant values
+|   |   +-- app.scss: application styles
+|   +-- js
+|   |   +-- common: code of shared functions or shared components
+|   |   +-- components: code (scripts and views) of every feature should be a sub-directory
+|   |   +-- services: code of services
+|   |   +-- stores: code of stores
+|   |   +-- app.js: main script
++-- gulpfile.babel.js: build scripts (or webpack.config.js if you prefer)
++-- index.html
++-- package.json: NPM package definition
++-- server.js: code of local web server (ExpressJS)
+```
+
+Let’s start evaluating the application by looking at index.html
 
 ```html
 <!-- index.html -->
@@ -26,20 +58,21 @@ You'll also need `babel-polyfill` to use async/await function, `babel-preset-es2
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>React CMS</title>
-  <link href="/node-modules/ext-react/css/rext.css" rel="stylesheet" />
+  <title>Extension React Application</title>
+  <link href="/node-modules/ext-react/css/rext.min.css" rel="stylesheet" />
+  <link href="/dist/app.min.css" rel="stylesheet" />
 </head>
 <body>
-  <script src="/node-modules/ext-react/js/framework.min.js"></script>
-  <script src="/js/app.min.js"></script>
+  <script src="/dist/framework.min.js"></script>
+  <script src="/dist/app.min.js"></script>
 </body>
 </html>
 ```
 
-To launch your app, add the following to your `main.js` file
+To launch your app, add the following to your `app.js` file
 
 ```js
-// main.js
+// app.js
 import 'babel-polyfill';
 import React from 'react';
 import Rext from 'ext-react';
@@ -48,33 +81,9 @@ import Viewport from './components/viewport/viewport';
 Rext.launch(<Viewport />);
 ```
 
-The launch function renders the specified component into the document body. If you need to do something before initial render, just return the component to be rendered in a callback function:
+## Core Concepts
 
-```js
-Rext.launch(() => {
-  // do something before initial render
-
-  // return the component to be rendered
-  return (<App/>);
-});
-```
-
-You can also work with async/await function before initial render:
-
-```js
-import 'babel-polyfill';
-import React from 'react';
-import Rext from 'ext-react';
-import CommonService from './services/common';
-import Viewport from './components/viewport/viewport';
-
-Rext.launch(async () => {
-  await CommonService.initApp();
-  return <Viewport />;
-});
-```
-
-## Components
+### Components
 
 A component in Extension React is the combination of a React Component and a component class that controls a portion of the screen. Here is an example of a component that display a simple string:
 
@@ -115,7 +124,7 @@ Every component begins with an `@Component` decorator function that takes a *met
 
 Then you will access properties and methods of component class via `this.props.dashboard`.
 
-## Screen Navigation
+### Screen Navigation
 
 `Route` decorator is most basic responsibility is to render UI when a location matches the route’s path.
 

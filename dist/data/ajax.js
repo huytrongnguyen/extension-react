@@ -36,14 +36,14 @@ var Ajax = function () {
   _createClass(Ajax, [{
     key: 'request',
     value: function () {
-      var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(_ref2) {
-        var url = _ref2.url,
-            _ref2$method = _ref2.method,
-            method = _ref2$method === undefined ? 'get' : _ref2$method,
-            params = _ref2.params,
-            next = _ref2.next,
-            error = _ref2.error,
-            complete = _ref2.complete;
+      var _ref2 = _asyncToGenerator(regeneratorRuntime.mark(function _callee(_ref) {
+        var url = _ref.url,
+            _ref$method = _ref.method,
+            method = _ref$method === undefined ? 'get' : _ref$method,
+            params = _ref.params,
+            next = _ref.next,
+            error = _ref.error,
+            complete = _ref.complete;
         var response;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
@@ -84,7 +84,7 @@ var Ajax = function () {
       }));
 
       function request(_x) {
-        return _ref.apply(this, arguments);
+        return _ref2.apply(this, arguments);
       }
 
       return request;

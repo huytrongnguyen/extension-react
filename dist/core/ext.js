@@ -122,23 +122,23 @@ var Ext = function () {
   }, {
     key: 'generateSetter',
     value: function generateSetter(state, comp) {
+      var _loop = function _loop(field) {
+        comp['set' + _string2.default.capitalize(field)] = function (value) {
+          return comp.setState(function () {
+            return _defineProperty({}, field, value);
+          });
+        };
+      };
+
       var _iteratorNormalCompletion = true;
       var _didIteratorError = false;
       var _iteratorError = undefined;
 
       try {
-        var _loop = function _loop() {
+        for (var _iterator = Object.keys(state)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
           var field = _step.value;
 
-          comp['set' + _string2.default.capitalize(field)] = function (value) {
-            return comp.setState(function () {
-              return _defineProperty({}, field, value);
-            });
-          };
-        };
-
-        for (var _iterator = Object.keys(state)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          _loop();
+          _loop(field);
         }
       } catch (err) {
         _didIteratorError = true;

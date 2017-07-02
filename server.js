@@ -1,6 +1,4 @@
 import express from 'express';
-import configuration from './data/configuration';
-import cards from './data/cards';
 
 const app = express();
 
@@ -15,12 +13,4 @@ app.listen(port, (err) => {
   console.log('App is listening at port %s', port);
 });
 
-app.use('/', express.static('./example'));
-
-app.get('/api/configuration', (req, res) => {
-  res.send(configuration);
-});
-
-app.post('/api/cards', (req, res) => {
-  res.send(cards);
-});
+app.use('/', express.static('./docs'));
