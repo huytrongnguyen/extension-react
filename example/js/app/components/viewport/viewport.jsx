@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, HashRouter } from '@/rext';
+import { Container, HashRouter } from '~/rext';
 import Header from './header';
 import Side from './side';
 import Nav from './nav';

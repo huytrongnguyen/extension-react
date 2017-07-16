@@ -2,7 +2,7 @@
 
 body {
   font-size: $font-size;
-  background-color: #e8e8e8;
+  background-color: #f1f1f1;
   font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif;
   -webkit-font-smoothing: subpixel-antialiased;
   color: $black;
@@ -10,9 +10,7 @@ body {
 
 header, footer, aside {
   padding: $size;
-  box-shadow: 0px 0px 2px rgba(0, 0, 0, .85);
-  background-color: #d8d8d8;
-  background-image: -webkit-linear-gradient(top, #e6e6e6, #efefef);
+  background-color: #f1f1f1;
 }
 
 header {
@@ -26,17 +24,51 @@ footer {
 aside {
   border-right: $border;
   margin-top: 1px;
+  .nav-link, .nav-text {
+    display: block;
+    margin: 0 (-$size);
+    padding: $size $size;
+    &.active {
+      background-color: $gray;
+      &:hover {
+        text-decoration: none;
+        cursor: default;
+      }
+    }
+  }
 }
 
-#{$a-tags} {
-  text-decoration: none !important;
+a {
+  text-decoration: none;
   color: $black;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
-.panel-body {
+code, pre {
+  font-family: Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  margin: 0;
+  padding: 0;
+}
+
+code { color: $red; }
+
+.panel-header, .panel-body {
   padding: $size;
   background-color: $white;
+}
+.panel-title {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+.panel {
   border: $border;
+  .panel-header {
+    border-bottom: $border;
+    background-color: $gray;
+  }
 }
 
 .form-control {

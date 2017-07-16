@@ -1,0 +1,10 @@
+#main-container {
+  >section {
+    > .panel-header {
+      border-bottom: 1px solid #d0d0d0;
+    }
+    > .panel-body {
+      overflow: auto;
+    }
+  }
+}

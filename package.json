@@ -1,6 +1,6 @@
 {
   "name": "ext-react",
-  "version": "1.6.2",
+  "version": "1.6.3",
   "description": "JavaScript library that build on top of React",
   "main": "dist/rext.js",
   "author": "Lionel Nguyen <huynguyen8505@gmail.com> (https://github.com/huytrongnguyen)",
@@ -16,38 +16,53 @@
   },
   "bugs": "https://github.com/huytrongnguyen/extension-react/issues",
   "scripts": {
-    "style": "node-sass --include-path scss css/rext.scss dist/css/rext.min.css --output-style compressed && gulp copy",
-    "script": "rm -rf dist/* && babel src -D -d dist --watch",
+    "style": "node-sass --include-path scss css/rext.scss src/rext.min.css --output-style compressed && gulp copy",
     "server": "babel-node server.js --presets env"
   },
   "files": [
     "LICENSE",
-    "dist/"
+    "src/"
   ],
+  "babel": {
+    "presets": [ "env", "react" ],
+    "plugins": [
+      "transform-decorators-legacy",
+      "transform-function-bind",
+      "transform-object-rest-spread",
+      ["babel-plugin-root-import", [{
+          "rootPathSuffix": "src/"
+        }, {
+          "rootPathPrefix": "@",
+          "rootPathSuffix": "docs/js/app/"
+        }]
+      ]
+    ],
+    "ignore": "node_modules"
+  },
   "devDependencies": {
     "babel-polyfill": "^6",
+    "react": "^15",
+    "react-dom": "^15",
+    "font-awesome": "^4",
+    "d3":"^4",
     "babel-cli": "6.24.1",
-    "babel-jest": "20.0.3",
     "babel-plugin-transform-decorators-legacy": "1.3.4",
+    "babel-plugin-transform-function-bind": "6.22.0",
     "babel-plugin-transform-object-rest-spread": "6.23.0",
     "babel-plugin-root-import": "5.1.0",
-    "babel-preset-env":"1.5.2",
+    "babel-preset-env":"1.6.0",
     "babel-preset-react": "6.24.1",
     "babelify": "7.3.0",
-    "babili": "0.1.4",
     "browserify": "14.4.0",
-    "d3":"4.9.1",
     "express": "4.15.3",
-    "font-awesome": "4.7.0",
     "gulp": "3.9.1",
     "gulp-sass": "3.1.0",
     "gulp-streamify": "1.0.2",
     "gulp-uglify": "3.0.0",
     "jest": "20.0.4",
     "node-sass": "4.5.3",
-    "react": "^15",
-    "react-dom": "^15",
     "vinyl-source-stream": "1.1.0",
-    "watchify":"3.9.0"
+    "watchify":"3.9.0",
+    "yarn": "0.27.5"
   }
 }

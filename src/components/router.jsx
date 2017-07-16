@@ -76,8 +76,8 @@ export class Link extends Component {
 
   render() {
     const { route, component, params } = this.state,
-          { to, className, activeClassName = 'active', ...others } = this.props;
-    return <a href={`#${to}`} className={to === getRoute() ? [className, activeClassName].join(' ') : className} {...others} />;
+          { to, className, activeClassName = 'active', text, children, ...others } = this.props;
+    return <a href={`#${to}`} className={['nav-link', className, (to === getRoute() ? activeClassName : '')].join(' ')} {...others}>{text || children}</a>;
   }
 }
 

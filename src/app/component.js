@@ -11,7 +11,7 @@ export default (config) => (comp) => {
       super(props)
       this.state = {
         stores: {},
-        [config.componentAs || 'vm']: new comp()
+        [config.componentAs || '$view']: new comp()
       };
     }
 

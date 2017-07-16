@@ -1,3 +1,10 @@
+## [1.7.x]
+> Jul 16, 2017
+
+  * Change default component alias to `$view`
+  * Add function `Rext.initialState`
+  * Update documentation
+
 ## [1.6.x]
 > Jun 18, 2017
 

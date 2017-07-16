@@ -15,8 +15,11 @@ import watchify from 'watchify';
 /*========== PATH ==========*/
 const DOCS = 'docs',
       PATH = {
-        STYLE: DOCS + '/css/**/*.scss',
-        SCRIPT: DOCS + '/js'
+        STYLE: DOCS + '/src/css/**/*.scss',
+        STYLE_DIST: DOCS + '/dist/css',
+        FONT_DIST: DOCS + '/dist/fonts',
+        SCRIPT: DOCS + '/src/js',
+        SCRIPT_DIST: DOCS + '/dist/js'
       },
 
       /*========== TASK ==========*/
@@ -36,14 +39,16 @@ const DOCS = 'docs',
       };
 
 gulp.task(TASK.COPY, () => {
-  gulp.src('./dist/css/**/*').pipe(gulp.dest(DOCS));
+  gulp.src('./src/*.css').pipe(gulp.dest(PATH.STYLE_DIST));
+  gulp.src('./node_modules/font-awesome/css/**/*').pipe(gulp.dest(PATH.STYLE_DIST));
+  gulp.src('./node_modules/font-awesome/fonts/**/*').pipe(gulp.dest(PATH.FONT_DIST));
 });
 
 gulp.task(TASK.STYLE, () => {
   return gulp.src(PATH.STYLE)
     .pipe(sass({ outputStyle: 'compressed' })
       .on('error', sass.logError))
-    .pipe(gulp.dest(DOCS));
+    .pipe(gulp.dest(PATH.STYLE_DIST));
 });
 
 gulp.task(TASK.FRAMEWORK, () => {
@@ -53,7 +58,7 @@ gulp.task(TASK.FRAMEWORK, () => {
   return bundler.bundle()
     .pipe(source('framework.min.js'))
     .pipe(streamify(uglify()))
-    .pipe(gulp.dest(DOCS));
+    .pipe(gulp.dest(PATH.SCRIPT_DIST));
 });
 
 gulp.task(TASK.SCRIPT, () => {
@@ -70,7 +75,7 @@ gulp.task(TASK.SCRIPT, () => {
     .on('error', function(err) { console.error(err.toString()); this.emit('end'); })
     .pipe(source('app.min.js'))
     .pipe(streamify(uglify()))
-    .pipe(gulp.dest(DOCS));
+    .pipe(gulp.dest(PATH.SCRIPT_DIST));
 });
 
 gulp.task('default', [TASK.STYLE, TASK.SCRIPT], () => {

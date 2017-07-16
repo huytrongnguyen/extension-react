@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, Cache } from '@/rext';
+import { Link, Cache } from '~/rext';
 
 export default class extends Component {
   render() {
