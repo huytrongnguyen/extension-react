@@ -35,7 +35,7 @@ Rext.launch(<Viewport />);
 
 ## Core Concepts
 
-Full documentation :[https://huytrongnguyen.github.io/extension-react](https://huytrongnguyen.github.io/extension-react)
+Full documentation: [https://huytrongnguyen.github.io/extension-react](https://huytrongnguyen.github.io/extension-react)
 
 ### Components
 
@@ -197,7 +197,7 @@ export default class NotFound extends Component {
 }
 ```
 
-## Observable
+### Observable
 
 `Observable.create` is an alias for the `Observable` constructor, you can call the `subscribe` function after create the observable. For example:
 
@@ -225,7 +225,7 @@ observable.unsubscribe(fn);
 
 `Observable` is used in `@Component` to connect Store and View.
 
-## Replace `setState` with a setter
+### Replace `setState` with a setter
 
 Instead of create a function like: `(value) => this.setState(() => ({ value })`, now you can use `this.setValue(value)` to replace for `setState` by using `Rext.generateSetter` function. For example:
 
@@ -336,7 +336,7 @@ export default class SearchFormView extends Component {
 
 ## Release Notes
 
-## [1.7.x]
+### [1.7.x]
 
   * Change default component alias to `$view`
   * Add function `Rext.initialState`
