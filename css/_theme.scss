@@ -23,13 +23,13 @@ footer {
 
 aside {
   border-right: $border;
-  margin-top: 1px;
   .nav-link, .nav-text {
     display: block;
     margin: 0 (-$size);
     padding: $size $size;
     &.active {
       background-color: $gray;
+      color: $white;
       &:hover {
         text-decoration: none;
         cursor: default;

@@ -67,6 +67,8 @@ export default class DashboardView extends Component {
 
 Every component begins with an `@Component` decorator function that takes a *metadata* object. The metadata object describes how the React Component and component class work together. That's mean you can access any property or method of component class via `this.props.$view`.
 
+## Data Package
+
 ## Stores
 
 Stores load data via a `Proxy`. Creating a `Store` is easy - we just tell it the `Proxy` to use for loading and saving its data:
@@ -76,50 +78,67 @@ Stores load data via a `Proxy`. Creating a `Store` is easy - we just tell it the
 import { Store } from 'ext-react';
 
 export default Store({
-  storeId: 'DashboardStore',
+  storeId: 'UserStore',
   proxy: {
-    url: '/api/dashboard'
-  },
-  autoLoad: true
+    url: '/api/user/search'
+  }
 });
 ```
 
-In the example above we configured an AJAX proxy to load data from the url `/api/dashboard`.
+In the example above we configured an AJAX proxy to load data from the url `/api/user/search`.
 
-Now, just bind a store to the `Component`. When store's data changed, it will fire an event to re-render the `Component`:
-
-```js
-// ./components/dashboard/dashboard.js
-import { Component } from 'ext-react';
-import DashboardView from './dashboard.view';
-import DashboardStore from '~/stores/dashboard';
-
-@Component({
-  view: DashboardView,
-  stores: [DashboardStore]
-})
-export default class Dashboard {
-  constructor() {
-    this.title = 'Dashboard';
-  }
-}
-```
-
-You can access store's data via `this.props.stores`. For example:
+Now, just bind a store to the `Component`:
 
 ```js
-// ./components/dashboard/dashboard.view.jsx
 import React, { Component } from 'react';
+import { bind } from 'ext-react';
+import CardStore from '~/stores/card';
 
-export default class DashboardView extends Component {
+export default class Card extends Component {
+  componentDidMount() {
+    CardStore.clearData();
+    CardStore.load();
+    CardStore.subscribe(this.reload);
+  }
+
+  componentWillUnmount() {
+    CardStore.unsubscribe(this.reload);
+  }
+
   render() {
+    const records = CardStore.getData();
     return <section>
-      <h1>{this.props.vm.title}</h1>
-      <p>{JSON.stringify(this.props.stores.DashboardStore.data)}</p>
+      <section className="rx-grid-header">
+        <div className="d-flex flex-row rx-grid-header-container">
+          <div className="rx-grid-column-header text-sm-center" style={{width:'20%'}}>ID</div>
+          <div className="rx-grid-column-header text-sm-center" style={{width:'20%'}}>Name</div>
+          <div className="rx-grid-column-header text-sm-center" style={{width:'20%'}}>Type</div>
+          <div className="rx-grid-column-header text-sm-center" style={{width:'20%'}}>Armor</div>
+          <div className="rx-grid-column-header text-sm-center" style={{width:'20%'}}>Weapon</div>
+        </div>
+      </section>
+      <section className="rx-grid-body" style={{overflow:'visible'}}>
+        <section className="rx-grid-view">
+          {records.map(record => <article className="d-flex flex-row rx-grid-row">
+            <div className="rx-grid-cell" style={{width:'20%'}}>{record.get('Id')}</div>
+            <div className="rx-grid-cell" style={{width:'20%'}}>{record.get('Name')}</div>
+            <div className="rx-grid-cell" style={{width:'20%'}}>{record.get('Type')}</div>
+            <div className="rx-grid-cell" style={{width:'20%'}}>{record.get('ArmorUsable')}</div>
+            <div className="rx-grid-cell" style={{width:'20%'}}>{record.get('WeaponUsable')}</div>
+          </article>)}
+        </section>
+      </section>
     </section>;
   }
+
+  @bind
+  reload() {
+    this.forceUpdate();
+  }
 }
 ```
+
+In this above example, we use `subscribe` and `unsubscribe` to update the component whenever data's changed. Because Store convert data to Model then you need to use `get` to access data.
 
 ### Screen Navigation
 
@@ -193,62 +212,6 @@ import { Route } from 'ext-react';
 export default class NotFound extends Component {
   render() {
     return <h1>Not Found</h1>;
-  }
-}
-```
-
-### Observable
-
-`Observable.create` is an alias for the `Observable` constructor, you can call the `subscribe` function after create the observable. For example:
-
-```js
-const observable = Observable.create();
-
-observable.subscribe(store => {
-  const { stores } = this.state;
-  stores[store.name] = store;
-  this.setState(() => ({ stores }));
-})
-```
-
-Whenever `Observable` is called, all observers will be called:
-
-```js
-observable.call(/* observer */);
-```
-
-Just as we can add listeners at any time, we can also remove them. This time we use the `unsubscribe` function. To remove a listener, we need a reference to its function.
-
-```js
-observable.unsubscribe(fn);
-```
-
-`Observable` is used in `@Component` to connect Store and View.
-
-### Replace `setState` with a setter
-
-Instead of create a function like: `(value) => this.setState(() => ({ value })`, now you can use `this.setValue(value)` to replace for `setState` by using `Rext.generateSetter` function. For example:
-
-```js
-import React, { Component } from 'react';
-import Rext, { withProps, Field } from 'ext-react';
-
-export default class GridCell extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      value: '',
-      readOnly: true
-    }
-    Ext.generateSetter(this.state, this);
-  }
-
-  @withProps
-  render({ className, style, ...others }) {
-    const { value, readOnly } = this.state;
-    return <div className={`rx-grid-cell ${className || ''}`} style={style} { ...others }>
-      <Field value={value} onChange={value => this.setValue(value)} onBlur={() => this.setReadOnly(!readOnly)} />
-    </div>
   }
 }
 ```

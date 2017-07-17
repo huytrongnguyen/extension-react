@@ -37,6 +37,28 @@ export default class DashboardView extends Component {
           The metadata object describes how the React Component and component class work together.
           That's mean you can access any property or method of component class via <code>this.props.$view</code>.
         </p>
+        <p>
+          Extension React provide a new way to work with state:
+          <pre className="editor">{`// ./components/search/search.view.jsx
+import React, { Component } from 'react';
+import Rext from 'extension-react';
+
+export default class SearchView extends Component {
+  constructor(props) {
+    super(props);
+    Rext.initialState(this, {
+      name: props.name
+    });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setName(nextProps.name);
+  }
+  ...
+}`}</pre>
+          Instead of using <code>{`this.setState((prevState, props) => ({ name: props.name }))`}</code> to update the state,
+          you can use <code>this.setName(props.name)</code> to make it easier to understand and more natural by using <code>Rext.initialState</code> function to declare the state in constructor.
+        </p>
       </Container>
     </Container>
   }

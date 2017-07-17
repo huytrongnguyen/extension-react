@@ -15,6 +15,9 @@ import watchify from 'watchify';
 /*========== PATH ==========*/
 const DOCS = 'docs',
       PATH = {
+        REXT_CSS: 'css/rext.scss',
+        CSS: 'css/**/*.scss',
+        SRC: 'src',
         STYLE: DOCS + '/src/css/**/*.scss',
         STYLE_DIST: DOCS + '/dist/css',
         FONT_DIST: DOCS + '/dist/fonts',
@@ -33,7 +36,8 @@ const DOCS = 'docs',
       /*========== TASK ==========*/
       TASK = {
         COPY: 'copy',
-        STYLE: 'style',
+        REXT_STYLE: 'rext_style',
+        DOCS_STYLE: 'docs_style',
         FRAMEWORK: 'framework',
         SCRIPT: 'script'
       };
@@ -44,7 +48,15 @@ gulp.task(TASK.COPY, () => {
   gulp.src('./node_modules/font-awesome/fonts/**/*').pipe(gulp.dest(PATH.FONT_DIST));
 });
 
-gulp.task(TASK.STYLE, () => {
+gulp.task(TASK.REXT_STYLE, () => {
+  return gulp.src(PATH.REXT_CSS)
+    .pipe(sass({ outputStyle: 'compressed' })
+      .on('error', sass.logError))
+    .pipe(gulp.dest(PATH.SRC))
+    .pipe(gulp.dest(PATH.STYLE_DIST));
+});
+
+gulp.task(TASK.DOCS_STYLE, () => {
   return gulp.src(PATH.STYLE)
     .pipe(sass({ outputStyle: 'compressed' })
       .on('error', sass.logError))
@@ -78,12 +90,13 @@ gulp.task(TASK.SCRIPT, () => {
     .pipe(gulp.dest(PATH.SCRIPT_DIST));
 });
 
-gulp.task('default', [TASK.STYLE, TASK.SCRIPT], () => {
+gulp.task('default', [TASK.REXT_STYLE, TASK.DOCS_STYLE, TASK.SCRIPT], () => {
   // trigger for new or deleted files
   // 2 things to get this working:
   //  - Avoid ./ in the file/folder patterns
   //  - Ensure ./ in the value for cwd
   const watchOpt = { cwd: './' };
-  gulp.watch(PATH.STYLE, watchOpt, [TASK.STYLE]);
+  gulp.watch(PATH.CSS, watchOpt, [TASK.REXT_STYLE]);
+  gulp.watch(PATH.STYLE, watchOpt, [TASK.DOCS_STYLE]);
   gulp.watch([`${PATH.SCRIPT}/**/*.js`, `${PATH.SCRIPT}/**/*.jsx`], watchOpt, [TASK.SCRIPT]);
 });

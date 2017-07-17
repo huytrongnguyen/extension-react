@@ -14,13 +14,15 @@ export default (config) => {
         observable: Observable.create()
       });
       this.createRecord = record => new Model(record, this);
-      this.data = List(config.data || []).map(this.createRecord);
+      this.data = List(config.data).map(this.createRecord);
       this.subscribe = observer => this.observable.subscribe(observer);
       this.unsubscribe = observer => this.observable.unsubscribe(observer);
     }
 
     clearData(silent = false) {
-      this.data = List([]);
+      this.data = List();
+      this.totalCount = 0;
+      this.currentPage = 1;
       if (!silent) {
         this.observable.call(this);
       }

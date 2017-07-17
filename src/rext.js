@@ -9,7 +9,7 @@ class Rext {
   constructor() {
     this.extend = Ext.extend;
     this.ajax = (settings) => Ajax.request(settings);
-    this.generateSetter = Ext.generateSetter;
+    this.initialState = Ext.initialState;
   }
 
   async launch(viewport) {

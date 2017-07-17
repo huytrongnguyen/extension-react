@@ -33,7 +33,7 @@
           "rootPathSuffix": "src/"
         }, {
           "rootPathPrefix": "@",
-          "rootPathSuffix": "docs/js/app/"
+          "rootPathSuffix": "docs/src/js/"
         }]
       ]
     ],

@@ -27,3 +27,5 @@ h3 { font-size: $size-xl; }
 h4 { font-size: $size * 7 / 4; }
 h5 { font-size: $size-lg; }
 h6 { font-size: $size * 5 / 4; }
+
+p { margin: 0 0 $size-sm; }
