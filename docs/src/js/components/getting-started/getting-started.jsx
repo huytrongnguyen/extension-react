@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Container, String } from '~/rext';
+import { Route, Container } from '~/rext';
 
 @Route('/')
 export default class GettingStarted extends Component {

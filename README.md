@@ -156,9 +156,7 @@ import Details from './components/search/details';
 import NotFound from './components/notfound/notfound';
 
 Rext.launch(<Viewport />);
-```
 
-```js
 // ./components/viewport/viewport.js
 import React, { Component } from 'react';
 import { Link, HashRouter } from 'ext-react';
@@ -173,9 +171,7 @@ export default class Viewport extends Component {
     </section>;
   }
 }
-```
 
-```js
 // ./components/search/search.js
 import React, { Component } from 'react';
 import { Route } from 'ext-react';
@@ -186,9 +182,7 @@ export default class Search extends Component {
     return <section />;
   }
 }
-```
 
-```js
 // ./components/search/detail.js
 import React, { Component } from 'react';
 import { Route } from 'ext-react';
@@ -199,9 +193,7 @@ export default class Detail extends Component {
     return <h1>{this.props.params.name}</h1>;
   }
 }
-```
 
-```js
 // ./components/notfound/notfound.js
 import React, { Component } from 'react';
 import { Route } from 'ext-react';
@@ -214,86 +206,11 @@ export default class NotFound extends Component {
 }
 ```
 
-### Built-in Components
+## Built-in Components
 
 Extension React has several build-in components to support for building responsive web. For example:
 
-#### Grid
-
-`Grid` are an excellent way of showing large amounts of tabular data on the client side. Essentially a supercharged <table>, `Grid` makes it easy to fetch, sort and filter large amounts of data.
-
-`Grid` are composed of two main pieces - a `Store` full of data and a set of columns to render.
-
-```js
-// app/stores/user.js
-import { Store } from 'ext-react'
-
-export default Store({
-  storeId: 'UserStore',
-  data: [
-    { 'name': 'Lisa',  "email":"lisa@simpsons.com",  "phone":"555-111-1224" },
-    { 'name': 'Bart',  "email":"bart@simpsons.com",  "phone":"555-222-1234" },
-    { 'name': 'Homer', "email":"home@simpsons.com",  "phone":"555-222-1244" },
-    { 'name': 'Marge', "email":"marge@simpsons.com", "phone":"555-222-1254" }
-  ]
-});
-```
-
-```js
-// app/components//search-result.jsx
-import React, { Component } from 'react';
-import { Container, Grid } from 'ext-react';
-import UserStore from '~/stores/user';
-
-export default class SearchResult extends Component {
-  render() {
-    return <Container>
-      <Grid store={UserStore}>
-        <div text="Name" dataIndex="name" />
-        <div text="Email" dataIndex="email" />
-        <div text="Phone" dataIndex="phone" />
-      </Grid>
-    </Container>;
-  }
-}
-```
-
-#### Dropdown
-
-A `Dropdown` is like a combination of a traditional HTML text `<input>` field and a `<select>` field; the user is able to type freely into the field, and/or pick values from a dropdown selection list.
-
-
-```js
-// app/stores/card-type.js
-import { Store } from '@/rext'
-
-export default Store({
-  storeId: 'CardTypeStore',
-  data: [
-    { id: null, code: 'MELEE', name: 'Melee' },
-    { id: null, code: 'SHOOT', name: 'Shoot' },
-    { id: null, code: 'MAGIC', name: 'Magic' },
-  ]
-});
-```
-
-```js
-// app/components//search-form.view.jsx
-import React, { Component } from 'react';
-import { withProps, Field, Dropdown, Button } from 'ext-react';
-import { CardTypeStore } from '~/app/stores/card-type';
-
-export default class SearchFormView extends Component {
-  @withProps
-  render({ searchForm }) {
-    return <section className="form-group form-inline">
-      <Field className="mr-sm" />
-      <Dropdown store={CardTypeStore} displayField="name" fieldLabel="Card Type" />
-      <Button className="primary mr-sm" text="Search" onClick={searchForm.search} />
-    </section>;
-  }
-}
-```
+  * `Grid` are an excellent way of showing large amounts of tabular data on the client side. Essentially a supercharged <table>, `Grid` iss an incredibly versatile component that provides an easy way to display and edit data.
 
 ## Release Notes
 

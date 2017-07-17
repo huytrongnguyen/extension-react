@@ -79,6 +79,12 @@ class Ext {
     return cls.join(' ');
   }
 
+  generateSetter(state, comp) {
+    for (let field of Object.keys(state)) {
+      comp[`set${String.capitalize(field)}`] = (value) => comp.setState(() => ({ [field]: value }));
+    }
+  }
+
   initialState(comp, state) {
     comp.state = state;
     for (let field of Object.keys(state)) {

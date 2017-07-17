@@ -44,8 +44,8 @@ export default class Grid extends Component {
   }
 
   @withProps
-  render({ store, paging }) {
-    return <Container>
+  render({ store, paging, ...others }) {
+    return <Container {...others}>
       {paging && <GridPagingToolbar store={store} />}
       <Container className="rx-grid">
         <GridHeader total={store.count()} {...this.state} />
