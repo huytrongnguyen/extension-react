@@ -1,8 +1,8 @@
 {
   "name": "ext-react",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "description": "JavaScript library that build on top of React",
-  "main": "src/rext.js",
+  "main": "dist/rext.js",
   "author": "Lionel Nguyen <huynguyen8505@gmail.com> (https://github.com/huytrongnguyen)",
   "license": "MIT",
   "keywords": [
@@ -16,12 +16,12 @@
   },
   "bugs": "https://github.com/huytrongnguyen/extension-react/issues",
   "scripts": {
-    "style": "node-sass --include-path scss css/rext.scss src/rext.min.css --output-style compressed && gulp copy",
+    "script": "rm -rf dist/* && babel src -D -d dist",
     "server": "babel-node server.js --presets env"
   },
   "files": [
     "LICENSE",
-    "src/"
+    "dist/"
   ],
   "babel": {
     "presets": [ "env", "react" ],
