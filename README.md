@@ -67,9 +67,7 @@ export default class DashboardView extends Component {
 
 Every component begins with an `@Component` decorator function that takes a *metadata* object. The metadata object describes how the React Component and component class work together. That's mean you can access any property or method of component class via `this.props.$view`.
 
-## Data Package
-
-## Stores
+### Data Package
 
 Stores load data via a `Proxy`. Creating a `Store` is easy - we just tell it the `Proxy` to use for loading and saving its data:
 
@@ -216,11 +214,11 @@ export default class NotFound extends Component {
 }
 ```
 
-## Built-in Components
+### Built-in Components
 
 Extension React has several build-in components to support for building responsive web. For example:
 
-### Grid
+#### Grid
 
 `Grid` are an excellent way of showing large amounts of tabular data on the client side. Essentially a supercharged <table>, `Grid` makes it easy to fetch, sort and filter large amounts of data.
 
@@ -260,7 +258,7 @@ export default class SearchResult extends Component {
 }
 ```
 
-### Dropdown
+#### Dropdown
 
 A `Dropdown` is like a combination of a traditional HTML text `<input>` field and a `<select>` field; the user is able to type freely into the field, and/or pick values from a dropdown selection list.
 
