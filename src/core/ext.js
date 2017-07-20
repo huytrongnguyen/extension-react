@@ -1,5 +1,6 @@
 import Component from './component';
 import String from './string';
+import Number from './number';
 import List from './list';
 
 class Ext {
@@ -7,6 +8,17 @@ class Ext {
     this.SCROLL_WIDTH = this.getScrollWidth();
     this.BORDER_WIDTH = 2;
     this.CHECK_COLUMN_WIDTH = 33;
+    this.COLOR_DEFAULTS = [
+      '#94ae0a',
+      '#115fa6',
+      '#a61120',
+      '#ff8809',
+      '#ffd13e',
+      '#a61187',
+      '#24ad9a',
+      '#7c7474',
+      '#a66111'
+    ];
   }
 
   getById(id) {
@@ -79,6 +91,10 @@ class Ext {
     return cls.join(' ');
   }
 
+  initialSetter(clazz, props) {
+    List(props).each(propName => clazz[`set${String.capitalize(propName)}`] = (value) => { clazz[propName] = value; return clazz; });
+  }
+
   generateSetter(state, comp) {
     for (let field of Object.keys(state)) {
       comp[`set${String.capitalize(field)}`] = (value) => comp.setState(() => ({ [field]: value }));
@@ -90,6 +106,10 @@ class Ext {
     for (let field of Object.keys(state)) {
       comp[`set${String.capitalize(field)}`] = (value) => comp.setState(() => ({ [field]: value }));
     }
+  }
+
+  guid(prefix, postfix) {
+    return `${prefix || ''}-${(Math.random() * (1<<30)).toString(16).replace('.', '')}-${postfix || ''}`;
   }
 
   getScrollWidth() {

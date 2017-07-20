@@ -1,13 +1,21 @@
 {
   "name": "ext-react",
-  "version": "1.7.1",
+  "version": "2.0.0",
   "description": "JavaScript library that build on top of React",
   "main": "dist/rext.js",
   "author": "Lionel Nguyen <huynguyen8505@gmail.com> (https://github.com/huytrongnguyen)",
   "license": "MIT",
   "keywords": [
-    "extension",
-    "react"
+    "ext-react",
+    "extension react",
+    "react",
+    "store",
+    "grid",
+    "d3",
+    "react",
+    "graph",
+    "visualization",
+    "chart"
   ],
   "homepage": "https://huytrongnguyen.github.io/extension-react",
   "repository": {
@@ -16,8 +24,9 @@
   },
   "bugs": "https://github.com/huytrongnguyen/extension-react/issues",
   "scripts": {
-    "script": "rm -rf dist/* && babel src -D -d dist",
-    "server": "babel-node server.js --presets env"
+    "build": "rm -rf dist/* && babel src -D -d dist",
+    "server": "babel-node server.js --presets env",
+    "prepublish": "npm run build"
   },
   "files": [
     "LICENSE",
@@ -38,6 +47,13 @@
       ]
     ],
     "ignore": "node_modules"
+  },
+  "peerDependencies": {
+    "babel-polyfill": "^6",
+    "react": "^15.0.0",
+    "react-dom": "^15.0.0",
+    "font-awesome": "^4",
+    "d3":"^4"
   },
   "devDependencies": {
     "babel-polyfill": "^6",

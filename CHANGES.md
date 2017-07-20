@@ -1,3 +1,10 @@
+## [2.0.x]
+> Jul 19, 2017
+
+  * Provide `Viz` component for data visualization
+  * Add more function to `Store`
+  * Update documentation and sample project
+
 ## [1.7.x]
 > Jul 16, 2017
 

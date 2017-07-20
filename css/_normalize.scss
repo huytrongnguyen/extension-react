@@ -3,9 +3,11 @@
 .brand {
   margin-right: $size;
   font-size: $size-xxl;
+  line-height: $size-xxl;
   font-weight: bold;
   white-space: nowrap;
-  text-shadow: 0 1px 0 $white;
+  color: #f5f5f5;
+  text-shadow: 0 1px 0 #1a1a1a;
 }
 
 .navbar {

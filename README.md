@@ -2,6 +2,8 @@
 
 [![npm version](http://img.shields.io/npm/v/ext-react.svg?style=flat-square)](http://npmjs.org/package/ext-react)
 [![Travis build status](https://travis-ci.org/huytrongnguyen/extension-react.svg)](https://travis-ci.org/huytrongnguyen/extension-react)
+[![Dependency Status](https://david-dm.org/c3js/c3.svg)](https://david-dm.org/huytrongnguyen/extension-react)
+[![devDependency Status](https://david-dm.org/c3js/c3/dev-status.svg)](https://david-dm.org/huytrongnguyen/extension-react#info=devDependencies)
 [![npm download](https://img.shields.io/npm/dm/ext-react.svg?style=flat-square)](https://npmjs.org/package/ext-react)
 [![npm license](https://img.shields.io/npm/l/ext-react.svg)](https://npmjs.org/package/ext-react)
 
@@ -35,7 +37,8 @@ Rext.launch(<Viewport />);
 
 ## Core Concepts
 
-Full documentation: [https://huytrongnguyen.github.io/extension-react](https://huytrongnguyen.github.io/extension-react)
+  * Full documentation: [https://huytrongnguyen.github.io/extension-react](https://huytrongnguyen.github.io/extension-react)
+  * Example: [https://huytrongnguyen.github.io/react-cms](https://huytrongnguyen.github.io/react-cms)
 
 ### Components
 

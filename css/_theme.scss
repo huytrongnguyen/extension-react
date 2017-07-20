@@ -14,6 +14,8 @@ header, footer, aside {
 }
 
 header {
+  background-color: #404040;
+  background-image: -webkit-linear-gradient(top, #4d4d4d, #333);
   border-bottom: $border;
 }
 
@@ -23,10 +25,11 @@ footer {
 
 aside {
   border-right: $border;
+  overflow: auto;
   .nav-link, .nav-text {
     display: block;
     margin: 0 (-$size);
-    padding: $size $size;
+    padding: $size-sm $size;
     &.active {
       background-color: $gray;
       color: $white;

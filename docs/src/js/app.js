@@ -8,5 +8,6 @@ import DataPackage from './components/core-concepts/data-package';
 import ScreenNavigation from './components/core-concepts/screen-navigation';
 import Architecture from './components/architecture/architecture';
 import GridComponent from './components/ui-components/grid';
+import ChartComponent from './components/ui-components/chart';
 
 Rext.launch(<Viewport />);

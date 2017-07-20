@@ -54,6 +54,10 @@ export default (config) => {
       return this.load(proxy);
     }
 
+    getRecords() {
+      return this.data;
+    }
+
     count() {
       return this.data.count();
     }

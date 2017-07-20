@@ -51,3 +51,4 @@ export { default as Grid } from './components/grid';
 export { Field, Button, Dropdown } from './components/form';
 export { default as DialogManager } from './components/dialog';
 export { Dialog, Toast, MsgBox } from './components/dialog';
+export { default as Viz } from './components/viz';

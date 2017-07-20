@@ -25,11 +25,6 @@ export default class Grid extends Component {
     this.reload = () => this.forceUpdate();
   }
 
-  componentWillMount() {
-
-
-  }
-
   componentDidMount() {
     this.resizeGrid();
     this.props.store.subscribe(this.reload);
