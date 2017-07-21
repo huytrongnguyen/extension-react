@@ -1,0 +1,12 @@
+svg {
+  overflow: hidden;
+}
+
+.rx-chart-legend-item {
+  cursor: pointer;
+  font-size: $size;
+}
+
+.rx-chart-tooltip {
+  display: none;
+}

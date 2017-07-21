@@ -24,12 +24,14 @@
   position: relative;
 }
 
+@mixin make-col($col: 1) {
+  width: percentage($col / 12);
+}
+
 @for $i from 1 to 12 {
   .col-#{$i} {
-    margin: 0 $size-sm;
-    width: 100% / #{$i};
-    flex-basis: 0;
-    flex-grow: 1;
+    @include make-col($i);
+    padding: 0 $size-sm;
   }
 }
 

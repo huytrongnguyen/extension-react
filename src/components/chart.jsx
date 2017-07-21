@@ -6,10 +6,10 @@ import withProps from '~/mixin/with-props';
 import bind from '~/mixin/bind';
 import Container from './container';
 
-export default class Viz extends Component {
+export default class Chart extends Component {
   constructor(props) {
     super(props);
-    this.guid = Ext.guid('viz', 'body');
+    this.guid = Ext.guid('rx-chart');
     Ext.initialState(this, {
       width: 0,
       height: 0
@@ -41,15 +41,14 @@ export default class Viz extends Component {
           parent = node.parent(),
           width = parent.width(),
           height = parent.height(),
-          { series, store } = this.props;
+          { store, series = {}, legend = {} } = this.props;
 
     this.setWidth(parent.width());
     this.setHeight(parent.height());
 
-    D3(`#${this.guid}`) .setWidth(width)
-                        .setHeight(height)
-                        .setData(store.getRecords().map(record => record.data).collect())
-                        .setSeries(series)
-                        ;
+    D3(`#${this.guid}`, width, height).setStore(store)
+                                      .setSeries(series)
+                                      .setLegend(legend)
+                                      .setTooltip();
   }
 }

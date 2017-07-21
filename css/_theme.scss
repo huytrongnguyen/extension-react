@@ -159,3 +159,11 @@ code { color: $red; }
     }
   }
 }
+
+.rx-tooltip {
+  background-color: #ccc;
+  border: 1px solid #868686;
+  border-radius: 3px;
+  padding: $size-xs;
+  font-size: $size;
+}

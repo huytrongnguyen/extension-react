@@ -108,8 +108,8 @@ class Ext {
     }
   }
 
-  guid(prefix, postfix) {
-    return `${prefix || ''}-${(Math.random() * (1<<30)).toString(16).replace('.', '')}-${postfix || ''}`;
+  guid(prefix) {
+    return `${prefix || ''}-${(Math.random() * (1<<30)).toString(16).replace('.', '')}`;
   }
 
   getScrollWidth() {
