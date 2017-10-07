@@ -1,21 +1,17 @@
 import List from './list';
 
-const EMPTY_MAP = {};
-
 class Map {
   constructor(keyValues) {
-    this.map = EMPTY_MAP;
-    if (keyValues && keyValues.length) {
-      this.map = Object.assign({}, keyValues);
+    this.map = {};
+    if (keyValues) {
+      this.map = keyValues;
     }
-    return this;
   }
 
   each(iteratee) {
     for (let key in this.map) {
       iteratee(key, this.map[key], this.map);
     }
-    return this;
   }
 
   keys() {

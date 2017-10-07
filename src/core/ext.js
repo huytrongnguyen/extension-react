@@ -70,7 +70,7 @@ class Ext {
     return typeof value === 'string';
   }
 
-  className(expressions) {
+  className(...expressions) {
     const cls = [];
 
     List(expressions).each(exp => {
@@ -91,20 +91,13 @@ class Ext {
     return cls.join(' ');
   }
 
-  initialSetter(clazz, props) {
-    List(props).each(propName => clazz[`set${String.capitalize(propName)}`] = (value) => { clazz[propName] = value; return clazz; });
-  }
-
-  generateSetter(state, comp) {
-    for (let field of Object.keys(state)) {
-      comp[`set${String.capitalize(field)}`] = (value) => comp.setState(() => ({ [field]: value }));
-    }
-  }
-
   initialState(comp, state) {
+    if (!comp || !state) {
+      return;
+    }
     comp.state = state;
     for (let field of Object.keys(state)) {
-      comp[`set${String.capitalize(field)}`] = (value) => comp.setState(() => ({ [field]: value }));
+      comp[`set${String.capitalize(field)}`] = value => comp.setState({ [field]: value });
     }
   }
 

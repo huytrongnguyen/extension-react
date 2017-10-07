@@ -40,13 +40,13 @@ export { default as Model } from './data/model';
 export { default as Service } from './app/service';
 export { default as Component } from './app/component';
 
-export { default as Observable } from './mixin/observable';
+export { default as Observable } from './reactive/observable';
+
 export { default as withProps } from './mixin/with-props';
 export { default as bind } from './mixin/bind';
 
-export { default as Route } from './components/router';
-export { HashRouter, Link } from './components/router';
-export { default as Container } from './components/container';
+export { HashRouter, Route, Link } from './components/router';
+export { Container } from './components/ux';
 export { default as Grid } from './components/grid';
 export { Field, Button, Dropdown } from './components/form';
 export { default as DialogManager } from './components/dialog';

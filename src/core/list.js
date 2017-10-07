@@ -1,46 +1,15 @@
-const EMPTY_LIST = [];
-
 class List {
   constructor(value) {
-    this.array = EMPTY_LIST;
+    this.array = [];
     if (value && value.length) {
       this.array = value;
     }
-    return this;
-  }
-
-  collect() {
-    return this.array;
-  }
-
-  count() {
-    return this.array.length;
   }
 
   each(iteratee) {
     for (let index = 0, item; (item = this.array[index]) != null; ++index) {
       iteratee(item, index, this.array);
     }
-  }
-
-  findIndex(predicate) {
-    let index = -1;
-    for (let idx = 0, item; (item = this.array[idx]) != null; ++idx) {
-      if (predicate(item, idx, this.array)) {
-        index = idx;
-        break;
-      }
-    }
-    return index;
-  }
-
-  find(predicate) {
-    let index = this.findIndex(predicate);
-    return index > -1 ? this.array[index] : null;
-  }
-
-  contains(predicate) {
-    return this.find(predicate) !== null;
   }
 
   filter(predicate) {
@@ -62,6 +31,34 @@ class List {
   reduce(iteratee, accumulator) {
     this.each((item, index, array) => accumulator = iteratee(accumulator, item, index, array));
     return accumulator;
+  }
+
+  collect() {
+    return this.array;
+  }
+
+  count() {
+    return this.array.length;
+  }
+
+  findIndex(predicate) {
+    let index = -1;
+    for (let idx = 0, item; (item = this.array[idx]) != null; ++idx) {
+      if (predicate(item, idx, this.array)) {
+        index = idx;
+        break;
+      }
+    }
+    return index;
+  }
+
+  find(predicate) {
+    let index = this.findIndex(predicate);
+    return index > -1 ? this.array[index] : null;
+  }
+
+  contains(predicate) {
+    return this.find(predicate) !== null;
   }
 
   getAt(index) {
