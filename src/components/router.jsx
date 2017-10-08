@@ -3,14 +3,16 @@ import Ext, { bind } from '~/core/ext';
 import List from '~/core/list';
 import Observable from '~/reactive/observable';
 
-const ROUTES = {};
+const ROUTES = {},
+      getRoute = () => window.location.hash.substring(1) || '/',
+      getRoutePath = route => route.split('/');
 
 export function Route(route) {
   return comp => {
     ROUTES[route] = {
       route,
       comp,
-      path: route.split('/')
+      path: getRoutePath(route)
     }
   }
 }
@@ -51,11 +53,9 @@ export class HashRouter extends Component {
   }
 }
 
-
-
 function matchPath() {
   const params = {},
-        currentRoute = window.location.hash.substring(1) || '/';
+        currentRoute = getRoute();
 
   // basic route (without params)
   if (ROUTES[currentRoute]) {
@@ -63,7 +63,7 @@ function matchPath() {
   }
 
   // advanced route (with params)
-  const currentPath = currentRoute.split('/');
+  const currentPath = getRoutePath(currentRoute);
   for(let route in ROUTES) {
     const mapRoute = ROUTES[route],
           routePath = mapRoute.path;
