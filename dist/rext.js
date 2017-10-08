@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.MsgBox = exports.Toast = exports.Dialog = exports.DialogManager = exports.Dropdown = exports.Button = exports.Field = exports.Grid = exports.Container = exports.Link = exports.HashRouter = exports.Route = exports.bind = exports.withProps = exports.Observable = exports.Component = exports.Service = exports.Model = exports.Store = exports.Cache = exports.Ajax = exports.Map = exports.List = exports.String = undefined;
+exports.Chart = exports.MsgBox = exports.Toast = exports.Dialog = exports.DialogManager = exports.Dropdown = exports.Button = exports.Field = exports.Grid = exports.Container = exports.Link = exports.Route = exports.HashRouter = exports.bind = exports.withProps = exports.Observable = exports.Component = exports.Service = exports.Model = exports.Store = exports.Cache = exports.Ajax = exports.Map = exports.List = exports.String = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -88,7 +88,7 @@ Object.defineProperty(exports, 'Component', {
   }
 });
 
-var _observable = require('./mixin/observable');
+var _observable = require('./reactive/observable');
 
 Object.defineProperty(exports, 'Observable', {
   enumerable: true,
@@ -117,16 +117,16 @@ Object.defineProperty(exports, 'bind', {
 
 var _router = require('./components/router');
 
-Object.defineProperty(exports, 'Route', {
-  enumerable: true,
-  get: function get() {
-    return _interopRequireDefault(_router).default;
-  }
-});
 Object.defineProperty(exports, 'HashRouter', {
   enumerable: true,
   get: function get() {
     return _router.HashRouter;
+  }
+});
+Object.defineProperty(exports, 'Route', {
+  enumerable: true,
+  get: function get() {
+    return _router.Route;
   }
 });
 Object.defineProperty(exports, 'Link', {
@@ -136,12 +136,12 @@ Object.defineProperty(exports, 'Link', {
   }
 });
 
-var _container = require('./components/container');
+var _ux = require('./components/ux');
 
 Object.defineProperty(exports, 'Container', {
   enumerable: true,
   get: function get() {
-    return _interopRequireDefault(_container).default;
+    return _ux.Container;
   }
 });
 
@@ -199,6 +199,15 @@ Object.defineProperty(exports, 'MsgBox', {
   enumerable: true,
   get: function get() {
     return _dialog.MsgBox;
+  }
+});
+
+var _chart = require('./components/chart');
+
+Object.defineProperty(exports, 'Chart', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_chart).default;
   }
 });
 

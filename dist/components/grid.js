@@ -120,9 +120,6 @@ var Grid = (_class = function (_Component) {
   }
 
   _createClass(Grid, [{
-    key: 'componentWillMount',
-    value: function componentWillMount() {}
-  }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
       this.resizeGrid();

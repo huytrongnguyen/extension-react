@@ -8,58 +8,22 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var EMPTY_LIST = [];
-
 var List = function () {
   function List(value) {
     _classCallCheck(this, List);
 
-    this.array = EMPTY_LIST;
+    this.array = [];
     if (value && value.length) {
       this.array = value;
     }
-    return this;
   }
 
   _createClass(List, [{
-    key: "collect",
-    value: function collect() {
-      return this.array;
-    }
-  }, {
-    key: "count",
-    value: function count() {
-      return this.array.length;
-    }
-  }, {
     key: "each",
     value: function each(iteratee) {
       for (var index = 0, item; (item = this.array[index]) != null; ++index) {
         iteratee(item, index, this.array);
       }
-    }
-  }, {
-    key: "findIndex",
-    value: function findIndex(predicate) {
-      var index = -1;
-      for (var idx = 0, item; (item = this.array[idx]) != null; ++idx) {
-        if (predicate(item, idx, this.array)) {
-          index = idx;
-          break;
-        }
-      }
-      return index;
-    }
-  }, {
-    key: "find",
-    value: function find(predicate) {
-      var index = this.findIndex(predicate);
-      return index > -1 ? this.array[index] : null;
-    }
-  }, {
-    key: "contains",
-    value: function contains(predicate) {
-      return this.find(predicate) !== null;
     }
   }, {
     key: "filter",
@@ -88,6 +52,39 @@ var List = function () {
         return accumulator = iteratee(accumulator, item, index, array);
       });
       return accumulator;
+    }
+  }, {
+    key: "collect",
+    value: function collect() {
+      return this.array;
+    }
+  }, {
+    key: "count",
+    value: function count() {
+      return this.array.length;
+    }
+  }, {
+    key: "findIndex",
+    value: function findIndex(predicate) {
+      var index = -1;
+      for (var idx = 0, item; (item = this.array[idx]) != null; ++idx) {
+        if (predicate(item, idx, this.array)) {
+          index = idx;
+          break;
+        }
+      }
+      return index;
+    }
+  }, {
+    key: "find",
+    value: function find(predicate) {
+      var index = this.findIndex(predicate);
+      return index > -1 ? this.array[index] : null;
+    }
+  }, {
+    key: "contains",
+    value: function contains(predicate) {
+      return this.find(predicate) !== null;
     }
   }, {
     key: "getAt",

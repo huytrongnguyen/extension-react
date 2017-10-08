@@ -16,6 +16,10 @@ var _string = require('./string');
 
 var _string2 = _interopRequireDefault(_string);
 
+var _number = require('./number');
+
+var _number2 = _interopRequireDefault(_number);
+
 var _list = require('./list');
 
 var _list2 = _interopRequireDefault(_list);
@@ -33,6 +37,7 @@ var Ext = function () {
     this.SCROLL_WIDTH = this.getScrollWidth();
     this.BORDER_WIDTH = 2;
     this.CHECK_COLUMN_WIDTH = 33;
+    this.COLOR_DEFAULTS = ['#94ae0a', '#115fa6', '#a61120', '#ff8809', '#ffd13e', '#a61187', '#24ad9a', '#7c7474', '#a66111'];
   }
 
   _createClass(Ext, [{
@@ -97,10 +102,14 @@ var Ext = function () {
     }
   }, {
     key: 'className',
-    value: function className(expressions) {
+    value: function className() {
       var _this = this;
 
       var cls = [];
+
+      for (var _len = arguments.length, expressions = Array(_len), _key = 0; _key < _len; _key++) {
+        expressions[_key] = arguments[_key];
+      }
 
       (0, _list2.default)(expressions).each(function (exp) {
         if (!exp) {
@@ -120,13 +129,16 @@ var Ext = function () {
       return cls.join(' ');
     }
   }, {
-    key: 'generateSetter',
-    value: function generateSetter(state, comp) {
+    key: 'initialState',
+    value: function initialState(comp, state) {
+      if (!comp || !state) {
+        return;
+      }
+      comp.state = state;
+
       var _loop = function _loop(field) {
         comp['set' + _string2.default.capitalize(field)] = function (value) {
-          return comp.setState(function () {
-            return _defineProperty({}, field, value);
-          });
+          return comp.setState(_defineProperty({}, field, value));
         };
       };
 
@@ -156,42 +168,9 @@ var Ext = function () {
       }
     }
   }, {
-    key: 'initialState',
-    value: function initialState(comp, state) {
-      comp.state = state;
-
-      var _loop2 = function _loop2(field) {
-        comp['set' + _string2.default.capitalize(field)] = function (value) {
-          return comp.setState(function () {
-            return _defineProperty({}, field, value);
-          });
-        };
-      };
-
-      var _iteratorNormalCompletion2 = true;
-      var _didIteratorError2 = false;
-      var _iteratorError2 = undefined;
-
-      try {
-        for (var _iterator2 = Object.keys(state)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-          var field = _step2.value;
-
-          _loop2(field);
-        }
-      } catch (err) {
-        _didIteratorError2 = true;
-        _iteratorError2 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion2 && _iterator2.return) {
-            _iterator2.return();
-          }
-        } finally {
-          if (_didIteratorError2) {
-            throw _iteratorError2;
-          }
-        }
-      }
+    key: 'guid',
+    value: function guid(prefix) {
+      return (prefix || '') + '-' + (Math.random() * (1 << 30)).toString(16).replace('.', '');
     }
   }, {
     key: 'getScrollWidth',

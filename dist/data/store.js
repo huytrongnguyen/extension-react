@@ -127,6 +127,11 @@ exports.default = function (config) {
         return this.load(proxy);
       }
     }, {
+      key: 'getRecords',
+      value: function getRecords() {
+        return this.data;
+      }
+    }, {
       key: 'count',
       value: function count() {
         return this.data.count();

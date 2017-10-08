@@ -14,17 +14,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var EMPTY_MAP = {};
-
 var Map = function () {
   function Map(keyValues) {
     _classCallCheck(this, Map);
 
-    this.map = EMPTY_MAP;
-    if (keyValues && keyValues.length) {
-      this.map = Object.assign({}, keyValues);
+    this.map = {};
+    if (keyValues) {
+      this.map = keyValues;
     }
-    return this;
   }
 
   _createClass(Map, [{
@@ -33,7 +30,6 @@ var Map = function () {
       for (var key in this.map) {
         iteratee(key, this.map[key], this.map);
       }
-      return this;
     }
   }, {
     key: 'keys',

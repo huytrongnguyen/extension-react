@@ -28,8 +28,7 @@ var Ajax = function () {
       xhr: new XMLHttpRequest(),
       ajaxBefore: function ajaxBefore() {/* to be implemented */},
       ajaxError: function ajaxError(error) {/* to be implemented */},
-      ajaxComplete: function ajaxComplete() {/* to be implemented */},
-      BASE_URL: null
+      ajaxComplete: function ajaxComplete() {/* to be implemented */}
     });
   }
 
@@ -38,6 +37,8 @@ var Ajax = function () {
     value: function () {
       var _ref2 = _asyncToGenerator(regeneratorRuntime.mark(function _callee(_ref) {
         var url = _ref.url,
+            _ref$contentType = _ref.contentType,
+            contentType = _ref$contentType === undefined ? 'application/json; charset=utf-8' : _ref$contentType,
             _ref$method = _ref.method,
             method = _ref$method === undefined ? 'get' : _ref$method,
             params = _ref.params,
@@ -53,7 +54,7 @@ var Ajax = function () {
 
                 this.ajaxBefore();
                 _context.next = 4;
-                return this.promise({ url: url, method: method, params: params });
+                return this.promise({ url: url, contentType: contentType, method: method, params: params });
 
               case 4:
                 response = _context.sent;
@@ -96,11 +97,7 @@ var Ajax = function () {
 
       return new Promise(function (resolve, reject) {
         _this.createRequest(settings, function (err, res) {
-          if (err) {
-            reject(err);
-            return;
-          }
-          resolve(res);
+          return err ? reject(err) : resolve(res);
         });
       });
     }
@@ -108,18 +105,23 @@ var Ajax = function () {
     key: 'createRequest',
     value: function createRequest(_ref3, done) {
       var url = _ref3.url,
+          contentType = _ref3.contentType,
           method = _ref3.method,
           params = _ref3.params;
 
-      this.BASE_URL && (url = this.BASE_URL + '/' + url);
-      method === 'get' && params !== null && (url = url + '?' + _string2.default.toQueryString(params));
+      method === 'get' && params && (url = url + '?' + _string2.default.toQueryString(params));
       var xhr = this.xhr;
       xhr.open(method, url, true);
-      xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+      xhr.setRequestHeader('Content-Type', contentType);
       xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
+          // ajax will return as a json by default, if parser error then it will return a raw string
           if (xhr.status === 200) {
-            done(null, JSON.parse(xhr.responseText));
+            try {
+              done(null, JSON.parse(xhr.responseText));
+            } catch (e) {
+              done(null, xhr.responseText);
+            }
           } else {
             try {
               done(JSON.parse(xhr.responseText));
@@ -129,7 +131,7 @@ var Ajax = function () {
           }
         }
       };
-      xhr.send(params !== null ? JSON.stringify(params) : null);
+      xhr.send(params ? JSON.stringify(params) : null);
     }
   }]);
 
