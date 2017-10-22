@@ -13,14 +13,18 @@ class Ajax {
 
   async request({ url, contentType = 'application/json; charset=utf-8', method = 'get', params, next, error, complete }) {
     try {
-      this.ajaxBefore();
-      const response = await this.promise({ url, contentType, method, params });
+      let response;
+      try {
+        this.ajaxBefore();
+        response = await this.promise({ url, contentType, method, params });
+      } catch (ex) {
+        console.error(`Cannot get response from server for url [${url}] caused by: ${ex}`);
+        this.ajaxError(ex);
+        error && error(ex);
+        return null;
+      }
+
       return next ? next(response) : response;
-    } catch (ex) {
-      console.error(`Cannot get response from server for url [${url}] caused by: ${ex}`);
-      this.ajaxError(ex);
-      error && error(ex);
-      return null
     } finally {
       this.ajaxComplete();
       complete && complete();

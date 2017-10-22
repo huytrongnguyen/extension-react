@@ -131,4 +131,45 @@ class Ext {
   }
 }
 
-export default new Ext;
+export default new Ext();
+
+export function bind(target, name, descriptor) {
+  const fn = descriptor.value;
+
+  if (typeof fn !== 'function') {
+    throw new Error(`@bind decorator is only applied to functions not: ${typeof fn}`);
+  }
+
+  return {
+    configurable: true,
+    get() {
+      return fn.bind(this);
+    }
+  };
+}
+
+export function withProps(target, name, descriptor) {
+  const fn = descriptor.value;
+
+  if (typeof fn !== 'function') {
+    throw new Error(`@withProps decorator is only applied to functions not: ${typeof fn}`);
+  }
+
+  descriptor.value = function() {
+    return fn.bind(this)(this.props);
+  };
+  return descriptor;
+}
+
+export function withState(target, name, descriptor) {
+  const fn = descriptor.value;
+
+  if (typeof fn !== 'function') {
+    throw new Error(`@withState decorator is only applied to functions not: ${typeof fn}`);
+  }
+
+  descriptor.value = function() {
+    return fn.bind(this)(this.state);
+  };
+  return descriptor;
+}

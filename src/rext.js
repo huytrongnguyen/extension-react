@@ -30,6 +30,7 @@ export default new Rext;
 export { default as String } from './core/string';
 export { default as List } from './core/list';
 export { default as Map } from './core/map';
+export { bind, withProps, withState } from './core/ext';
 
 export { default as Ajax } from './data/ajax';
 
@@ -42,11 +43,8 @@ export { default as Component } from './app/component';
 
 export { default as Observable } from './reactive/observable';
 
-export { default as withProps } from './mixin/with-props';
-export { default as bind } from './mixin/bind';
-
-export { HashRouter, Route, Link } from './components/router';
 export { Container } from './components/ux';
+export { HashRouter, Route, Link } from './components/router';
 export { default as Grid } from './components/grid';
 export { Field, Button, Dropdown } from './components/form';
 export { default as DialogManager } from './components/dialog';

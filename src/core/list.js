@@ -1,21 +1,29 @@
-class List {
+export class List {
   constructor(value) {
-    this.array = [];
+    this.data = [];
     if (value && value.length) {
-      this.array = value;
+      this.data = value;
     }
   }
 
+  collect() {
+    return this.data;
+  }
+
+  count() {
+    return this.data.length;
+  }
+
   each(iteratee) {
-    for (let index = 0, item; (item = this.array[index]) != null; ++index) {
-      iteratee(item, index, this.array);
+    for (let index = 0, item; (item = this.data[index]) != null; ++index) {
+      iteratee(item, index, this.data);
     }
   }
 
   filter(predicate) {
     const result = [];
-    this.each((item, index, array) => {
-      if (predicate(item, index, array)) {
+    this.each((item, index, data) => {
+      if (predicate(item, index, data)) {
         result.push(item);
       }
     });
@@ -24,27 +32,19 @@ class List {
 
   map(iteratee) {
     const result = [];
-    this.each((item, index, array) => result[index] = iteratee(item, index, array));
+    this.each((item, index, data) => result[index] = iteratee(item, index, data));
     return new List(result);
   }
 
   reduce(iteratee, accumulator) {
-    this.each((item, index, array) => accumulator = iteratee(accumulator, item, index, array));
+    this.each((item, index, data) => accumulator = iteratee(accumulator, item, index, data));
     return accumulator;
-  }
-
-  collect() {
-    return this.array;
-  }
-
-  count() {
-    return this.array.length;
   }
 
   findIndex(predicate) {
     let index = -1;
-    for (let idx = 0, item; (item = this.array[idx]) != null; ++idx) {
-      if (predicate(item, idx, this.array)) {
+    for (let idx = 0, item; (item = this.data[idx]) != null; ++idx) {
+      if (predicate(item, idx, this.data)) {
         index = idx;
         break;
       }
@@ -54,7 +54,7 @@ class List {
 
   find(predicate) {
     let index = this.findIndex(predicate);
-    return index > -1 ? this.array[index] : null;
+    return index > -1 ? this.data[index] : null;
   }
 
   contains(predicate) {
@@ -62,23 +62,23 @@ class List {
   }
 
   getAt(index) {
-    return this.array[index];
+    return this.data[index];
   }
 
   removeAt(index, count = 1) {
-    return this.array.splice(index, count);
+    return this.data.splice(index, count);
   }
 
   add(item) {
-    this.array.push(item);
+    this.data.push(item);
   }
 
   insert(index, item) {
-    this.array.splice(index, 0, item);
+    this.data.splice(index, 0, item);
   }
 
   join(separator) {
-    return this.array.join(separator);
+    return this.data.join(separator);
   }
 }
 

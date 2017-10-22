@@ -4,24 +4,24 @@ import List from '~/core/list';
 import Map from '~/core/map';
 import Observable from '~/mixin/observable';
 
-export default (config) => (comp) => {
+export default (config) => (Controller) => {
   const WrappedComponent = config.view;
   return class HocComponent extends Component {
     constructor(props) {
-      super(props)
-      this.state = {
+      super(props);
+      Ext.initialState(this, {
         stores: {},
-        [config.componentAs || '$view']: new comp()
-      };
+        [config.controllerAs || config.componentAs || 'controller']: new Controller()
+      });
+      this.onDataChange = () => this.forceUpdate();
     }
 
     componentWillMount() {
-      const stores = List(config.stores).reduce((stores, store) => {
+      this.setStores(List(config.stores).reduce((stores, store) => {
         store.subscribe(this.onDataChanged.bind(this));
         stores[store.storeId] = store;
         return stores;
-      }, {})
-      this.setState(() => ({ stores }));
+      }, {}));
     }
 
     async componentDidMount() {
@@ -33,20 +33,17 @@ export default (config) => (comp) => {
       }
     }
 
+    componentDidCatch(error) {
+      // TODO need to show a message box in this case
+      console.log(error);
+    }
+
     componentWillUnmount() {
-      Map(this.state.stores).each((storeId, store) => {
-        store.unsubscribe(this.onDataChanged);
-      })
+      Map(this.stores).each((storeId, store) => store.unsubscribe(this.onDataChange));
     }
 
     render() {
       return <WrappedComponent {...this.state} {...this.props} />;
-    }
-
-    onDataChanged(store) {
-      const { stores } = this.state;
-      stores[store.storeId] = store;
-      this.setState(() => ({ stores }));
     }
   }
 }

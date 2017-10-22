@@ -1,10 +1,9 @@
 import Ext from '~/core/ext';
 import List from '~/core/list';
 
-export default class Observable {
+export default class Observable extends List {
   constructor() {
-    this.observers = [];
-    return this;
+    super();
   }
 
   static create() {
@@ -12,15 +11,15 @@ export default class Observable {
   }
 
   subscribe(observer) {
-    this.observers.push(observer);
-  }
-
-  unsubscribe(observer) {
-    List(this.observers).each((value, index, observers) => (value === observer) && (observers.splice(index, 1)));
+    this.data.push(observer);
   }
 
   call(...args) {
-    List(this.observers).each(observer => observer.apply(this, args));
+    this.each(observer => observer.apply(this, args));
+  }
+
+  unsubscribe(observer) {
+    this.data = this.filter(item => item !== observer).collect();
   }
 
   static fromEvent(target, eventName) {
