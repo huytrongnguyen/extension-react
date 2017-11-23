@@ -1,74 +1,62 @@
 import Ext from '~/core/ext';
 import List from '~/core/list';
-import Map from '~/core/map';
-import Observable from '~/mixin/observable';
 
 export default class Model {
   constructor(data, store) {
+    //#region configs
+    this.selected = false;
+    //#endregion
+
+    //#region properties
     this.data = data;
     this.store = store;
-    this.fields = this.createFields((store && store.fields) ? store.fields : Object.keys(this.data));
-    this.selected = false;
+    this.idProperty = (store && store.idProperty) ? store.idProperty : 'id';
+    const fieldConfig = (store && store.fields) ? store.fields : [];
+    this.fields = List(fieldConfig).map(field => Ext.isString(field) ? ({ name: field, type: 'string' }) : field);
+    //#endregion
+
+    //#region methods
+    this.getData = () => this.data;
+    this.get = fieldName => this.data[fieldName];
+    //#endregion
+
     this.save();
   }
 
-  get(fieldName) {
-    if (!fieldName || Ext.isPrimitive(this.data)) {
-      return this.data;
-    }
-    return this.data[fieldName];
-  }
-
-  set(fieldName, newValue) {
-    if (!fieldName || Ext.isPrimitive(this.data)) {
-      this.data = newValue;
-    } else {
-      this.data[fieldName] = newValue;
-    }
-    this.store && this.store.observable.call(this.store);
+  set(fieldName, newValue, silent) {
+    this.data[fieldName] = newValue;
+    this.modified = !this.isEqual(fieldName);
+    (!silent && this.store) && (this.store.fireEvent());
   }
 
   save() {
     this.phantom = Ext.clone(this.data);
+    this.modified = false;
   }
 
-  reject() {
+  reject(silent) {
     this.data = Ext.clone(this.phantom);
     this.save();
-  }
-
-  isModified(fieldName) {
-    if (fieldName) {
-      const field = this.fields.find(field => field.name === fieldName);
-      return !field ? false : !this.isEqual(field);
-    }
-
-    return this.fields.contains(field => !this.isEqual(field));
+    (!silent && this.store) && (this.store.fireEvent());
   }
 
   isEqual(field) {
-    return !field ? true :
-        (field.equals ? field.equals(this.data[field.name], this.phantom[field.name]) :
-            (this.data[field.name] === this.phantom[field.name]));
+    const oldValue = this.phantom[field.name],
+          newValue = this.data[field.name];
+
+    return field.equals ? field.equals(newValue, oldValue) : newValue === oldValue;
   }
 
-  createFields(fields) {
-    return List(fields).map(field => {
-      if (Ext.isString(field)) {
-        return { name: field };
-      } else {
-        return field;
-      }
-    });
-  }
-
-  setSelected(selected) {
-    this.selected = selected;
-    this.store && this.store.observable.call(this.store);
+  isModified(fieldName) {
+    return this.modified && !this.phantom[this.idProperty]; // should not detect new record as a modified record
   }
 
   isNewlyCreated() {
-    const idProperty = (this.store && this.store.idProperty) ? this.store.idProperty : id;
-    return !this.phantom[idProperty];
+    return !this.phantom[this.idProperty];
+  }
+
+  setSelected(selected, silent) {
+    this.selected = selected;
+    (!silent && this.store) && (this.store.fireEvent());
   }
 }

@@ -1,10 +1,8 @@
 import List from './list';
 
-const EMPTY_MAP = {};
-
 class Map {
   constructor(keyValues) {
-    this.map = EMPTY_MAP;
+    this.map = {};
     if (keyValues && keyValues.length) {
       this.map = Object.assign({}, keyValues);
     }

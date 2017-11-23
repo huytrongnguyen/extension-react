@@ -1,92 +1,100 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
+import Ext from '~/core/ext';
 import List from '~/core/list';
-import Observable from '~/mixin/observable';
+import Observable from '~/reactive/observable';
 
 const ROUTES = {},
       getRoute = () => window.location.hash.substring(1) || '/',
-      getRoutePath = (route) => route.split('/'),
-      isParam = (routeName) => routeName.startsWith(':'),
-      matchPath = () => {
-        const currentRoute = getRoute(),
-              params = {};
+      getRoutePath = route => route.split('/');
 
-        if (ROUTES[currentRoute]) {
-          return { route: currentRoute, component: ROUTES[currentRoute].component, params };
-        }
+export function Route(route) {
+  return comp => {
+    ROUTES[route] = {
+      route,
+      comp,
+      path: getRoutePath(route)
+    }
+  }
+}
 
-        const currentPath = getRoutePath(currentRoute);
-        for (let key in ROUTES) {
-          const route = ROUTES[key],
-                routePath = route.path;
-          let matched = true;
-          List(routePath).each((routeName, index) => {
-            if (routeName !== currentPath[index]) {
-              if (isParam(routeName)) {
-                params[routeName.substring(1)] = currentPath[index];
-              } else {
-                matched = false;
-                return;
-              }
-            }
-          });
-          if (matched) {
-            return { route: currentRoute, component: route.component, params };
-          }
-        }
-
-        if (ROUTES['*']) {
-          return { route: currentRoute, component: ROUTES['*'].component, params };
-        }
-
-        return { route: currentRoute, component: null, params };
-      }
-
-export class HashRouter extends Component {
+export class Link extends PureComponent {
   constructor(props) {
     super(props);
-    this.state = matchPath();
+    this.onHashChange = () => this.forceUpdate();
   }
 
   componentDidMount() {
-    Observable.fromEvent(window, 'hashchange').subscribe(() => this.setState(() => (matchPath())));
+    Observable.fromEvent(window, 'hashchange').subscribe(this.onHashChange);
   }
 
   render() {
-    const { route, component, params } = this.state;
+    const { to, className = '', activeClassName = 'active', text, children, ...others } = this.props;
+    return <a href={`#${to}`} className={Ext.className('nav-link', className, { [activeClassName]: to === getRoute() })} {...others}>
+      {text || children}
+    </a>
+  }
+}
 
-    if (!component) {
-      console.error('component props should not be null');
+export class HashRouter extends PureComponent {
+  constructor(props) {
+    super(props);
+    Ext.initialState(this, matchPath());
+    this.onHashChange = () => this.setState(matchPath());
+  }
+
+  componentDidMount() {
+    Observable.fromEvent(window, 'hashchange').subscribe(this.onHashChange);
+  }
+
+  render() {
+    const { route, comp, params } = this.state;
+
+    if (!comp) {
+      console.error('Component not found!');
       return null;
     }
 
-    return React.createElement(component, { route, params });
+    return React.createElement(comp, { route, params });
   }
 }
 
+function matchPath() {
+  const params = {},
+        currentRoute = getRoute();
 
-export class Link extends Component {
-  constructor(props) {
-    super(props);
-    this.state = matchPath();
+  // basic route (without params)
+  if (ROUTES[currentRoute]) {
+    return { route: currentRoute, comp: ROUTES[currentRoute].comp, params };
   }
 
-  componentDidMount() {
-    Observable.fromEvent(window, 'hashchange').subscribe(() => this.setState(() => (matchPath())));
+  // advanced route (with params)
+  const currentPath = getRoutePath(currentRoute);
+  for(let route in ROUTES) {
+    const mapRoute = ROUTES[route],
+          routePath = mapRoute.path;
+
+    let matched = true;
+    List(mapRoute.path).each((routeName, index) => {
+      if (routeName !== currentPath[index]) {
+        if (routeName.startsWith(':')) { // detect param value
+          params[routeName.substring(1)] = currentPath[index];
+        } else {
+          matched = false;
+          return;
+        }
+      }
+    });
+
+    if (matched) {
+      return { route: currentRoute, comp: mapRoute.comp, params };
+    }
   }
 
-  render() {
-    const { route, component, params } = this.state,
-          { to, className, activeClassName = 'active', text, children, ...others } = this.props;
-    return <a href={`#${to}`} className={['nav-link', className, (to === getRoute() ? activeClassName : '')].join(' ')} {...others}>{text || children}</a>;
+  // with not found screen
+  if (ROUTES['*']) {
+    return { route: currentRoute, comp: ROUTES['*'].comp, params };
   }
-}
 
-export default (route) => {
-  return (component) => {
-    ROUTES[route] = {
-      route,
-      component,
-      path: getRoutePath(route)
-    };
-  }
+  // without not found screen
+  return { route: currentRoute, comp: null, params };
 }

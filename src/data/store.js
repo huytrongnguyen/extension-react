@@ -17,6 +17,7 @@ export default (config) => {
       this.data = List(config.data).map(this.createRecord);
       this.subscribe = observer => this.observable.subscribe(observer);
       this.unsubscribe = observer => this.observable.unsubscribe(observer);
+      this.fireEvent = () => this.observable.call(this);
     }
 
     clearData(silent = false) {

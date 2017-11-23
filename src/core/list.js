@@ -1,46 +1,24 @@
-const EMPTY_LIST = [];
-
-class List {
+export class List {
   constructor(value) {
-    this.array = EMPTY_LIST;
+    this.data = [];
     if (value && value.length) {
-      this.array = value;
+      this.data = value;
     }
     return this;
   }
 
   collect() {
-    return this.array;
+    return this.data;
   }
 
   count() {
-    return this.array.length;
+    return this.collect().length;
   }
 
   each(iteratee) {
-    for (let index = 0, item; (item = this.array[index]) != null; ++index) {
-      iteratee(item, index, this.array);
+    for (let index = 0, item; (item = this.data[index]) != null; ++index) {
+      iteratee(item, index, this.data);
     }
-  }
-
-  findIndex(predicate) {
-    let index = -1;
-    for (let idx = 0, item; (item = this.array[idx]) != null; ++idx) {
-      if (predicate(item, idx, this.array)) {
-        index = idx;
-        break;
-      }
-    }
-    return index;
-  }
-
-  find(predicate) {
-    let index = this.findIndex(predicate);
-    return index > -1 ? this.array[index] : null;
-  }
-
-  contains(predicate) {
-    return this.find(predicate) !== null;
   }
 
   filter(predicate) {
@@ -65,23 +43,53 @@ class List {
   }
 
   getAt(index) {
-    return this.array[index];
+    return this.data[index];
   }
 
   removeAt(index, count = 1) {
-    return this.array.splice(index, count);
+    return this.data.splice(index, count);
   }
 
   add(item) {
-    this.array.push(item);
+    this.data.push(item);
   }
 
   insert(index, item) {
-    this.array.splice(index, 0, item);
+    this.data.splice(index, 0, item);
+  }
+
+  findIndex(predicate) {
+    let index = -1;
+    for (let idx = 0, item; (item = this.data[idx]) != null; ++idx) {
+      if (predicate(item, idx, this.data)) {
+        index = idx;
+        break;
+      }
+    }
+    return index;
+  }
+
+  find(predicate) {
+    let index = this.findIndex(predicate);
+    return index > -1 ? this.data[index] : null;
+  }
+
+  contains(predicate) {
+    return this.find(predicate) !== null;
+  }
+
+  removeIf(predicate) {
+    const result = [];
+    this.each((item, index, array) => {
+      if (!predicate(item, index, array)) {
+        result.push(item);
+      }
+    });
+    this.data = result;
   }
 
   join(separator) {
-    return this.array.join(separator);
+    return this.data.join(separator);
   }
 }
 
