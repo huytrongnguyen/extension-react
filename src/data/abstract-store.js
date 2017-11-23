@@ -7,6 +7,9 @@ export default class AbstractStore extends List {
     super();
 
     //#region configs
+    this.totalCount = 0;
+    this.pageSize = 0;
+    this.currentPage = 1;
     this.observable = Observable.create();
     //#endregion
 

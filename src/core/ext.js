@@ -1,6 +1,7 @@
 import DOM from './dom';
 import String from './string';
 import List from './list';
+import Map from './map';
 
 class Ext {
   constructor() {
@@ -16,6 +17,11 @@ class Ext {
     this.isArray = value => toString.call(value) === '[object Array]';
 
     this.clone = obj => JSON.parse(JSON.stringify(obj)); // deep clone
+
+    this.DOM = DOM;
+    this.String = String;
+    this.List = List;
+    this.Map = Map;
   }
 
   extend() {
