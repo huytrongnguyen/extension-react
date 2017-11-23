@@ -1,3 +1,8 @@
+## [2.0.x]
+>
+
+  * Rewrite Rext core
+
 ## [1.7.x]
 > Jul 16, 2017
 
