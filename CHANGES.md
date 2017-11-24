@@ -12,7 +12,7 @@
   * Refactor `Model`
   * Refactor `Store`
     * Separate to multiple class, derived from List: `List` > `AbstractStore` > `ProxyStore` > `Store`
-  * Using function component instead of class component for `Container`, `Field`, `TextField`, `Checkbox`, `TextArea`
+  * Using function component instead of class component in `core/container`, `core/form`
   * Update scss
 
 ## [1.7.x]
