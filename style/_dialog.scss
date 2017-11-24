@@ -1,0 +1,71 @@
+@import "variables";
+
+.mask {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1050;
+  background-color: transparent;
+  .dialog {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: auto;
+    height: auto;
+    border-radius: $size-xs;
+    @include bg-color();
+    box-shadow: rgba(0,0,0,0.5) 0px 3px 20px;
+    .dialog-header {
+      background-image: -webkit-linear-gradient(top, #ededed 0px, #ededed 1px, #e7e7e7 2px, #d1d1d1 100%);
+      border-bottom: 1px solid #afafaf;
+      border-top-left-radius: $size-xs;
+      border-top-right-radius: $size-xs;
+      .dialog-title {
+        font-weight: bold;
+        padding: ($size-sm) ($size-lg) ($size-sm) 0;
+      }
+      .tool {
+        position: absolute;
+        top: $size-sm;
+        right: $size-sm;
+        width: $size;
+        height: $size;
+        background-color: $red;
+        border-radius: 50%;
+        cursor: pointer;
+      }
+    }
+    .dialog-body {
+      padding: $size;
+      min-width: 20rem;
+      min-height: 20rem;
+      .toast-icon {
+        width: $size-xl;
+      }
+    }
+    &.msgbox {
+      .dialog-body {
+        min-height: 0;
+      }
+    }
+  }
+}
+
+.notification {
+  position: absolute;
+  top: $size * 5;
+  right: $size * 5 / 2;
+  z-index: 2050;
+  @include bg-color();
+  border: $border;
+  border-radius: $size-xs;
+  padding: $size-sm $size;
+  min-width: $size * 20;
+  max-width: $size * 50;
+  .toast-icon {
+    width: $size-xl;
+  }
+}

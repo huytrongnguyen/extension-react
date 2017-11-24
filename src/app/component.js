@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import Ext from '~/core/ext';
 import List from '~/core/list';
 import Map from '~/core/map';
-import Observable from '~/mixin/observable';
+import Observable from '~/reactive/observable';
 
 export default config => Controller => {
   const WrappedComponent = config.view;

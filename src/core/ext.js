@@ -88,7 +88,7 @@ class Ext {
 
 export default new Ext();
 
-export default (target, name, descriptor) => {
+export function bind(target, name, descriptor) {
   const fn = descriptor.value;
 
   if (typeof fn !== 'function') {
@@ -101,4 +101,18 @@ export default (target, name, descriptor) => {
       return fn.bind(this);
     }
   };
+}
+
+export function debounce(func, wait = 500) {
+  let timeout;
+  return function() {
+    const context = this,
+          args = arguments,
+          later = function() {
+            func.apply(context, args);
+          }
+
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  }
 }

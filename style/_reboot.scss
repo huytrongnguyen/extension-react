@@ -1,0 +1,19 @@
+@import "variables";
+@import "mixins";
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body { @include full-screen(); }
+
+h1, h2, h3, h4, h5, h6, p { margin: 0; }
+
+a, a:active, a:hover, a:visited, a:focus { color: $link-color; }
+
+button {
+  cursor: pointer;
+  outline: none !important;
+  &:hover, &:focus, &:active {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+}

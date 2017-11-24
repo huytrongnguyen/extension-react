@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { render, unmountComponentAtNode, findDOMNode } from 'react-dom';
-import Ext from '~/core/ext';
-import bind from '~/mixin/bind';
+import Ext, { bind } from '~/core/ext';
 import Container from './container';
 import { Button } from './form';
 

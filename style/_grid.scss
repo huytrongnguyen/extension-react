@@ -4,34 +4,24 @@
   overflow: hidden;
   border: $border;
   .rx-grid-header {
-    background-color: #c5c5c5;
-    background-image: -webkit-linear-gradient(top, #f9f9f9, #e3e4e6);
+    @include bg-color();
     border-bottom: $border;
     font-weight: bold;
-    overflow: hidden;
     .rx-grid-header-container {
-      .rx-grid-column-header {
+      .rx-grid-header-column {
         padding: $size-sm;
         border-right: $border;
-        min-height: $size-xl;
-        .inner-table {
-          margin: (-$size-xs);
-          .header-group {
-            border-bottom: $border;
-            border-right: none;
-          }
-          .rx-grid-column-header:last-child {
-            border-right: none;
-          }
+        &:last-child {
+          border-right: none;
         }
       }
     }
   }
   .rx-grid-body {
+    overflow-x: auto;
+    overflow-y: scroll;
     background-color: $white;
-    overflow: scroll;
     .rx-grid-view {
-      height: auto;
       .rx-grid-row {
         &:nth-of-type(odd) {
           background-color: #fafafa;
@@ -51,17 +41,6 @@
           padding: $size-sm;
           border-bottom: $border;
           border-right: $border;
-          min-height: $size-xl;
-          &.modified {
-            background-color: $yellow !important;
-          }
-          &:last-child {
-            border-right: 0;
-          }
-          >.form-control, >.dropdown {
-            width: 100%;
-            margin: (-$size-sm);
-          }
         }
       }
     }

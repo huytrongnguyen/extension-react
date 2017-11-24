@@ -16,7 +16,9 @@
   },
   "bugs": "https://github.com/huytrongnguyen/extension-react/issues",
   "scripts": {
+    "build": "yarn script && yarn style",
     "script": "rm -rf dist/* && babel src -D -d dist",
+    "style": "node-sass --include-path scss style/rext.scss dist/rext.css",
     "server": "babel-node server.js --presets env"
   },
   "files": [
@@ -31,7 +33,7 @@
       "transform-object-rest-spread",
       ["babel-plugin-root-import", [{
           "rootPathSuffix": "src/"
-        }, {
+          }, {
           "rootPathPrefix": "@",
           "rootPathSuffix": "docs/src/js/"
         }]
@@ -59,9 +61,7 @@
     "gulp-sass": "3.1.0",
     "gulp-streamify": "1.0.2",
     "gulp-uglify": "3.0.0",
-    "jest": "21.2.1",
     "node-sass": "4.7.2",
-    "vinyl-source-stream": "1.1.0",
-    "watchify":"3.9.0"
+    "vinyl-source-stream": "1.1.0"
   }
 }

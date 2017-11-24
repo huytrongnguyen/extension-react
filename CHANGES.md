@@ -1,17 +1,19 @@
-## [2.0.x]
+## [1.8.x]
 >
 
-  * Refactor Rext core
-    * Changed in Ext, Rext is extended from Ext
-    * Replace core/component with core/dom, all the functions like jquery
-    * A little bit change in core/list, core/map, core/string
-  * Observable moved from mixin to reactive folder and extended from List
-  * Replace Component with PureComponent in Link, HashRouter
+  * Refactor `Rext` core
+    * Changed in `Ext`, `Rext` is extended from `Ext`
+    * Replace `core/component` with `core/dom`, all the functions like jquery
+    * A little bit change in `core/list`, `core/map`, `core/string`
+  * `Observable` moved from mixin to reactive folder and extended from `List`
+  * Replace `Component` with `PureComponent` in `Link`, `HashRouter`
   * Support to set contentType on AJAX request
-  * Export Cache object
-  * Refactor Model
-  * Refactor Store
-    * Separate to multiple class, derived from List: List > AbstractStore > ProxyStore > Store
+  * Export `Cache` object
+  * Refactor `Model`
+  * Refactor `Store`
+    * Separate to multiple class, derived from List: `List` > `AbstractStore` > `ProxyStore` > `Store`
+  * Using function component instead of class component for `Container`, `Field`, `TextField`, `Checkbox`, `TextArea`
+  * Update scss
 
 ## [1.7.x]
 > Jul 16, 2017
