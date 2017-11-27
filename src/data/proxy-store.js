@@ -14,29 +14,35 @@ export default class ProxyStore extends AbstractStore {
     //#endregion
   }
 
-  async load(proxy) {
-    proxy = Ext.extend({}, this.proxy, proxy || {});
-    const response = await Ajax.request(proxy);
-    if (response) {
-      const { rootProperty, totalProperty } = this.proxy.reader;
-      this.loadData(rootProperty ? response[rootProperty] : response);
-      this.totalCount = (this.pageSize && totalProperty) ? response[totalProperty] : this.count();
-    }
+  async load({ done, fail, always }) {
+    Observable.ajax(this.proxy).subscribe({
+      next: value => {
+        const { rootProperty, totalProperty } = this.proxy.reader;
+        this.loadData(rootProperty ? response[rootProperty] : response);
+        this.totalCount = (this.pageSize && totalProperty) ? response[totalProperty] : this.count();
+        done && done(this.getRecords());
+      },
+      error: fail,
+      complete: always
+    });
   }
 
   loadPage(page) {
     this.currentPage = page;
-    const proxy = Ext.extend({}, this.proxy, { url: `${this.proxy.url}?page=${this.currentPage}&size=${this.pageSize}` });
-    return this.load(proxy);
+    this.proxy.params = Ext.extend({}, this.proxy.params, { page: this.currentPage, size: this.pageSize });
+    return this.load({});
   }
 
-  async sync(proxy) {
-    proxy = Ext.extend({}, this.proxy, proxy || {});
-    proxy.method = 'post';
-    proxy.params = this.getModifiedRecords().map(record => record.data).collect();
-    proxy.params.push(...this.getNewRecords().map(record => record.data).collect());
+  async sync({ done, fail, always }) {
+    this.proxy.method = 'post';
+    this.proxy.params = this.getModifiedRecords().map(record => record.data).collect();
+    this.proxy.proxy.params.push(...this.getNewRecords().map(record => record.data).collect());
     const { transform } = proxy.writer;
-    transform && (proxy.params = transform(proxy.params));
-    return await Ajax.request(proxy);
+    transform && (this.proxy.params = transform(this.proxy.params));
+    Observable.ajax(this.proxy).subscribe({
+      next: done,
+      error: fail,
+      complete: always
+    });
   }
 }

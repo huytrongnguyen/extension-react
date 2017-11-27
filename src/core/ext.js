@@ -9,6 +9,7 @@ class Ext {
     this.BORDER_WIDTH = 2;
     this.CHECK_COLUMN_WIDTH = 33;
     this.UNKNOWN_ERROR_MSG = 'An unknown error has occurred.';
+    this.XHR = new XMLHttpRequest();
 
     this.isPrimitive = value => { const type = typeof value; return type === 'string' || type === 'number' || type === 'boolean'; }
     this.isString = value => (typeof value) === 'string';

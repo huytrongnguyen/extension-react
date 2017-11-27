@@ -1,5 +1,5 @@
 import { List } from '~/core/list';
-import Observable from '~/reactive/observable';
+import Subject from '~/reactive/subject';
 import Model from './model';
 
 export default class AbstractStore extends List {
@@ -10,22 +10,21 @@ export default class AbstractStore extends List {
     this.totalCount = 0;
     this.pageSize = 0;
     this.currentPage = 1;
-    this.observable = Observable.create();
+    this.subject = Subject.create();
     //#endregion
 
     //#region properties
     //#endregion
 
     //#region methods
-    this.subscribe = observer => this.observable.subscribe(observer);
-    this.unsubscribe = observer => this.observable.unsubscribe(observer);
-    this.fireEvent = () => this.observable.call(this);
+    this.subscribe = observer => this.subject.subscribe(observer);
+    this.unsubscribe = observer => this.subject.unsubscribe(observer);
+    this.fireEvent = () => this.subject.next(this);
     this.createRecord = record => new Model(record, this);
     this.getRecords = this.collect;
     this.getModifiedRecords = () => this.filter(record => record.isModified());
     this.getNewRecords = () => this.filter(record => record.isNewlyCreated());
     //#endregion
-
   }
 
   clearData(silent = false) {

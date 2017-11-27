@@ -5,7 +5,10 @@
     * Changed in `Ext`, `Rext` is extended from `Ext`
     * Replace `core/component` with `core/dom`, all the functions like jquery
     * A little bit change in `core/list`, `core/map`, `core/string`
-  * `Observable` moved from mixin to reactive folder and extended from `List`
+  * `Observable` moved from mixin to reactive folder,
+    * Renamed to `Subject` and extended from `List`
+    * Implement new `Observable` with ReactiveX concept
+    * Implement `AjaxObservable` to replace `Ajax` class in `data/ajax`
   * Replace `Component` with `PureComponent` in `Link`, `HashRouter`
   * Support to set contentType on AJAX request
   * Export `Cache` object

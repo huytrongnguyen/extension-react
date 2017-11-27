@@ -2,13 +2,10 @@ import 'babel-polyfill';
 import React from 'react';
 import { render } from 'react-dom';
 import Ext from './core/ext';
-import Ajax from './data/ajax';
 
 class Rext extends Ext {
   constructor() {
     super();
-    this.Ajax = Ajax;
-    this.ajax = (settings) => Ajax.request(settings);
     this.Cache = require('./data/cache');
     this.Model = require('./data/model');
     this.Observable = require('./reactive/observable');

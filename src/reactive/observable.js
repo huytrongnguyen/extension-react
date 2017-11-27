@@ -1,43 +1,48 @@
-import List from '~/core/list';
+import EventObservable from './event';
+import AjaxObservable from './ajax';
 
-export default class Observable extends List {
-  constructor() {
-    super();
+/**
+ * From ReactiveX docs:
+ *
+ * Observable: An interface that listens for incoming notifications over a period of time
+ * and pushes them to another interface that reacts to them.
+ *
+ * Subscription: When an Observable interface starts doing its work,
+ * i.e. listening for notifications and pushing them out.
+ *
+ * Observer: An interface that reacts to data pushed from an Observable.
+ *
+ * Operators: Functions used to manipulate an Observable’s output, e.g. filter, map, reduce, etc.
+ */
+
+export default class Observable {
+  constructor(subcriber = () => {}) {
+    this.subcriber = subscriber;
   }
 
-  static create() {
-    return new Observable();
+  subscribe({ next, error, complete }) {
+    try {
+      next && next(this.subcriber());
+    } catch (err) {
+      error && error(err)
+    } finally {
+      complete && complete();
+    }
   }
 
-  subscribe(observer) {
-    this.add(observer);
+  unsubscribe() {
+    this.subcriber = null;
   }
 
-  unsubscribe(observer) {
-    this.data = this.filter(item => item !== observer).collect();
-  }
-
-  call(...args) {
-    this.each(observer => observer.apply(this, args));
+  static create(subscriber) {
+    return new Observable(subscriber);
   }
 
   static fromEvent(target, eventName) {
-    return new EventObservable(target, eventName);
-  }
-}
-
-class EventObservable {
-  constructor(target, eventName) {
-    this.target = target;
-    this.eventName = eventName;
-    return this;
+    return EventObservable.create(target, eventName);
   }
 
-  subscribe(observer) {
-    this.target.addEventListener(this.eventName, observer, false);
-  }
-
-  unsubscribe(observer) {
-    this.target.removeEventListener(this.eventName, observer, false);
+  static ajax(urlOrRequest) {
+    return AjaxObservable.create(urlOrRequest);
   }
 }
