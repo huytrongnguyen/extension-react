@@ -1,7 +1,7 @@
 import 'babel-polyfill';
 import React from 'react';
 import { render } from 'react-dom';
-import Ext from './core/ext';
+import { Ext } from './core/ext';
 
 class Rext extends Ext {
   constructor() {
@@ -28,7 +28,7 @@ export default new Rext();
 
 //#region Component
 export { HashRouter, Link } from './components/router';
-export { default as Container } from './components/container';
+export { Container } from './components/container';
 export { Button, ButtonLink, Field, TextField, Checkbox, TextArea } from './components/form';
 // export { default as Grid } from './components/grid';
 // export { default as ListView } from './components/list';

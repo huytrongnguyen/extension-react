@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Route, Container } from '~/rext';
 
 @Route('/')
-export default class GettingStarted extends Component {
+export default class GettingStarted extends PureComponent {
   render() {
     return <Container>
       <div className="panel-header">

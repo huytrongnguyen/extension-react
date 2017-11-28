@@ -3,7 +3,7 @@ import String from './string';
 import List from './list';
 import Dictionary from './dictionary';
 
-class Ext {
+export class Ext {
   constructor() {
     this.SCROLL_WIDTH = this.getScrollWidth();
     this.BORDER_WIDTH = 2;

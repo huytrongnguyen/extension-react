@@ -15,15 +15,14 @@ import AjaxObservable from './ajax';
  *
  * Operators: Functions used to manipulate an Observable’s output, e.g. filter, map, reduce, etc.
  */
-
 export default class Observable extends Operator {
-  constructor(subcribe) {
+  constructor(subscribe) {
     super();
-    this.subcribe = subscribe;
+    this.subscribe = subscribe;
   }
 
-  static create(subscriber) {
-    return new Observable(subscriber);
+  static create(subscribe) {
+    return new Observable(subscribe);
   }
 
   /**
@@ -36,11 +35,11 @@ export default class Observable extends Operator {
    *
    * setTimeout(unsubcribe, 5000);
    *
-   * @param {*} target
-   * @param {*} eventName
+   * @param target
+   * @param eventName
    */
   static fromEvent(target, eventName) {
-    return new Observable(observer => {
+    return Observable.create(observer => {console.log(observer)
       const callback = e => observer.next(e);
       target.addEventListener(eventName, callback, false);
       return () => target.removeEventListener(eventName, callback, false);

@@ -17,33 +17,20 @@ export function Route(route) {
   }
 }
 
-export class Link extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.onHashChange = () => this.forceUpdate();
-  }
-
-  componentDidMount() {
-    Observable.fromEvent(window, 'hashchange').subscribe(this.onHashChange);
-  }
-
-  render() {
-    const { to, className = '', activeClassName = 'active', text, children, ...others } = this.props;
-    return <a href={`#${to}`} className={Ext.className('nav-link', className, { [activeClassName]: to === getRoute() })} {...others}>
-      {text || children}
-    </a>
-  }
+export function Link({ to, className = '', activeClassName = 'active', text, children, ...others }) {
+  return <a href={`#${to}`} className={Ext.className('nav-link', className, { [activeClassName]: to === getRoute() })} {...others}>
+    {text || children}
+  </a>
 }
 
 export class HashRouter extends PureComponent {
   constructor(props) {
     super(props);
     Ext.initialState(this, matchPath());
-    this.onHashChange = () => this.setState(matchPath());
   }
 
   componentDidMount() {
-    Observable.fromEvent(window, 'hashchange').subscribe(this.onHashChange);
+    Observable.fromEvent(window, 'hashchange').subscribe({ next: () => this.setState(matchPath()) });
   }
 
   render() {

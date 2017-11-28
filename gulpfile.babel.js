@@ -73,8 +73,7 @@ gulp.task(TASK.SCRIPT, () => {
   DEPENDENCIES.forEach(lib => bundler.external(lib));
   return bundler.bundle()
     .on('error', function(err) { console.error(err.toString()); this.emit('end'); })
-    .pipe(source('app.min.js'))
-    .pipe(streamify(uglify()))
+    .pipe(source('app.js'))
     .pipe(gulp.dest(DIST + PATH.SCRIPT));
 });
 
@@ -85,7 +84,11 @@ gulp.task('watch', [TASK.STYLE, TASK.SCRIPT], () => {
   //  - Ensure ./ in the value for cwd
   const watchOpt = { cwd: './' };
   gulp.watch(SRC + PATH.SCSS, watchOpt, [TASK.STYLE]);
-  gulp.watch([`${SRC + PATH.SCRIPT}/**/*.js`, `${SRC + PATH.SCRIPT}/**/*.jsx`], watchOpt, [TASK.SCRIPT]);
+  gulp.watch([
+    'src/**/*.js', 'src/**/*.jsx', 
+    `${SRC + PATH.SCRIPT}/**/*.js`, 
+    `${SRC + PATH.SCRIPT}/**/*.jsx`
+  ], watchOpt, [TASK.SCRIPT]);
 });
 
 gulp.task('default', [TASK.VENDOR, TASK.STYLE, TASK.SCRIPT]);

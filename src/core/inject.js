@@ -1,6 +1,6 @@
 import Ext from './ext';
 
-export const Injectable = comp => {
+export function Injectable(comp) {
   console.log(comp, Ext.Provider);
   Ext.Provider[comp.name] = new comp();
 }
