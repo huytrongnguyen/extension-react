@@ -9,14 +9,24 @@ body {
 
 .nav {
   background-color: rgb(44, 44, 44);
+  list-style-type: none;
   .brand {
     font-size: $size-lg;
     font-weight: bold;
     background-color: $black;
     color: $white;
+    display: block;
+    padding: $size;
+  }
+  .nav-text {
+    color: $link-color;
+    display: block;
+    padding: $size;
   }
   .nav-link {
     color: $link-color;
+    display: block;
+    padding: $size;
     &:hover, &.active {
       color: $white;
     }

@@ -27,9 +27,7 @@ export default class Observable extends Operator {
 
   /**
    * For example:
-   * const input$ = Observable.fromEvent(document.getElementById('input'), 'change');
-   *
-   * const unsubcribe = input$.subscribe({
+   * const unsubcribe = Observable.fromEvent(document.getElementById('input'), 'change').subscribe({
    *    next: e => console.log(e.target.value)
    * });
    *
@@ -39,7 +37,7 @@ export default class Observable extends Operator {
    * @param eventName
    */
   static fromEvent(target, eventName) {
-    return Observable.create(observer => {console.log(observer)
+    return Observable.create(observer => {
       const callback = e => observer.next(e);
       target.addEventListener(eventName, callback, false);
       return () => target.removeEventListener(eventName, callback, false);

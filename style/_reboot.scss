@@ -5,9 +5,11 @@
 
 html, body { @include full-screen(); }
 
-h1, h2, h3, h4, h5, h6, p { margin: 0; }
+h1, h2, h3, h4, h5, h6, p, pre, code { margin: 0; }
 
 a, a:active, a:hover, a:visited, a:focus { color: $link-color; }
+
+ul, ol { margin: 0; padding-left: $size-xl; }
 
 button {
   cursor: pointer;

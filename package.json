@@ -18,7 +18,7 @@
   "scripts": {
     "build": "yarn script && yarn style",
     "script": "rm -rf dist/* && babel src -D -d dist",
-    "style": "node-sass --include-path scss style/rext.scss dist/rext.css",
+    "style": "node-sass --include-path scss style/rext.scss dist/rext.css && gulp copy",
     "server": "babel-node server.js --presets env"
   },
   "files": [

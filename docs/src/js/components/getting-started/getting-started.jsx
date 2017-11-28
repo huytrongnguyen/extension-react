@@ -9,14 +9,14 @@ export default class GettingStarted extends PureComponent {
         <h1 className="panel-title">Getting Started</h1>
       </div>
       <Container className="panel-body">
-        <p>
+        <p className="mb-md">
           Extension React is a library that build on top of React, helping you build data-intensive, cross-platform web apps for desktops, tablets, and smartphones.
         </p>
-        <h2>Quick Start</h2>
-        <h3>1. Setup a development enviroment</h3>
-        <p>
+        <h2 className="mb-md">Quick Start</h2>
+        <h3 className="mb-md">1. Setup a development enviroment</h3>
+        <p className="mb-md">
           Use <code>npm</code> or <code>yarn</code> to install following dependencies:
-          <ul className="list-style-disc">
+          <ul>
             <li><pre>babel-polyfill</pre></li>
             <li><pre>babel-preset-env</pre></li>
             <li><pre>babel-preset-react</pre></li>
@@ -26,8 +26,8 @@ export default class GettingStarted extends PureComponent {
             <li><pre>ext-react</pre></li>
           </ul>
         </p>
-        <h3>2. Create a new project</h3>
-        <p>
+        <h3 className="mb-md">2. Create a new project</h3>
+        <p className="mb-md">
           The following is the recommended directory structure for an Extension React application:
           <pre className="editor">
             +-- node_modules: NPM components<br />
@@ -51,7 +51,7 @@ export default class GettingStarted extends PureComponent {
             +-- server.js: code of local web server (ExpressJS)<br />
           </pre>
           Let’s start evaluating the application by looking at <code>index.html</code>
-          <pre className="editor">{`<!-- index.html -->
+          <pre className="editor mb-md">{`<!-- index.html -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -66,7 +66,7 @@ export default class GettingStarted extends PureComponent {
   <script src="/dist/app.min.js"></script>
 </body>
 </html>`}</pre>
-          To launch your app, add the following to your <code>app.js</code> file
+          <p className="mb-md">To launch your app, add the following to your <code>app.js</code> file</p>
           <pre className="editor">{`// app.js
 import 'babel-polyfill';
 import React from 'react';

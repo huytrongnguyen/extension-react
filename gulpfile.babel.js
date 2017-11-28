@@ -25,6 +25,7 @@ const DOCS = 'docs/',
         }
       },
       TASK = {
+        COPY: 'copy',
         VENDOR: 'vendor',
         STYLE: 'style',
         SCRIPT: 'script'
@@ -36,10 +37,12 @@ const DOCS = 'docs/',
         'react-dom',
       ];
 
-gulp.task(TASK.VENDOR, () => {
-  gulp.src('./dist/rext.css')
-    .pipe(gulp.dest(DIST + PATH.LIBS.CSS));
+gulp.task(TASK.COPY, () => {
+  return gulp.src('./dist/rext.css')
+      .pipe(gulp.dest(DIST + PATH.LIBS.CSS));
+})
 
+gulp.task(TASK.VENDOR, [TASK.COPY], () => {
   gulp.src('./node_modules/font-awesome/css/**/*')
   .pipe(gulp.dest(DIST + PATH.LIBS.CSS));
 

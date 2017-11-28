@@ -7,11 +7,15 @@ html, body {
   margin: 0;
   padding: 0; }
 
-h1, h2, h3, h4, h5, h6, p {
+h1, h2, h3, h4, h5, h6, p, pre, code {
   margin: 0; }
 
 a, a:active, a:hover, a:visited, a:focus {
   color: #6c6c6c; }
+
+ul, ol {
+  margin: 0;
+  padding-left: 2.25rem; }
 
 button {
   cursor: pointer;
@@ -27,14 +31,23 @@ body {
   color: #14171a; }
 
 .nav {
-  background-color: #2c2c2c; }
+  background-color: #2c2c2c;
+  list-style-type: none; }
   .nav .brand {
     font-size: 1.5rem;
     font-weight: bold;
     background-color: #000;
-    color: #fff; }
+    color: #fff;
+    display: block;
+    padding: 0.75rem; }
+  .nav .nav-text {
+    color: #6c6c6c;
+    display: block;
+    padding: 0.75rem; }
   .nav .nav-link {
-    color: #6c6c6c; }
+    color: #6c6c6c;
+    display: block;
+    padding: 0.75rem; }
     .nav .nav-link:hover, .nav .nav-link.active {
       color: #fff; }
 
@@ -200,10 +213,7 @@ body {
 .flex-column {
   flex-direction: column; }
 
-.nav .nav-link, .nav .brand {
-  display: block; }
-
-.nav-link, .brand, .header, .container {
+.header, .container {
   padding: 0.75rem; }
 
 .main {

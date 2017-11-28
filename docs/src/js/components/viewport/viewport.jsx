@@ -3,16 +3,16 @@ import { Container, HashRouter, Link } from '~/rext';
 
 export default class Viewport extends PureComponent {
   render() {
-    return <Container>
-      <header>
-        <div className="brand">Extension React</div>
-        <div className="navbar">
-          <ul className="navbar-nav mr-auto">
-          </ul>
-        </div>
-      </header>
-      <Container layout="column">
-        <aside style={{width:300}}>
+    return <Container layout="column">
+      <Container className="nav" style={{width:300}}>
+        <header>
+          <h1 className="brand">Extension React</h1>
+          <div className="navbar">
+            <ul className="navbar-nav mr-auto">
+            </ul>
+          </div>
+        </header>
+        <nav className="mb-auto d-flex">
           <ul>
             <li><Link to="/" text="GETTING STARTED" /></li>
             <li><span className="nav-text">CORE CONCEPTS</span></li>
@@ -24,14 +24,14 @@ export default class Viewport extends PureComponent {
             <li><Link to="/ui-components/grids" text="Grids" /></li>
             <li><span className="nav-text">API</span></li>
           </ul>
-        </aside>
-        <Container id="main-container">
-          <HashRouter />
-        </Container>
+        </nav>
+        <footer>
+          <div className="nav-text">&copy; 2017 huytrongnguyen</div>
+        </footer>
       </Container>
-      <footer>
-        <div className="row text-center">&copy; 2017 huytrongnguyen</div>
-      </footer>
+      <Container id="main-container">
+        <HashRouter />
+      </Container>
     </Container>
   }
 }
