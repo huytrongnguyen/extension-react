@@ -4,21 +4,21 @@ export class List {
     if (value && value.length) {
       this.data = value;
     }
-    return this;
-  }
 
-  collect() {
-    return this.data;
-  }
-
-  count() {
-    return this.collect().length;
+    this.collect = () => this.data;
+    this.count = () => this.data.length;
+    this.getAt = index => this.data[index];
+    this.add = item => this.data.push(item);
+    this.insert = (item, index = 0) => this.data.splice(index, 0, item);
+    this.removeAt = (index, count = 1) => this.data.splice(index, count);
+    this.join = separator => this.data.join(separator);
   }
 
   each(iteratee) {
-    for (let index = 0, item; (item = this.data[index]) != null; ++index) {
-      iteratee(item, index, this.data);
+    for (let index in this.data) {
+      iteratee(this.data[index], index, this.data);
     }
+    return this;
   }
 
   filter(predicate) {
@@ -40,22 +40,6 @@ export class List {
   reduce(iteratee, accumulator) {
     this.each((item, index, array) => accumulator = iteratee(accumulator, item, index, array));
     return accumulator;
-  }
-
-  getAt(index) {
-    return this.data[index];
-  }
-
-  removeAt(index, count = 1) {
-    return this.data.splice(index, count);
-  }
-
-  add(item) {
-    this.data.push(item);
-  }
-
-  insert(index, item) {
-    this.data.splice(index, 0, item);
   }
 
   findIndex(predicate) {
@@ -86,10 +70,6 @@ export class List {
       }
     });
     this.data = result;
-  }
-
-  join(separator) {
-    return this.data.join(separator);
   }
 }
 

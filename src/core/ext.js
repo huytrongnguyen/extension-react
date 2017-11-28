@@ -1,7 +1,7 @@
 import DOM from './dom';
 import String from './string';
 import List from './list';
-import Map from './map';
+import Dictionary from './dictionary';
 
 class Ext {
   constructor() {
@@ -22,7 +22,8 @@ class Ext {
     this.DOM = DOM;
     this.String = String;
     this.List = List;
-    this.Map = Map;
+    this.Map = Dictionary;
+    this.Provider = new Dictionary();
   }
 
   extend() {

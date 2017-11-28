@@ -24,6 +24,11 @@ const DOCS = 'docs/',
           FONT: 'libs/fonts',
         }
       },
+      TASK = {
+        VENDOR: 'vendor',
+        STYLE: 'style',
+        SCRIPT: 'script'
+      },
       DEPENDENCIES = [
         'babel-polyfill',
         'd3',
@@ -31,7 +36,7 @@ const DOCS = 'docs/',
         'react-dom',
       ];
 
-gulp.task('vendor', () => {
+gulp.task(TASK.VENDOR, () => {
   gulp.src('./dist/rext.css')
     .pipe(gulp.dest(DIST + PATH.LIBS.CSS));
 
@@ -50,11 +55,13 @@ gulp.task('vendor', () => {
                 .pipe(gulp.dest(DIST + PATH.LIBS.JS));
 });
 
-gulp.task('default', () => {
-  gulp.src(SRC + PATH.SCSS)
-    .pipe(sass({ outputStyle: 'compressed' }).on('error', sass.logError))
-    .pipe(gulp.dest(DIST + PATH.STYLE));
+gulp.task(TASK.STYLE, () => {
+  return gulp.src(SRC + PATH.SCSS)
+      .pipe(sass({ outputStyle: 'compressed' }).on('error', sass.logError))
+      .pipe(gulp.dest(DIST + PATH.STYLE));
+});
 
+gulp.task(TASK.SCRIPT, () => {
   const bundler = bundler || browserify({
     entries: SRC + PATH.SCRIPT + '/app.js',
     transform: [babelify],
@@ -70,3 +77,15 @@ gulp.task('default', () => {
     .pipe(streamify(uglify()))
     .pipe(gulp.dest(DIST + PATH.SCRIPT));
 });
+
+gulp.task('watch', [TASK.STYLE, TASK.SCRIPT], () => {
+  // trigger for new or deleted files
+  // 2 things to get this working:
+  //  - Avoid ./ in the file/folder patterns
+  //  - Ensure ./ in the value for cwd
+  const watchOpt = { cwd: './' };
+  gulp.watch(SRC + PATH.SCSS, watchOpt, [TASK.STYLE]);
+  gulp.watch([`${SRC + PATH.SCRIPT}/**/*.js`, `${SRC + PATH.SCRIPT}/**/*.jsx`], watchOpt, [TASK.SCRIPT]);
+});
+
+gulp.task('default', [TASK.VENDOR, TASK.STYLE, TASK.SCRIPT]);

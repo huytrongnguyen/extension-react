@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import Ext from '~/core/ext';
 import List from '~/core/list';
-import Map from '~/core/map';
+import Dictionary from '~/core/dictionary';
 import Observable from '~/reactive/observable';
 
 export default config => Controller => {
@@ -39,7 +39,7 @@ export default config => Controller => {
     }
 
     componentWillUnmount() {
-      Map(this.state.stores).each((storeId, store) => {
+      Dictionary(this.state.stores).each((storeId, store) => {
         store.unsubscribe(this.onDataChanged);
         store.clearData(true);
       })

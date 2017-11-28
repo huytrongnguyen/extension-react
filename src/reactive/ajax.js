@@ -14,7 +14,7 @@ class AjaxObservable {
     });
   }
 
-  subscribe({ next, error, complete }) {
+  async subscribe({ next, error, complete }) {
     try {
       let response;
       try {

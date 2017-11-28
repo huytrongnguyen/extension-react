@@ -1,3 +1,4 @@
+import Operator from './operator';
 import EventObservable from './event';
 import AjaxObservable from './ajax';
 
@@ -15,31 +16,35 @@ import AjaxObservable from './ajax';
  * Operators: Functions used to manipulate an Observable’s output, e.g. filter, map, reduce, etc.
  */
 
-export default class Observable {
-  constructor(subcriber = () => {}) {
-    this.subcriber = subscriber;
-  }
-
-  subscribe({ next, error, complete }) {
-    try {
-      next && next(this.subcriber());
-    } catch (err) {
-      error && error(err)
-    } finally {
-      complete && complete();
-    }
-  }
-
-  unsubscribe() {
-    this.subcriber = null;
+export default class Observable extends Operator {
+  constructor(subcribe) {
+    super();
+    this.subcribe = subscribe;
   }
 
   static create(subscriber) {
     return new Observable(subscriber);
   }
 
+  /**
+   * For example:
+   * const input$ = Observable.fromEvent(document.getElementById('input'), 'change');
+   *
+   * const unsubcribe = input$.subscribe({
+   *    next: e => console.log(e.target.value)
+   * });
+   *
+   * setTimeout(unsubcribe, 5000);
+   *
+   * @param {*} target
+   * @param {*} eventName
+   */
   static fromEvent(target, eventName) {
-    return EventObservable.create(target, eventName);
+    return new Observable(observer => {
+      const callback = e => observer.next(e);
+      target.addEventListener(eventName, callback, false);
+      return () => target.removeEventListener(eventName, callback, false);
+    });
   }
 
   static ajax(urlOrRequest) {

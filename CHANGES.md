@@ -3,8 +3,10 @@
 
   * Refactor `Rext` core
     * Changed in `Ext`, `Rext` is extended from `Ext`
-    * Replace `core/component` with `core/dom`, all the functions like jquery
-    * A little bit change in `core/list`, `core/map`, `core/string`
+    * Replaced `core/component` with `core/dom`, all the functions like jquery
+    * A little bit change in `core/list`, `core/string`
+    * Replaced `core/map` with `core/dictionary`
+    * Implemente `Injectable` and `Inject` as a decorator
   * `Observable` moved from mixin to reactive folder,
     * Renamed to `Subject` and extended from `List`
     * Implement new `Observable` with ReactiveX concept

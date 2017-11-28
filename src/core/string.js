@@ -1,6 +1,6 @@
 class String {
-  capitalize(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
+  constructor() {
+    this.capitalize = value => value.charAt(0).toUpperCase() + value.slice(1);
   }
 
   htmlEncode(value) {
