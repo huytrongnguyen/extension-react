@@ -22,7 +22,6 @@ export default class Viewport extends PureComponent {
             <li><Link to="/architecture" text="ARCHITECTURE" /></li>
             <li><span className="nav-text">UI COMPONENTS</span></li>
             <li><Link to="/ui-components/grids" text="Grids" /></li>
-            <li><span className="nav-text">API</span></li>
           </ul>
         </nav>
         <footer>

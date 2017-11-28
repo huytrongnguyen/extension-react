@@ -158,3 +158,13 @@ body {
     }
   }
 }
+
+pre {
+  background-color: #e0e0e0;
+  padding: $size;
+  border-radius: $size;
+}
+
+pre, code {
+  font-family: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+}

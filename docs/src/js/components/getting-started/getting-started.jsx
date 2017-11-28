@@ -17,13 +17,13 @@ export default class GettingStarted extends PureComponent {
         <p className="mb-md">
           Use <code>npm</code> or <code>yarn</code> to install following dependencies:
           <ul>
-            <li><pre>babel-polyfill</pre></li>
-            <li><pre>babel-preset-env</pre></li>
-            <li><pre>babel-preset-react</pre></li>
-            <li><pre>d3</pre></li>
-            <li><pre>font-awesome</pre></li>
-            <li><pre>react</pre></li>
-            <li><pre>ext-react</pre></li>
+            <li><code>babel-polyfill</code></li>
+            <li><code>babel-preset-env</code></li>
+            <li><code>babel-preset-react</code></li>
+            <li><code>d3</code></li>
+            <li><code>font-awesome</code></li>
+            <li><code>react</code></li>
+            <li><code>ext-react</code></li>
           </ul>
         </p>
         <h3 className="mb-md">2. Create a new project</h3>
