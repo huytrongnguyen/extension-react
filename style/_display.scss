@@ -1,12 +1,40 @@
-@import "variables";
+// @import "variables";
+@import "mixins";
+
+.d-flex { display: flex; @include full-screen(); }
+.flex-row { flex-direction: row; }
+.flex-column { flex-direction: column; }
+// .d-inline-flex { display: inline-flex; }
+
+.scrollable { overflow: auto; }
+
+.container { 
+  padding: $size;
+  .row {
+    margin: 0 (-$size);
+    display: flex;
+    flex-wrap: wrap;
+    [class^=col-] {
+      padding: 0 $size;
+    }
+    .col-auto {
+      flex: auto;
+      width: auto;
+      max-width: none;
+    }
+    @for $i from 1 through 12 {
+      .col-#{$i} {
+        flex: percentage($i / 12);
+        max-width: percentage($i / 12);
+      }
+    }
+  }
+}
 
 @each $side in (top, right, bottom, left) {
   .m#{str-slice($side, 0, 1)}-auto {
     margin-#{$side}: auto;
   }
-}
-
-@each $side in (top, right, bottom, left) {
   .m#{str-slice($side, 0, 1)}-md {
     margin-#{$side}: $size;
   }
@@ -18,53 +46,21 @@
   }
 }
 
-.d-flex {
-  display: flex;
-  @include full-screen();
-}
 
-.d-inline-flex { display: inline-flex; }
 
-.flex-row { flex-direction: row; }
 
-.flex-column { flex-direction: column; }
 
-.header, .container { padding: $size; }
 
-.main { overflow: auto; }
+// .breadcrumb-item+.breadcrumb-item::before {
+//   display: inline-block;
+//   color: $link-color;
+//   padding-left: $size;
+//   content: "\232A";
+// }
 
-.row {
-  margin: 0 (-$size);
-  display: flex;
-  flex-wrap: wrap;
-  [class^=col-] {
-    padding: 0 $size;
-  }
-}
-
-.col-auto {
-  flex: auto;
-  width: auto;
-  max-width: none;
-}
-
-@for $i from 1 through 12 {
-  .col-#{$i} {
-    flex: percentage($i / 12);
-    max-width: percentage($i / 12);
-  }
-}
-
-.breadcrumb-item+.breadcrumb-item::before {
-  display: inline-block;
-  color: $link-color;
-  padding-left: $size;
-  content: "\232A";
-}
-
-.img-thumbnail {
-  padding: $size-sm;
-  background-color: $white;
-  border: $border;
-  border-radius: $size-sm;
-}
+// .img-thumbnail {
+//   padding: $size-sm;
+//   background-color: $white;
+//   border: $border;
+//   border-radius: $size-sm;
+// }

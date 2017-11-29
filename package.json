@@ -18,7 +18,7 @@
   "scripts": {
     "build": "yarn script && yarn style",
     "script": "rm -rf dist/* && babel src -D -d dist",
-    "style": "node-sass --include-path scss style/rext.scss dist/rext.css && gulp copy",
+    "style": "node-sass --include-path scss style/rext.scss dist/css/rext.min.css --output-style compressed && gulp copy",
     "server": "babel-node server.js --presets env"
   },
   "files": [
@@ -45,7 +45,7 @@
     "babel-polyfill": "^6",
     "react": "^16",
     "react-dom": "^16",
-    "font-awesome": "^4",
+    "rxjs": "^5",
     "d3":"^4",
     "babel-cli": "6.26.0",
     "babel-plugin-transform-decorators-legacy": "1.3.4",

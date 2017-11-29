@@ -1,48 +1,48 @@
-@import "variables";
+// @import "variables";
 
-.rx-grid {
-  overflow: hidden;
-  border: $border;
-  .rx-grid-header {
-    @include bg-color();
-    border-bottom: $border;
-    font-weight: bold;
-    .rx-grid-header-container {
-      .rx-grid-header-column {
-        padding: $size-sm;
-        border-right: $border;
-        &:last-child {
-          border-right: none;
-        }
-      }
-    }
-  }
-  .rx-grid-body {
-    overflow-x: auto;
-    overflow-y: scroll;
-    background-color: $white;
-    .rx-grid-view {
-      .rx-grid-row {
-        &:nth-of-type(odd) {
-          background-color: #fafafa;
-        }
-        &:hover {
-          background-color: #efefef;
-        }
-        &.selected {
-          background-color: #e0e0e0;
-        }
-        &:last-child {
-          .rx-grid-cell {
-            border-bottom: 0;
-          }
-        }
-        .rx-grid-cell {
-          padding: $size-sm;
-          border-bottom: $border;
-          border-right: $border;
-        }
-      }
-    }
-  }
-}
+// .rx-grid {
+//   overflow: hidden;
+//   border: $border;
+//   .rx-grid-header {
+//     @include bg-color();
+//     border-bottom: $border;
+//     font-weight: bold;
+//     .rx-grid-header-container {
+//       .rx-grid-header-column {
+//         padding: $size-sm;
+//         border-right: $border;
+//         &:last-child {
+//           border-right: none;
+//         }
+//       }
+//     }
+//   }
+//   .rx-grid-body {
+//     overflow-x: auto;
+//     overflow-y: scroll;
+//     background-color: $white;
+//     .rx-grid-view {
+//       .rx-grid-row {
+//         &:nth-of-type(odd) {
+//           background-color: #fafafa;
+//         }
+//         &:hover {
+//           background-color: #efefef;
+//         }
+//         &.selected {
+//           background-color: #e0e0e0;
+//         }
+//         &:last-child {
+//           .rx-grid-cell {
+//             border-bottom: 0;
+//           }
+//         }
+//         .rx-grid-cell {
+//           padding: $size-sm;
+//           border-bottom: $border;
+//           border-right: $border;
+//         }
+//       }
+//     }
+//   }
+// }

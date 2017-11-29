@@ -35,10 +35,11 @@ const DOCS = 'docs/',
         'd3',
         'react',
         'react-dom',
+        'rxjs',
       ];
 
 gulp.task(TASK.COPY, () => {
-  return gulp.src('./dist/rext.css')
+  return gulp.src('./dist/css/rext.min.css')
       .pipe(gulp.dest(DIST + PATH.LIBS.CSS));
 })
 

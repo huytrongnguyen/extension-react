@@ -5,11 +5,11 @@ import Dictionary from './dictionary';
 
 export class Ext {
   constructor() {
-    this.SCROLL_WIDTH = this.getScrollWidth();
-    this.BORDER_WIDTH = 2;
-    this.CHECK_COLUMN_WIDTH = 33;
-    this.UNKNOWN_ERROR_MSG = 'An unknown error has occurred.';
-    this.XHR = new XMLHttpRequest();
+    // this.SCROLL_WIDTH = this.getScrollWidth();
+    // this.BORDER_WIDTH = 2;
+    // this.CHECK_COLUMN_WIDTH = 33;
+    // this.UNKNOWN_ERROR_MSG = 'An unknown error has occurred.';
+    // this.XHR = new XMLHttpRequest();
 
     this.isPrimitive = value => { const type = typeof value; return type === 'string' || type === 'number' || type === 'boolean'; }
     this.isString = value => (typeof value) === 'string';
@@ -17,18 +17,18 @@ export class Ext {
     this.isObject = value => toString.call(value) === '[object Object]';
     this.isArray = value => toString.call(value) === '[object Array]';
 
-    this.clone = obj => JSON.parse(JSON.stringify(obj)); // deep clone
+    // this.clone = obj => JSON.parse(JSON.stringify(obj)); // deep clone
 
-    this.DOM = DOM;
-    this.String = String;
-    this.List = List;
-    this.Map = Dictionary;
-    this.Provider = new Dictionary();
+    // this.DOM = DOM;
+    // this.String = String;
+    // this.List = List;
+    // this.Map = Dictionary;
+    // this.Provider = new Dictionary();
   }
 
-  extend() {
-    return Object.assign.apply(null, arguments); // immutable object
-  }
+  // extend() {
+  //   return Object.assign.apply(null, arguments); // immutable object
+  // }
 
   initialState(comp, state) {
     if (!comp || !state) { return; }
@@ -66,55 +66,55 @@ export class Ext {
     return div.children[0];
   }
 
-  getEl(selector) {
-    return DOM(selector);
-  }
+  // getEl(selector) {
+  //   return DOM(selector);
+  // }
 
-  getScrollWidth() {
-    const outer = this.createElement('<div style="visibility: hidden; width: 100px; overflow: scroll;"></div>');
-    document.body.appendChild(outer);
-    const widthNoScroll = outer.offsetWidth;
+  // getScrollWidth() {
+  //   const outer = this.createElement('<div style="visibility: hidden; width: 100px; overflow: scroll;"></div>');
+  //   document.body.appendChild(outer);
+  //   const widthNoScroll = outer.offsetWidth;
 
-    // add innerdiv
-    const inner = this.createElement('<div style="width: 100%;"></div>');
-    outer.appendChild(inner);
-    const widthWithScroll = inner.offsetWidth;
+  //   // add innerdiv
+  //   const inner = this.createElement('<div style="width: 100%;"></div>');
+  //   outer.appendChild(inner);
+  //   const widthWithScroll = inner.offsetWidth;
 
-    // remove divs
-    outer.parentNode.removeChild(outer);
+  //   // remove divs
+  //   outer.parentNode.removeChild(outer);
 
-    return widthNoScroll - widthWithScroll;
-  }
+  //   return widthNoScroll - widthWithScroll;
+  // }
   //#endregion
 }
 
 export default new Ext();
 
-export function bind(target, name, descriptor) {
-  const fn = descriptor.value;
+// export function bind(target, name, descriptor) {
+//   const fn = descriptor.value;
 
-  if (typeof fn !== 'function') {
-    throw new Error(`@bind decorator is only applied to functions not: ${typeof fn}`);
-  }
+//   if (typeof fn !== 'function') {
+//     throw new Error(`@bind decorator is only applied to functions not: ${typeof fn}`);
+//   }
 
-  return {
-    configurable: true,
-    get() {
-      return fn.bind(this);
-    }
-  };
-}
+//   return {
+//     configurable: true,
+//     get() {
+//       return fn.bind(this);
+//     }
+//   };
+// }
 
-export function debounce(func, wait = 500) {
-  let timeout;
-  return function() {
-    const context = this,
-          args = arguments,
-          later = function() {
-            func.apply(context, args);
-          }
+// export function debounce(func, wait = 500) {
+//   let timeout;
+//   return function() {
+//     const context = this,
+//           args = arguments,
+//           later = function() {
+//             func.apply(context, args);
+//           }
 
-    clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-  }
-}
+//     clearTimeout(timeout);
+//     timeout = setTimeout(later, wait);
+//   }
+// }

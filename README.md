@@ -17,8 +17,8 @@ Use `npm` or `yarn` to install following dependencies:
   * `babel-preset-env`
   * `babel-preset-react`
   * `d3`
-  * `font-awesome`
   * `react`
+  * `rxjs`
   * `ext-react`
 
 To launch your app, add the following to your `app.js` file
@@ -30,7 +30,9 @@ import React from 'react';
 import Rext from 'ext-react';
 import Viewport from './components/viewport/viewport';
 
-Rext.launch(<Viewport />);
+Rext.application({
+  launch: () => <Viewport />
+});
 ```
 
 ## Core Concepts

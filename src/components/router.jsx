@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react';
+import { Observable } from 'rxjs';
 import Ext from '~/core/ext';
 import List from '~/core/list';
-import Observable from '~/reactive/observable';
+// import Observable from '~/reactive/observable';
 
 const ROUTES = {},
       getRoute = () => window.location.hash.substring(1) || '/',
@@ -30,7 +31,8 @@ export class HashRouter extends PureComponent {
   }
 
   componentDidMount() {
-    Observable.fromEvent(window, 'hashchange').subscribe({ next: () => this.setState(matchPath()) });
+    (!window.location.hash) && (window.location.hash = '/');
+    Observable.fromEvent(window, 'hashchange').subscribe(() => this.setState(matchPath()));
   }
 
   render() {

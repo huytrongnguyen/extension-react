@@ -9,4 +9,6 @@ import './components/getting-started/getting-started';
 // import Architecture from './components/architecture/architecture';
 // import GridComponent from './components/ui-components/grid';
 
-Rext.launch(<Viewport />);
+Rext.application({
+  launch: () => <Viewport />
+});

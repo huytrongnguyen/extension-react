@@ -1,3 +1,17 @@
+## [2.0.x]
+>
+
+  * Change `Rext.launch` to `Rext.application` with new configuration
+  * Refactor `Rext` core
+    * Changed in `Ext`, `Rext` is extended from `Ext`
+  * Apply `rxjs`
+  * Replace `Component` with `PureComponent` in `Link`, `HashRouter`
+  * Refactor `Model`
+  * Refactor `Store`
+    * Separate to multiple class, derived from List: `List` > `AbstractStore` > `ProxyStore` > `Store`
+  * Using function component instead of class component in `core/container`, `core/form`
+  * Update scss
+
 ## [1.8.x]
 >
 
