@@ -35,7 +35,7 @@ export default Store({
       </pre>
       <p className="mb-md">Stores can also load data inline. Internally, Store converts each of the objects we pass in as cfg-data into Model instances:</p>
       <pre className="mb-md">
-;{`import { Store } from 'ext-react'
+{`import { Store } from 'ext-react'
 
 export default Store({
   storeId: 'UserStore',
@@ -97,19 +97,9 @@ export default class Card extends Component {
 }`}
       </pre>
       <p className="mb-md">
-        In this above example, we use <code>subscribe</code> and <code>unsubscribe</code> to update the component whenever data's changed.
+        In this above example, we use <code>subscribe</code> to update the component whenever data's changed.
         Because Store convert data to Model then you need to use <code>get</code> to access data.
-        Here is the <code>card.json</code> file and result:
       </p>
-      <pre className="mb-md">
-{`[
-  {"Id":"soldier_f","Name":"Soldier of Reboldoeux","Type":"Melee","STR":60,"AGI":50,"HP":70,"DEX":40,"INT":30,"SEN":50,"ArmorUsable":"Metal","WeaponUsable":"Polearm"},
-  {"Id":"idgebattle_f","Name":"Idge Imbrulia, the Battlesmith","Type":"Melee","STR":85,"AGI":95,"HP":85,"DEX":40,"INT":30,"SEN":50,"ArmorUsable":"Metal","WeaponUsable":"Greatsword"},
-  {"Id":"brunie_f","Name":"Brunie Etienne","Type":"Shoot","STR":40,"AGI":90,"HP":40,"DEX":70,"INT":30,"SEN":50,"ArmorUsable":"Leather","WeaponUsable":"Pistol"},
-  {"Id":"mifuyu_f","Name":"Asoka","Type":"Melee","STR":85,"AGI":75,"HP":95,"DEX":50,"INT":30,"SEN":50,"ArmorUsable":"Metal","WeaponUsable":"Greatsword"},
-  {"Id":"jin_f","Name":"Jin","Type":"Melee","STR":90,"AGI":80,"HP":80,"DEX":70,"INT":40,"SEN":45,"ArmorUsable":"Leather","WeaponUsable":"Dagger"}
-]`}
-      </pre>
     </Container>
   }
 }

@@ -2,11 +2,11 @@ import { List } from './list';
 
 class DOM extends List {
   show() {
-    this.selectors.each(selector => selector.style.display = 'block');
+    this.data.each(selector => selector.style.display = 'block');
   }
 
   hide() {
-    this.selectors.each(selector => selector.style.display = 'none');
+    this.data.each(selector => selector.style.display = 'none');
   }
 
   // parent() {
@@ -27,4 +27,4 @@ class DOM extends List {
   // }
 }
 
-export default (selector) => new DOM(document.querySelectorAll(selector));
+export default selector => DOM.getEl(selector);

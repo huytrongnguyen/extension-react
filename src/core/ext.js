@@ -1,10 +1,10 @@
-import DOM from './dom';
-import String from './string';
-import List from './list';
-import Dictionary from './dictionary';
-
 export class Ext {
   constructor() {
+    this.DOM = require('./dom').default;
+    this.String = require('./string').default;
+    this.List = require('./list').default;
+    this.Map = require('./dictionary').default;
+
     this.SCROLL_WIDTH = this.getScrollWidth();
     this.BORDER_WIDTH = 2;
     this.CHECK_COLUMN_WIDTH = 33;
@@ -17,12 +17,6 @@ export class Ext {
     this.isArray = value => toString.call(value) === '[object Array]';
 
     this.clone = obj => JSON.parse(JSON.stringify(obj)); // deep clone
-
-    this.DOM = DOM;
-    this.String = String;
-    this.List = List;
-    this.Map = Dictionary;
-    // this.Provider = new Dictionary();
   }
 
   extend() {
@@ -40,7 +34,7 @@ export class Ext {
   className(...expressions) {
     const cls = [];
 
-    List(expressions).each(exp => {
+    Ext.List(expressions).each(exp => {
       if (!exp) {
         return;
       }

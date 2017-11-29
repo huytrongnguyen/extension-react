@@ -30,15 +30,7 @@ export default config => Controller => {
       }, {}));
     }
 
-    componentDidMount() {
-      const { stores } = this.state;
-      for (let storeId in stores) {
-        const store = stores[storeId];
-        store.autoLoad && store.load();
-      }
-    }
-
-    render() {console.log('render wrapped component')
+    render() {
       return <WrappedComponent {...this.state} {...this.props} />;
     }
   }

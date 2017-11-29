@@ -5,14 +5,21 @@ import { Ext } from './core/ext';
 
 class Rext extends Ext {
   constructor() {
-    super();
+    super();console.log(this)
     // this.Cache = require('./data/cache');
     // this.Model = require('./data/model');
     // this.Observable = require('./reactive/observable');
     // this.DialogManager = require('./components/dialog');
   }
 
-  async application({ launch }) {
+  async application({ stores, launch }) {console.log(stores)
+    if (stores) {
+      this.List(stores).reduce((stores, store) => {
+        store = store.default;
+        stores[store.storeId] = store;
+        return stores;
+      }, {})
+    }
     if (launch) {
       const root = this.createElement('<div id="react-root"></div>'),
             viewport = await launch();

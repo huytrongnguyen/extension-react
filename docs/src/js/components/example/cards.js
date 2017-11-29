@@ -4,7 +4,7 @@ import CardStore from './store/card';
 
 class CardView extends PureComponent {
   componentDidMount() {
-    // CardStore.load();
+    CardStore.load();
   }
   render() {console.log('render card view')
     return <section />
