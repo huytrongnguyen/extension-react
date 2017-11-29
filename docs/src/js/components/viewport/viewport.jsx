@@ -12,8 +12,8 @@ export default function Viewport() {
             <span className="nav-text">CORE CONCEPTS</span>
             <ul>
               <li><Link to="/core-concepts/component" text="Component" /></li>
-              <li><Link to="/core-concepts/data-package" text="Data Package" /></li>
               <li><Link to="/core-concepts/screen-navigation" text="Screen Navigation" /></li>
+              <li><Link to="/core-concepts/data-package" text="Data Package" /></li>
             </ul>
           </li>
           <li><Link to="/architecture" text="ARCHITECTURE" /></li>

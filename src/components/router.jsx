@@ -48,8 +48,8 @@ export class HashRouter extends PureComponent {
 }
 
 function matchPath() {
-  const params = {},
-        currentRoute = getRoute();
+  const currentRoute = getRoute(),
+        params = { route: currentRoute };
 
   // basic route (without params)
   if (ROUTES[currentRoute]) {

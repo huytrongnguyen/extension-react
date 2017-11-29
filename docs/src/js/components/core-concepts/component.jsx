@@ -42,8 +42,7 @@ export default class Dashboard {
         Actually, with the above example, it can be implemented like this:
       </p>
       <pre className="mb-md">
-{`// ./components/dashboard/dashboard.js
-import { Component } from 'ext-react';
+{`import { Component } from 'ext-react';
 
 @Component({
   view: ({ $view }) => <h1>{$view.title}</h1>
