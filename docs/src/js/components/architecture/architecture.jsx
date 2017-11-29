@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Route, Container, String } from '~/rext';
+import { Route, Container } from '~/rext';
 
 @Route('/architecture')
 export default class Architecture extends PureComponent {

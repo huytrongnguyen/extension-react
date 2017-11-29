@@ -1,5 +1,6 @@
+import { Observable } from 'rxjs';
 import Ext from '~/core/ext';
-import Ajax from './ajax';
+// import Ajax from './ajax';
 import AbstractStore from './abstract-store';
 
 export default class ProxyStore extends AbstractStore {
@@ -14,35 +15,39 @@ export default class ProxyStore extends AbstractStore {
     //#endregion
   }
 
-  async load({ done, fail, always }) {
-    Observable.ajax(this.proxy).subscribe({
-      next: value => {
-        const { rootProperty, totalProperty } = this.proxy.reader;
-        this.loadData(rootProperty ? response[rootProperty] : response);
-        this.totalCount = (this.pageSize && totalProperty) ? response[totalProperty] : this.count();
-        done && done(this.getRecords());
-      },
-      error: fail,
-      complete: always
+  load() {
+    let { url, method = 'get', responseType = 'json', params } = this.proxy;
+    (method === 'get' && params) && (url = `${url}?${String.toQueryString(params)}`);
+    Observable.ajax({
+      url,
+      method,
+      responseType,
+      body: method === 'post' && params
+    })
+    .map(value => value.response)
+    .subscribe(response => {
+      const { reader: { rootProperty, totalProperty } = {} } = this.proxy;
+      this.loadData(rootProperty ? response[rootProperty] : response);
+      this.totalCount = (this.pageSize && totalProperty) ? response[totalProperty] : this.count();
     });
   }
 
-  loadPage(page) {
-    this.currentPage = page;
-    this.proxy.params = Ext.extend({}, this.proxy.params, { page: this.currentPage, size: this.pageSize });
-    return this.load({});
-  }
+  // loadPage(page) {
+  //   this.currentPage = page;
+  //   this.proxy.params = Ext.extend({}, this.proxy.params, { page: this.currentPage, size: this.pageSize });
+  //   return this.load({});
+  // }
 
-  async sync({ done, fail, always }) {
-    this.proxy.method = 'post';
-    this.proxy.params = this.getModifiedRecords().map(record => record.data).collect();
-    this.proxy.proxy.params.push(...this.getNewRecords().map(record => record.data).collect());
-    const { transform } = proxy.writer;
-    transform && (this.proxy.params = transform(this.proxy.params));
-    Observable.ajax(this.proxy).subscribe({
-      next: done,
-      error: fail,
-      complete: always
-    });
-  }
+  // async sync({ done, fail, always }) {
+  //   this.proxy.method = 'post';
+  //   this.proxy.params = this.getModifiedRecords().map(record => record.data).collect();
+  //   this.proxy.proxy.params.push(...this.getNewRecords().map(record => record.data).collect());
+  //   const { transform } = proxy.writer;
+  //   transform && (this.proxy.params = transform(this.proxy.params));
+  //   Observable.ajax(this.proxy).subscribe({
+  //     next: done,
+  //     error: fail,
+  //     complete: always
+  //   });
+  // }
 }

@@ -38,5 +38,5 @@ export { bind } from './core/ext';
 export { Route } from './components/router';
 export { default as Component } from './app/component';
 // export { default as Service } from './app/service';
-// export { default as Store } from './data/store';
+export { default as Store } from './data/store';
 //#endregion

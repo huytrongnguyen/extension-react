@@ -43,14 +43,14 @@ export class List {
   }
 
   findIndex(predicate) {
-    let index = -1;
-    for (let idx = 0, item; (item = this.data[idx]) != null; ++idx) {
-      if (predicate(item, idx, this.data)) {
-        index = idx;
+    let foundAt = -1;
+    for (let index in this.data) {
+      if (predicate(item, index, this.data)) {
+        foundAt = index;
         break;
       }
     }
-    return index;
+    return foundAt;
   }
 
   find(predicate) {

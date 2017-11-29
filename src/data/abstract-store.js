@@ -1,5 +1,5 @@
+import { Subject } from 'rxjs';
 import { List } from '~/core/list';
-import Subject from '~/reactive/subject';
 import Model from './model';
 
 export default class AbstractStore extends List {
@@ -10,20 +10,19 @@ export default class AbstractStore extends List {
     this.totalCount = 0;
     this.pageSize = 0;
     this.currentPage = 1;
-    this.subject = Subject.create();
+    this.subject = new Subject();
     //#endregion
 
     //#region properties
     //#endregion
 
     //#region methods
-    this.subscribe = observer => this.subject.subscribe(observer);
-    this.unsubscribe = observer => this.subject.unsubscribe(observer);
-    this.fireEvent = () => this.subject.next(this);
     this.createRecord = record => new Model(record, this);
     this.getRecords = this.collect;
     this.getModifiedRecords = () => this.filter(record => record.isModified());
     this.getNewRecords = () => this.filter(record => record.isNewlyCreated());
+    this.subscribe = observer => this.subject.subscribe({ next: value => observer(value) });
+    this.fireEvent = () => this.subject.next(this);
     //#endregion
   }
 

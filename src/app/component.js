@@ -19,7 +19,7 @@ export default config => Controller => {
 
     componentWillMount() {
       this.setStores(List(config.stores).reduce((stores, store) => {
-        store.subscribe(this.onDataChange);
+        store.subscribe(this.onDataChanged);
         stores[store.storeId] = store;
         return stores;
       }, {}));
@@ -30,22 +30,15 @@ export default config => Controller => {
       }, {}));
     }
 
-    async componentDidMount() {
+    componentDidMount() {
       const { stores } = this.state;
       for (let storeId in stores) {
         const store = stores[storeId];
-        store.autoLoad && (await store.load());
+        store.autoLoad && store.load();
       }
     }
 
-    componentWillUnmount() {
-      Dictionary(this.state.stores).each((storeId, store) => {
-        store.unsubscribe(this.onDataChanged);
-        store.clearData(true);
-      })
-    }
-
-    render() {
+    render() {console.log('render wrapped component')
       return <WrappedComponent {...this.state} {...this.props} />;
     }
   }
