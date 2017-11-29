@@ -8,13 +8,21 @@ export default function Viewport() {
       <aside style={{width:300}}>
         <ul className="navbar nav">
           <li><Link to="/" text="GETTING STARTED" /></li>
-          <li><span className="nav-text">CORE CONCEPTS</span></li>
-          <li><Link to="/core-concepts/component" text="Component" /></li>
-          <li><Link to="/core-concepts/data-package" text="Data Package" /></li>
-          <li><Link to="/core-concepts/screen-navigation" text="Screen Navigation" /></li>
+          <li>
+            <span className="nav-text">CORE CONCEPTS</span>
+            <ul>
+              <li><Link to="/core-concepts/component" text="Component" /></li>
+              <li><Link to="/core-concepts/data-package" text="Data Package" /></li>
+              <li><Link to="/core-concepts/screen-navigation" text="Screen Navigation" /></li>
+            </ul>
+          </li>
           <li><Link to="/architecture" text="ARCHITECTURE" /></li>
-          <li><span className="nav-text">UI COMPONENTS</span></li>
-          <li><Link to="/ui-components/grids" text="Grids" /></li>
+          <li>
+            <span className="nav-text">UI COMPONENTS</span>
+            <ul>
+              <li><Link to="/ui-components/grids" text="Grids" /></li>
+            </ul>
+          </li>
         </ul>
       </aside>
       <Container><HashRouter /></Container>

@@ -36,7 +36,7 @@ export { Container } from './components/container';
 //#region Decorator (or Higher Order Function or Higher Order Component)
 export { bind } from './core/ext';
 export { Route } from './components/router';
-// export { default as Component } from './app/component';
+export { default as Component } from './app/component';
 // export { default as Service } from './app/service';
 // export { default as Store } from './data/store';
 //#endregion

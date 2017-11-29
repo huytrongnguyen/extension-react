@@ -2,31 +2,18 @@
 >
 
   * Change `Rext.launch` to `Rext.application` with new configuration
-  * Refactor `Rext` core
-    * Changed in `Ext`, `Rext` is extended from `Ext`
   * Apply `rxjs`
-  * Replace `Component` with `PureComponent` in `Link`, `HashRouter`
-  * Refactor `Model`
-  * Refactor `Store`
-    * Separate to multiple class, derived from List: `List` > `AbstractStore` > `ProxyStore` > `Store`
-  * Using function component instead of class component in `core/container`, `core/form`
   * Update scss
 
 ## [1.8.x]
->
+> Nov 29, 2017
 
   * Refactor `Rext` core
     * Changed in `Ext`, `Rext` is extended from `Ext`
     * Replaced `core/component` with `core/dom`, all the functions like jquery
     * A little bit change in `core/list`, `core/string`
     * Replaced `core/map` with `core/dictionary`
-    * Implemente `Injectable` and `Inject` as a decorator
-  * `Observable` moved from mixin to reactive folder,
-    * Renamed to `Subject` and extended from `List`
-    * Implement new `Observable` with ReactiveX concept
-    * Implement `AjaxObservable` to replace `Ajax` class in `data/ajax`
   * Replace `Component` with `PureComponent` in `Link`, `HashRouter`
-  * Support to set contentType on AJAX request
   * Export `Cache` object
   * Refactor `Model`
   * Refactor `Store`
