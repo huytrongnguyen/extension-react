@@ -27,14 +27,14 @@ export class Ext {
     if (!comp || !state) { return; }
     comp.state = state;
     for (let field of Object.keys(state)) {
-      comp[`set${String.capitalize(field)}`] = value => comp.setState({ [field]: value });
+      comp[`set${this.String.capitalize(field)}`] = value => comp.setState({ [field]: value });
     }
   }
 
   className(...expressions) {
     const cls = [];
 
-    Ext.List(expressions).each(exp => {
+    this.List(expressions).each(exp => {
       if (!exp) {
         return;
       }
