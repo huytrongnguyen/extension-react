@@ -18,6 +18,7 @@ export default class GettingStarted extends PureComponent {
         <li><code>babel-preset-react</code></li>
         <li><code>d3</code></li>
         <li><code>react</code></li>
+        <li><code>react-dom</code></li>
         <li><code>rxjs</code></li>
         <li><code>ext-react</code></li>
       </ul>

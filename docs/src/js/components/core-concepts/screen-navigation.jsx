@@ -27,8 +27,10 @@ Rext.application({
 });
 
 Rext.launch(<Viewport />);
-
-// ./components/viewport.js
+`}
+      </pre>
+      <pre className="mb-md">
+{`// ./components/viewport.js
 import React from 'react';
 import { Link, HashRouter } from 'ext-react';
 
@@ -40,8 +42,10 @@ export default function Viewport() {
     <HashRouter />
   </section>
 }
-
-// ./components/search.js
+`}
+      </pre>
+      <pre className="mb-md">
+{`// ./components/search.js
 import React from 'react';
 import { Route, Component } from 'ext-react';
 
@@ -50,8 +54,10 @@ import { Route, Component } from 'ext-react';
   view: () => <section />
 })
 export default class Search { }
-
-// ./components/details.js
+`}
+      </pre>
+      <pre className="mb-md">
+{`// ./components/details.js
 import React from 'react';
 import { Route, Component } from 'ext-react';
 
@@ -60,8 +66,10 @@ import { Route, Component } from 'ext-react';
   view: ({ params }) => <h1>{params.name}</h1>
 })
 export default class Details { }
-
-// ./components/notfound.js
+`}
+      </pre>
+      <pre className="mb-md">
+{`// ./components/notfound.js
 import React, { PureComponent } from 'react';
 import { Route } from 'ext-react';
 

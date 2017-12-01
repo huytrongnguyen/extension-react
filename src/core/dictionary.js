@@ -3,7 +3,7 @@ import List from './list';
 export class Dictionary {
   constructor(keyValues) {
     this.data = {};
-    if (keyValues && keyValues.length) {
+    if (keyValues) {
       this.data = Object.assign({}, keyValues);
     }
 

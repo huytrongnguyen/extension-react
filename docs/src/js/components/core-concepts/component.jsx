@@ -11,24 +11,20 @@ export default class RextComponent extends PureComponent {
         Here is an example of a component that display a simple string:
       </p>
       <pre className="mb-md">
-{`// ./components/dashboard/dashboard.view.jsx
-import React, { PureComponent } from 'react';
+{`import React, { PureComponent } from 'react';
+import { Component } from 'ext-react';
 
-export default class DashboardView extends PureComponent {
+class DashboardView extends PureComponent {
   render() {
     return <h1>{this.props.$view.title}</h1>;
   }
 }
 
-// ./components/dashboard/dashboard.js
-import { Component } from 'ext-react';
-import DashboardView from './dashboard.view';
-
 @Component({
   view: DashboardView
 })
 export default class Dashboard {
-  constructor(props) {
+  constructor() {
     this.title = 'Dashboard';
   }
 }`}
@@ -48,7 +44,7 @@ export default class Dashboard {
   view: ({ $view }) => <h1>{$view.title}</h1>
 })
 export default class Dashboard {
-  constructor(props) {
+  constructor() {
     this.title = 'Dashboard';
   }
 }`}

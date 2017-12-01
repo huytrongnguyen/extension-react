@@ -29,24 +29,4 @@ export default function Viewport() {
     </Container>
     <footer className="container"><p>&copy; 2017 huytrongnguyen</p></footer>
   </Container>
-  // return <Container layout="column">
-  //   <Container className="nav" style={{width:300}}>
-  //     <header>
-  //       <h1 className="brand">Extension React</h1>
-  //       <div className="navbar">
-  //         <ul className="navbar-nav mr-auto">
-  //         </ul>
-  //       </div>
-  //     </header>
-  //     <nav className="mb-auto d-flex">
-        
-  //     </nav>
-  //     <footer>
-  //       <div className="nav-text">&copy; 2017 huytrongnguyen</div>
-  //     </footer>
-  //   </Container>
-  //   <Container>
-  //     <HashRouter />
-  //   </Container>
-  // </Container>
 }

@@ -5,7 +5,7 @@ import Viewport from './components/viewport/viewport';
 
 Rext.application({
   stores: [
-    require('./components/example/store/card'),
+    require('./components/example/stores/card'),
   ],
   views: [
     require('./components/getting-started/getting-started'),

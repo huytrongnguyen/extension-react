@@ -2,23 +2,24 @@ import 'babel-polyfill';
 import React from 'react';
 import { render } from 'react-dom';
 import { Ext } from './core/ext';
+import StoreManager from './data/store-manager';
 
 class Rext extends Ext {
   constructor() {
-    super();console.log(this)
+    super();
+    this.StoreManager = StoreManager;
     // this.Cache = require('./data/cache');
     // this.Model = require('./data/model');
     // this.Observable = require('./reactive/observable');
     // this.DialogManager = require('./components/dialog');
   }
 
-  async application({ stores, launch }) {console.log(stores)
+  async application({ stores, launch }) {
     if (stores) {
-      this.List(stores).reduce((stores, store) => {
+      this.List(stores).each(store => {
         store = store.default;
-        stores[store.storeId] = store;
-        return stores;
-      }, {})
+        StoreManager.set(store.storeId, store);
+      });
     }
     if (launch) {
       const root = this.createElement('<div id="react-root"></div>'),

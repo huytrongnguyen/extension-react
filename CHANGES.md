@@ -14,10 +14,10 @@
     * A little bit change in `core/list`, `core/string`
     * Replaced `core/map` with `core/dictionary`
   * Replace `Component` with `PureComponent` in `Link`, `HashRouter`
-  * Export `Cache` object
   * Refactor `Model`
   * Refactor `Store`
     * Separate to multiple class, derived from List: `List` > `AbstractStore` > `ProxyStore` > `Store`
+    * Provide StoreManager to initial all stores on first load, support to lookup by store id
   * Using function component instead of class component in `core/container`, `core/form`
   * Update scss
 
