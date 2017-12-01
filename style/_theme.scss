@@ -1,0 +1,12 @@
+@import "variables";
+
+.nav {
+  list-style-type: none;
+  .nav-text, .nav-link {
+    color: $link-color;
+    display: block;
+    padding: $size-sm;
+  }
+}
+
+

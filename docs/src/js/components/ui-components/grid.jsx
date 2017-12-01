@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Route, Container } from '~/rext';
-import UserGrid from './example/user'
 
 @Route('/ui-components/grids')
 export default class GridComponent extends Component {

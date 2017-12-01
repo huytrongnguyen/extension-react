@@ -1,46 +1,24 @@
-const EMPTY_LIST = [];
-
-class List {
+export class List {
   constructor(value) {
-    this.array = EMPTY_LIST;
+    this.data = [];
     if (value && value.length) {
-      this.array = value;
+      this.data = value;
     }
-    return this;
-  }
 
-  collect() {
-    return this.array;
-  }
-
-  count() {
-    return this.array.length;
+    this.collect = () => this.data;
+    this.count = () => this.data.length;
+    this.getAt = index => this.data[index];
+    this.add = item => this.data.push(item);
+    this.insert = (item, index = 0) => this.data.splice(index, 0, item);
+    this.removeAt = (index, count = 1) => this.data.splice(index, count);
+    this.join = separator => this.data.join(separator);
   }
 
   each(iteratee) {
-    for (let index = 0, item; (item = this.array[index]) != null; ++index) {
-      iteratee(item, index, this.array);
+    for (let index in this.data) {
+      iteratee(this.data[index], index, this.data);
     }
-  }
-
-  findIndex(predicate) {
-    let index = -1;
-    for (let idx = 0, item; (item = this.array[idx]) != null; ++idx) {
-      if (predicate(item, idx, this.array)) {
-        index = idx;
-        break;
-      }
-    }
-    return index;
-  }
-
-  find(predicate) {
-    let index = this.findIndex(predicate);
-    return index > -1 ? this.array[index] : null;
-  }
-
-  contains(predicate) {
-    return this.find(predicate) !== null;
+    return this;
   }
 
   filter(predicate) {
@@ -64,24 +42,34 @@ class List {
     return accumulator;
   }
 
-  getAt(index) {
-    return this.array[index];
+  findIndex(predicate) {
+    let foundAt = -1;
+    for (let index in this.data) {
+      if (predicate(this.data[index], index, this.data)) {
+        foundAt = index;
+        break;
+      }
+    }
+    return foundAt;
   }
 
-  removeAt(index, count = 1) {
-    return this.array.splice(index, count);
+  find(predicate) {
+    let index = this.findIndex(predicate);
+    return index > -1 ? this.data[index] : null;
   }
 
-  add(item) {
-    this.array.push(item);
+  contains(predicate) {
+    return this.find(predicate) !== null;
   }
 
-  insert(index, item) {
-    this.array.splice(index, 0, item);
-  }
-
-  join(separator) {
-    return this.array.join(separator);
+  removeIf(predicate) {
+    const result = [];
+    this.each((item, index, array) => {
+      if (!predicate(item, index, array)) {
+        result.push(item);
+      }
+    });
+    this.data = result;
   }
 }
 

@@ -1,77 +1,85 @@
-import React, { Component } from 'react';
-import { Route, Container, String } from '~/rext';
+import React, { PureComponent } from 'react';
+import { Route, Container } from '~/rext';
 
 @Route('/core-concepts/screen-navigation')
-export default class ScreenNavigation extends Component {
+export default class ScreenNavigation extends PureComponent {
   render() {
-    return <Container>
-      <div className="panel-header">
-        <h1 className="panel-title">Screen Navigation</h1>
-      </div>
-      <Container className="panel-body">
-        <ul className="list-style-disc">
-          <li><code>Route</code> decorator is most basic responsibility is to render UI when a location matches the route’s path.</li>
-          <li><code>Link</code> provides declarative, accessible navigation around your application.</li>
-          <li><code>HashRouter</code> uses the hash portion of the URL (i.e. window.location.hash) to keep your UI in sync with the URL.</li>
-        </ul>
-        <pre className="editor">{`// main.js
+    return <Container className="main container scrollable">
+      <h1 className="mb-md">Screen Navigation</h1>
+      <ul className="mb-md">
+        <li><strong><code>Route</code></strong> decorator is most basic responsibility is to render UI when a location matches the route’s path.</li>
+        <li><strong><code>Link</code></strong> provides declarative, accessible navigation around your application.</li>
+        <li><strong><code>HashRouter</code></strong> uses the hash portion of the URL (i.e. window.location.hash) to keep your UI in sync with the URL.</li>
+      </ul>
+      <pre className="mb-md">
+{`// main.js
 import 'babel-polyfill';
 import Rext from 'ext-react';
-import Viewport from './components/viewport/viewport';
-import Search from './components/search/search';
-import Details from './components/search/details';
-import NotFound from './components/notfound/notfound';
+import Viewport from './components/viewport';
+
+Rext.application({
+  views: [
+    require('./components/search'),
+    require('./components/details'),
+    require('./components/notfound'),
+  ],
+  launch: () => <Viewport />
+});
 
 Rext.launch(<Viewport />);
-
-// ./components/viewport/viewport.js
-import React, { Component } from 'react';
+`}
+      </pre>
+      <pre className="mb-md">
+{`// ./components/viewport.js
+import React from 'react';
 import { Link, HashRouter } from 'ext-react';
 
-export default class Viewport extends Component {
-  render() {
-    return <section>
-      <Link to="/">Dashboard</Link>
-      <Link to="/search">Search</Link>
-      <Link to="/details/huynguyen">Details</Link>
-      <HashRouter />
-    </section>;
-  }
+export default function Viewport() {
+  return <section>
+    <Link to="/">Dashboard</Link>
+    <Link to="/search">Search</Link>
+    <Link to="/details/huynguyen">Details</Link>
+    <HashRouter />
+  </section>
 }
+`}
+      </pre>
+      <pre className="mb-md">
+{`// ./components/search.js
+import React from 'react';
+import { Route, Component } from 'ext-react';
 
-// ./components/search/search.js
-import React, { Component } from 'react';
-import { Route } from 'ext-react';
-
-@Route('/')
-export default class Search extends Component {
-  render() {
-    return <section />;
-  }
-}
-
-// ./components/search/detail.js
-import React, { Component } from 'react';
-import { Route } from 'ext-react';
+@Route('/search')
+@Component({
+  view: () => <section />
+})
+export default class Search { }
+`}
+      </pre>
+      <pre className="mb-md">
+{`// ./components/details.js
+import React from 'react';
+import { Route, Component } from 'ext-react';
 
 @Route('/details/:name')
-export default class Detail extends Component {
-  render() {
-    return <h1>{this.props.params.name}</h1>;
-  }
-}
-
-// ./components/notfound/notfound.js
-import React, { Component } from 'react';
+@Component({
+  view: ({ params }) => <h1>{params.name}</h1>
+})
+export default class Details { }
+`}
+      </pre>
+      <pre className="mb-md">
+{`// ./components/notfound.js
+import React, { PureComponent } from 'react';
 import { Route } from 'ext-react';
 
 @Route('*')
-export default class NotFound extends Component {
+export default class NotFound extends PureComponent {
   render() {
-    return <h1>Not Found</h1>;
+    return <h1>'{this.props.params.route}' doesn't exist</h1>
   }
-}`}</pre>
-      </Container>
+}`}
+      </pre>
     </Container>
   }
 }

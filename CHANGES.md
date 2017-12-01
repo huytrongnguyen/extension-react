@@ -1,3 +1,26 @@
+## [2.0.x]
+> Dec 1, 2016
+
+  * Change `Rext.launch` to `Rext.application` with new configuration
+  * Apply `rxjs`
+  * Update scss
+
+## [1.8.x]
+> Nov 29, 2017
+
+  * Refactor `Rext` core
+    * Changed in `Ext`, `Rext` is extended from `Ext`
+    * Replaced `core/component` with `core/dom`, all the functions like jquery
+    * A little bit change in `core/list`, `core/string`
+    * Replaced `core/map` with `core/dictionary`
+  * Replace `Component` with `PureComponent` in `Link`, `HashRouter`
+  * Refactor `Model`
+  * Refactor `Store`
+    * Separate to multiple class, derived from List: `List` > `AbstractStore` > `ProxyStore` > `Store`
+    * Provide StoreManager to initial all stores on first load, support to lookup by store id
+  * Using function component instead of class component in `core/container`, `core/form`
+  * Update scss
+
 ## [1.7.x]
 > Jul 16, 2017
 

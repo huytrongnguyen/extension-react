@@ -1,10 +1,17 @@
-#main-container {
-  >section {
-    > .panel-header {
-      border-bottom: 1px solid #d0d0d0;
-    }
-    > .panel-body {
-      overflow: auto;
-    }
+$border: 1px solid #d6d6d6;
+$white: #fff;
+$size: .75rem;
+
+header { border-bottom: $border; }
+aside { border-right: $border; }
+footer { border-top: $border;}
+
+.main { background-color: $white; }
+
+.navbar {
+  padding-left: $size / 2;
+  ul {
+    list-style-type: none;
+    padding-left: $size;
   }
 }

@@ -1,7 +1,14 @@
 [
-  {"Id":"soldier_f","Name":"Soldier of Reboldoeux","Type":"Melee","STR":60,"AGI":50,"HP":70,"DEX":40,"INT":30,"SEN":50,"ArmorUsable":"Metal","WeaponUsable":"Polearm"},
-  {"Id":"idgebattle_f","Name":"Idge Imbrulia, the Battlesmith","Type":"Melee","STR":85,"AGI":95,"HP":85,"DEX":40,"INT":30,"SEN":50,"ArmorUsable":"Metal","WeaponUsable":"Greatsword"},
-  {"Id":"brunie_f","Name":"Brunie Etienne","Type":"Shoot","STR":40,"AGI":90,"HP":40,"DEX":70,"INT":30,"SEN":50,"ArmorUsable":"Leather","WeaponUsable":"Pistol"},
-  {"Id":"mifuyu_f","Name":"Asoka","Type":"Melee","STR":85,"AGI":75,"HP":95,"DEX":50,"INT":30,"SEN":50,"ArmorUsable":"Metal","WeaponUsable":"Greatsword"},
-  {"Id":"jin_f","Name":"Jin","Type":"Melee","STR":90,"AGI":80,"HP":80,"DEX":70,"INT":40,"SEN":45,"ArmorUsable":"Leather","WeaponUsable":"Dagger"}
+  {"Id":"Fighter_f","Name":"","Type":"Melee","Stance":"","STR":8,"AGI":6,"CON":7,"DEX":6,"INT":4,"SPR":5,"JobSkill":""},
+  {"Id":"Fighter_m","Name":"","Type":"Melee","Stance":"bg_earthtremor","STR":7,"AGI":6,"CON":7,"DEX":6,"INT":4,"SPR":5,"JobSkill":""},
+  {"Id":"Musketeer_f","Name":"","Type":"Range","Stance":"","STR":5,"AGI":7,"CON":5,"DEX":9,"INT":3,"SPR":5,"JobSkill":""},
+  {"Id":"Musketeer_m","Name":"","Type":"Range","Stance":"","STR":5,"AGI":7,"CON":5,"DEX":9,"INT":3,"SPR":5,"JobSkill":""},
+  {"Id":"Scout_f","Name":"","Type":"Melee","Stance":"","STR":3,"AGI":7,"CON":9,"DEX":7,"INT":7,"SPR":5,"JobSkill":""},
+  {"Id":"Scout_m","Name":"","Type":"Melee","Stance":"","STR":3,"AGI":7,"CON":6,"DEX":7,"INT":5,"SPR":5,"JobSkill":""},
+  {"Id":"Warlock_f","Name":"","Type":"Magic","Stance":"","STR":3,"AGI":6,"CON":5,"DEX":5,"INT":8,"SPR":7,"JobSkill":""},
+  {"Id":"Warlock_m","Name":"","Type":"Magic","Stance":"","STR":3,"AGI":3,"CON":4,"DEX":5,"INT":9,"SPR":8,"JobSkill":""},
+  {"Id":"Wizard_f","Name":"","Type":"Magic","Stance":"","STR":3,"AGI":5,"CON":6,"DEX":4,"INT":7,"SPR":7,"JobSkill":""},
+  {"Id":"Wizard_m","Name":"","Type":"Magic","Stance":"","STR":3,"AGI":5,"CON":4,"DEX":4,"INT":8,"SPR":8,"JobSkill":""},
+  {"Id":"Soldier_f","Name":"Soldier of Reboldoeux","Type":"Melee","Stance":"tor_destruido","STR":60,"AGI":50,"CON":70,"DEX":40,"INT":30,"SPR":50,"JobSkill":"job_tenacity"},
+  {"Id":"Infantry_f","Name":"City of Auch Infantry","Type":"Range","Stance":"fl_shootdown","STR":40,"AGI":50,"CON":50,"DEX":80,"INT":30,"SPR":50,"JobSkill":"job_concentrate"}
 ]

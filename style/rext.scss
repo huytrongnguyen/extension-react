@@ -1,0 +1,11 @@
+@import "variables";
+@import "mixins";
+@import "reboot";
+@import "theme";
+@import "display";
+@import "grid";
+
+#react-root {
+  @include full-screen();
+  overflow: hidden;
+}

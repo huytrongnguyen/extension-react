@@ -1,67 +1,40 @@
-import Component from './component';
-import String from './string';
-import List from './list';
-
-class Ext {
+export class Ext {
   constructor() {
+    this.DOM = require('./dom').default;
+    this.String = require('./string').default;
+    this.List = require('./list').default;
+    this.Map = require('./dictionary').default;
+
     this.SCROLL_WIDTH = this.getScrollWidth();
     this.BORDER_WIDTH = 2;
     this.CHECK_COLUMN_WIDTH = 33;
-  }
+    this.UNKNOWN_ERROR_MSG = 'An unknown error has occurred.';
 
-  getById(id) {
-    return document.getElementById(id);
-  }
+    this.isPrimitive = value => { const type = typeof value; return type === 'string' || type === 'number' || type === 'boolean'; }
+    this.isString = value => (typeof value) === 'string';
+    this.isFunction = value => !!value && typeof value === 'function';
+    this.isObject = value => toString.call(value) === '[object Object]';
+    this.isArray = value => toString.call(value) === '[object Array]';
 
-  getComp(comp) {
-    return new Component(comp);
-  }
-
-  createElement(html) {
-    const div = document.createElement('div');
-    div.innerHTML = html;
-    return div.children[0];
-  }
-
-  append(html) {
-    const dom = this.createElement(html);
-    document.body.appendChild(dom);
-    return dom;
+    this.clone = obj => JSON.parse(JSON.stringify(obj)); // deep clone
   }
 
   extend() {
     return Object.assign.apply(null, arguments); // immutable object
   }
 
-  clone(obj) {
-    return JSON.parse(JSON.stringify(obj)); // deep clone
+  initialState(comp, state) {
+    if (!comp || !state) { return; }
+    comp.state = state;
+    for (let field of Object.keys(state)) {
+      comp[`set${this.String.capitalize(field)}`] = value => comp.setState({ [field]: value });
+    }
   }
 
-  isFunction(value) {
-    return !!value && typeof value === 'function';
-  }
-
-  isObject(value) {
-    return toString.call(value) === '[object Object]';
-  }
-
-  isArray(value) {
-    return toString.call(value) === '[object Array]';
-  }
-
-  isPrimitive(value) {
-    const type = typeof value;
-    return type === 'string' || type === 'number' || type === 'boolean';
-  }
-
-  isString(value) {
-    return typeof value === 'string';
-  }
-
-  className(expressions) {
+  className(...expressions) {
     const cls = [];
 
-    List(expressions).each(exp => {
+    this.List(expressions).each(exp => {
       if (!exp) {
         return;
       }
@@ -79,43 +52,58 @@ class Ext {
     return cls.join(' ');
   }
 
-  generateSetter(state, comp) {
-    for (let field of Object.keys(state)) {
-      comp[`set${String.capitalize(field)}`] = (value) => comp.setState(() => ({ [field]: value }));
-    }
-  }
-
-  initialState(comp, state) {
-    comp.state = state;
-    for (let field of Object.keys(state)) {
-      comp[`set${String.capitalize(field)}`] = (value) => comp.setState(() => ({ [field]: value }));
-    }
+  //#region DOM
+  createElement(html) {
+    const div = document.createElement('div');
+    div.innerHTML = html;
+    return div.children[0];
   }
 
   getScrollWidth() {
-    var outer = document.createElement("div");
-    outer.style.visibility = "hidden";
-    outer.style.width = "100px";
-    outer.style.msOverflowStyle = "scrollbar"; // needed for WinJS apps
-
+    const outer = this.createElement('<div style="visibility: hidden; width: 100px; overflow: scroll;"></div>');
     document.body.appendChild(outer);
-
-    var widthNoScroll = outer.offsetWidth;
-    // force scrollbars
-    outer.style.overflow = "scroll";
+    const widthNoScroll = outer.offsetWidth;
 
     // add innerdiv
-    var inner = document.createElement("div");
-    inner.style.width = "100%";
+    const inner = this.createElement('<div style="width: 100%;"></div>');
     outer.appendChild(inner);
-
-    var widthWithScroll = inner.offsetWidth;
+    const widthWithScroll = inner.offsetWidth;
 
     // remove divs
     outer.parentNode.removeChild(outer);
 
     return widthNoScroll - widthWithScroll;
   }
+  //#endregion
 }
 
-export default new Ext;
+export default new Ext();
+
+export function bind(target, name, descriptor) {
+  const fn = descriptor.value;
+
+  if (typeof fn !== 'function') {
+    throw new Error(`@bind decorator is only applied to functions not: ${typeof fn}`);
+  }
+
+  return {
+    configurable: true,
+    get() {
+      return fn.bind(this);
+    }
+  };
+}
+
+export function debounce(func, wait = 500) {
+  let timeout;
+  return function() {
+    const context = this,
+          args = arguments,
+          later = function() {
+            func.apply(context, args);
+          }
+
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  }
+}

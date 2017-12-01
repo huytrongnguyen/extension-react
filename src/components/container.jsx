@@ -1,8 +1,12 @@
-import React, { Component } from 'react';
+import React from 'react';
+import Ext from '~/core/ext';
 
-export default class Container extends Component {
-  render() {
-    const { className = '', hbox, children, ...others } = this.props;
-    return <section className={`d-flex flex-${hbox ? 'row' : 'column'} ${className}`} {...others}>{children}</section>;
-  }
+const LAYOUT_CLASS = {
+  'column': 'flex-row',
+  'row': 'flex-column',
+  'fit': '',
+}
+
+export function Container({ className = '', layout = 'row', children, ...others }) {
+  return <section className={Ext.className('d-flex', LAYOUT_CLASS[layout], className)} {...others}>{children}</section>
 }
