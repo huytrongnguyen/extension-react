@@ -1,6 +1,5 @@
 import { Observable } from 'rxjs';
 import Ext from '~/core/ext';
-// import Ajax from './ajax';
 import AbstractStore from './abstract-store';
 
 export default class ProxyStore extends AbstractStore {

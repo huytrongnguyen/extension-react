@@ -8,10 +8,7 @@ class Rext extends Ext {
   constructor() {
     super();
     this.StoreManager = StoreManager;
-    // this.Cache = require('./data/cache');
-    // this.Model = require('./data/model');
-    // this.Observable = require('./reactive/observable');
-    // this.DialogManager = require('./components/dialog');
+    this.Cache = require('./data/cache').default;
   }
 
   async application({ stores, launch }) {
@@ -36,15 +33,12 @@ export default new Rext();
 export { HashRouter, Link } from './components/router';
 export { Container } from './components/container';
 // export { Button, ButtonLink, Field, TextField, Checkbox, TextArea } from './components/form';
-// export { default as Grid } from './components/grid';
-// export { default as ListView } from './components/list';
-// export { Dialog } from './components/dialog';
+export { default as Grid } from './components/grid/grid';
 //#endregion
 
 //#region Decorator (or Higher Order Function or Higher Order Component)
-export { bind } from './core/ext';
+export { bind, debounce } from './core/ext';
 export { Route } from './components/router';
 export { default as Component } from './app/component';
-// export { default as Service } from './app/service';
 export { default as Store } from './data/store';
 //#endregion

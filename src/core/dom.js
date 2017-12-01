@@ -9,22 +9,22 @@ class DOM extends List {
     this.data.each(selector => selector.style.display = 'none');
   }
 
-  // parent() {
-  //   this.comp = this.comp.parentElement;
-  //   return this;
-  // }
+  parent() {
+    this.comp = this.comp.parentElement;
+    return this;
+  }
 
-  // width() {
-  //   return this.comp.clientWidth;
-  // }
+  width() {
+    return this.comp.clientWidth;
+  }
 
-  // height() {
-  //   return this.comp.clientHeight;
-  // }
+  height() {
+    return this.comp.clientHeight;
+  }
 
-  // find(selector) {
-  //   return this.comp.querySelector(selector);
-  // }
+  find(selector) {
+    return this.comp.querySelector(selector);
+  }
 }
 
 export default selector => DOM.getEl(selector);

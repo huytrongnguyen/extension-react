@@ -35,21 +35,8 @@ export default Store({
 })`}
       </pre>
       <pre className="mb-md">
-{`// ./components/cards.view.jsx
-import React, { PureComponent } from 'react';
-
-export default class CardView extends PureComponent {
-  componentDidMount() {
-    this.props.stores.CardStore.load();
-  }
-  render() {
-    return <section />
-  }
-}`}
-      </pre>
-      <pre>
 {`// ./components/cards.js
-import { Route, Component } from '~/rext';
+import { Route, Component } from 'ext-react';
 
 @Route('/example/cards')
 @Component({
@@ -57,6 +44,25 @@ import { Route, Component } from '~/rext';
   view: CardView
 })
 export default class Card { }`}
+      </pre>
+      <pre>
+{`// ./components/cards.view.jsx
+import React, { PureComponent } from 'react';
+import { Grid } from 'ext-react';
+
+export default class CardView extends PureComponent {
+  componentDidMount() {
+    this.props.stores.CardStore.load();
+  }
+  render() {
+    const {CardStore } = this.props.stores;
+    return <Grid store={CardStore}>
+      <div header="Id" dataIndex="Id" />
+      <div header="Name" dataIndex="Name" />
+      <div header="Type" dataIndex="Type" />
+    </Grid>
+  }
+}`}
       </pre>
     </Container>
   }

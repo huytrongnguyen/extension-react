@@ -1,14 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Route, Component } from '~/rext';
-
-class CardView extends PureComponent {
-  componentDidMount() {
-    this.props.stores.CardStore.load();
-  }
-  render() {
-    return <section />
-  }
-}
+import CardView from './cards.view';
 
 @Route('/example/cards')
 @Component({
