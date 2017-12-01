@@ -5,9 +5,9 @@
   padding: 0;
 }
 
-// @mixin bg-color {
-//   background-color: #f8f8f8;
-//   background-image: -webkit-linear-gradient(top, #f0f0f0, #ddd);
-//   background-image: -moz-linear-gradient(top, #f0f0f0, #ddd);
-//   background-image: linear-gradient(top, #f0f0f0, #ddd);
-// }
+@mixin bg-color {
+  background-color: #f8f8f8;
+  background-image: -webkit-linear-gradient(top, #f0f0f0, #ddd);
+  background-image: -moz-linear-gradient(top, #f0f0f0, #ddd);
+  background-image: linear-gradient(top, #f0f0f0, #ddd);
+}

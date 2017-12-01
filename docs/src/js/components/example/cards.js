@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Route, Component } from '~/rext';
+import { Route, Component, bind } from '~/rext';
 import CardView from './cards.view';
 
 @Route('/example/cards')
@@ -7,4 +7,16 @@ import CardView from './cards.view';
   stores: [ 'CardStore' ],
   view: CardView
 })
-export default class Card { }
+export default class Card {
+  @bind
+  saveChanges() {
+    this.stores.CardStore.sync({
+      fail: err => console.log(err)
+    });
+  }
+
+  @bind
+  rejectChanges() {
+    this.stores.CardStore.rejectChanges();
+  }
+}

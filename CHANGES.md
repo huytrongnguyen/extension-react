@@ -1,5 +1,5 @@
 ## [2.0.x]
->
+> Dec 1, 2016
 
   * Change `Rext.launch` to `Rext.application` with new configuration
   * Apply `rxjs`

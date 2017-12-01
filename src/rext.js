@@ -32,7 +32,7 @@ export default new Rext();
 //#region Component
 export { HashRouter, Link } from './components/router';
 export { Container } from './components/container';
-// export { Button, ButtonLink, Field, TextField, Checkbox, TextArea } from './components/form';
+export { Button, ButtonLink, Field, TextField, Checkbox, TextArea } from './components/form';
 export { default as Grid } from './components/grid/grid';
 //#endregion
 

@@ -18,6 +18,7 @@ Use `npm` or `yarn` to install following dependencies:
   * `babel-preset-react`
   * `d3`
   * `react`
+  * `react-dom`
   * `rxjs`
   * `ext-react`
 
@@ -44,9 +45,14 @@ Full documentation: [https://huytrongnguyen.github.io/extension-react](https://h
 A component in Extension React is the combination of a React Component and a component class that controls a portion of the screen. Here is an example of a component that display a simple string:
 
 ```js
-// ./components/dashboard/dashboard.js
+import React, { PureComponent } from 'react';
 import { Component } from 'ext-react';
-import DashboardView from './dashboard.view';
+
+class DashboardView extends PureComponent {
+  render() {
+    return <h1>{this.props.$view.title}</h1>;
+  }
+}
 
 @Component({
   view: DashboardView
@@ -56,18 +62,24 @@ export default class Dashboard {
     this.title = 'Dashboard';
   }
 }
-
-// ./components/dashboard/dashboard.view.jsx
-import React, { Component } from 'react';
-
-export default class DashboardView extends Component {
-  render() {
-    return <h1>{this.props.$view.title}</h1>;
-  }
-}
 ```
 
 Every component begins with an `@Component` decorator function that takes a *metadata* object. The metadata object describes how the React Component and component class work together. That's mean you can access any property or method of component class via `this.props.$view`.
+
+Actually, with the above example, it can be implemented like this:
+
+```js
+import { Component } from 'ext-react';
+
+@Component({
+  view: ({ $view }) => <h1>{$view.title}</h1>
+})
+export default class Dashboard {
+  constructor() {
+    this.title = 'Dashboard';
+  }
+}
+```
 
 ### Data Package
 
@@ -90,19 +102,19 @@ In the example above we configured an AJAX proxy to load data from the url `/api
 Now, just bind a store to the `Component`:
 
 ```js
-import React, { Component } from 'react';
-import { bind } from 'ext-react';
+import React, { PureComponent } from 'react';
 import CardStore from '~/stores/card';
 
-export default class Card extends Component {
+export default class Card extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.reload = () => this.forceUpdate();
+  }
+
   componentDidMount() {
     CardStore.clearData();
     CardStore.load();
     CardStore.subscribe(this.reload);
-  }
-
-  componentWillUnmount() {
-    CardStore.unsubscribe(this.reload);
   }
 
   render() {
@@ -130,15 +142,10 @@ export default class Card extends Component {
       </section>
     </section>;
   }
-
-  @bind
-  reload() {
-    this.forceUpdate();
-  }
 }
 ```
 
-In this above example, we use `subscribe` and `unsubscribe` to update the component whenever data's changed. Because Store convert data to Model then you need to use `get` to access data.
+In this above example, we use `subscribe` to update the component whenever data's changed. Because Store convert data to Model then you need to use `get` to access data.
 
 ### Screen Navigation
 
@@ -152,10 +159,16 @@ In this above example, we use `subscribe` and `unsubscribe` to update the compon
 // main.js
 import 'babel-polyfill';
 import Rext from 'ext-react';
-import Viewport from './components/viewport/viewport';
-import Search from './components/search/search';
-import Details from './components/search/details';
-import NotFound from './components/notfound/notfound';
+import Viewport from './components/viewport';
+
+Rext.application({
+  views: [
+    require('./components/search'),
+    require('./components/details'),
+    require('./components/notfound'),
+  ],
+  launch: () => <Viewport />
+});
 
 Rext.launch(<Viewport />);
 
@@ -175,35 +188,33 @@ export default class Viewport extends Component {
 }
 
 // ./components/search/search.js
-import React, { Component } from 'react';
-import { Route } from 'ext-react';
+import React from 'react';
+import { Route, Component } from 'ext-react';
 
-@Route('/')
-export default class Search extends Component {
-  render() {
-    return <section />;
-  }
-}
+@Route('/search')
+@Component({
+  view: () => <section />
+})
+export default class Search { }
 
 // ./components/search/detail.js
-import React, { Component } from 'react';
-import { Route } from 'ext-react';
+import React from 'react';
+import { Route, Component } from 'ext-react';
 
 @Route('/details/:name')
-export default class Detail extends Component {
-  render() {
-    return <h1>{this.props.params.name}</h1>;
-  }
-}
+@Component({
+  view: ({ params }) => <h1>{params.name}</h1>
+})
+export default class Details { }
 
 // ./components/notfound/notfound.js
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Route } from 'ext-react';
 
 @Route('*')
-export default class NotFound extends Component {
+export default class NotFound extends PureComponent {
   render() {
-    return <h1>Not Found</h1>;
+    return <h1>'{this.props.params.route}' doesn't exist</h1>
   }
 }
 ```
@@ -214,7 +225,97 @@ Extension React has several build-in components to support for building responsi
 
   * `Grid` are an excellent way of showing large amounts of tabular data on the client side. Essentially a supercharged <table>, `Grid` iss an incredibly versatile component that provides an easy way to display and edit data.
 
+```js
+// ./app.js
+import 'babel-polyfill';
+import React from 'react';
+import Rext from 'ext-react';
+import Viewport from './components/viewport/viewport';
+
+Rext.application({
+  stores: [
+    require('./stores/cards'),
+  ],
+  views: [
+    require('./components/cards'),
+  ],
+  launch: () => <Viewport />
+});
+
+// ./stores/card
+import { Store } from 'ext-react';
+
+export default Store({
+  storeId: 'CardStore',
+  fields: [ 'Name' ],
+  proxy: {
+    url: '/data/card.json'
+  }
+})
+
+// ./components/cards.js
+import { Route, Component } from 'ext-react';
+
+@Route('/example/cards')
+@Component({
+  stores: [ 'CardStore' ],
+  view: CardView
+})
+export default class Card {
+  @bind
+  saveChanges() {
+    this.stores.CardStore.sync({
+      fail: err => console.log(err)
+    });
+  }
+
+  @bind
+  rejectChanges() {
+    this.stores.CardStore.rejectChanges();
+  }
+}
+
+// ./components/cards.view.jsx
+import React, { PureComponent } from 'react';
+import { Grid } from 'ext-react';
+
+export default class CardView extends PureComponent {
+  componentDidMount() {
+    this.props.stores.CardStore.load();
+  }
+  render() {
+    const {CardStore } = this.props.stores;
+    return <Grid store={CardStore}>
+      <div header="Id" dataIndex="Id" />
+      <div header="Name" dataIndex="Name" editable />
+      <div header="Type" dataIndex="Type" />
+    </Grid>
+  }
+}
+```
+
 ## Release Notes
+
+### [2.0.x]
+
+  * Change `Rext.launch` to `Rext.application` with new configuration
+  * Apply `rxjs`
+  * Update scss
+
+### [1.8.x]
+
+  * Refactor `Rext` core
+    * Changed in `Ext`, `Rext` is extended from `Ext`
+    * Replaced `core/component` with `core/dom`, all the functions like jquery
+    * A little bit change in `core/list`, `core/string`
+    * Replaced `core/map` with `core/dictionary`
+  * Replace `Component` with `PureComponent` in `Link`, `HashRouter`
+  * Refactor `Model`
+  * Refactor `Store`
+    * Separate to multiple class, derived from List: `List` > `AbstractStore` > `ProxyStore` > `Store`
+    * Provide StoreManager to initial all stores on first load, support to lookup by store id
+  * Using function component instead of class component in `core/container`, `core/form`
+  * Update scss
 
 ### [1.7.x]
 

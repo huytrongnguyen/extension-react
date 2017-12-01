@@ -38,13 +38,12 @@ export default class AbstractStore extends List {
   }
 
   commitChanges() {
-    this.filter(record => record.isModified() || record.isNewlyCreated()).each(record => record.save());
+    this.getModifiedRecords().each(record => record.save());
     this.fireEvent();
   }
 
   rejectChanges() {
-    this.filter(record => record.isModified()).each(record => record.reject(true));
-    this.data = this.filter(record => !record.isNewlyCreated()).collect();
+    this.getModifiedRecords().each(record => record.reject(true));
     this.fireEvent();
   }
 }

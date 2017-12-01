@@ -45,7 +45,7 @@ export class List {
   findIndex(predicate) {
     let foundAt = -1;
     for (let index in this.data) {
-      if (predicate(item, index, this.data)) {
+      if (predicate(this.data[index], index, this.data)) {
         foundAt = index;
         break;
       }

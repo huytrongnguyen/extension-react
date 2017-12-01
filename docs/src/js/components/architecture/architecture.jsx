@@ -29,6 +29,7 @@ import { Store } from 'ext-react';
 
 export default Store({
   storeId: 'CardStore',
+  fields: [ 'Name' ],
   proxy: {
     url: '/data/card.json'
   }
@@ -43,7 +44,19 @@ import { Route, Component } from 'ext-react';
   stores: [ 'CardStore' ],
   view: CardView
 })
-export default class Card { }`}
+export default class Card {
+  @bind
+  saveChanges() {
+    this.stores.CardStore.sync({
+      fail: err => console.log(err)
+    });
+  }
+
+  @bind
+  rejectChanges() {
+    this.stores.CardStore.rejectChanges();
+  }
+}`}
       </pre>
       <pre>
 {`// ./components/cards.view.jsx
@@ -58,7 +71,7 @@ export default class CardView extends PureComponent {
     const {CardStore } = this.props.stores;
     return <Grid store={CardStore}>
       <div header="Id" dataIndex="Id" />
-      <div header="Name" dataIndex="Name" />
+      <div header="Name" dataIndex="Name" editable />
       <div header="Type" dataIndex="Type" />
     </Grid>
   }

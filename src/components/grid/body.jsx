@@ -12,10 +12,6 @@ export default class GridBody extends PureComponent {
     this.props.store.subscribe(this.onDataChange);
   }
 
-  componentWillUnmount() {
-    this.props.store.unsubscribe(this.onDataChange);
-  }
-
   render() {
     const { columns = [], store } = this.props;
     return <Container layout="row" className="rx-grid-body">

@@ -10,7 +10,6 @@ export default class Model {
     //#region properties
     this.data = data;
     this.store = store;
-    this.idProperty = (store && store.idProperty) ? store.idProperty : 'id';
     const fieldConfig = (store && store.fields) ? store.fields : [];
     this.fields = List(fieldConfig).map(field => Ext.isString(field) ? ({ name: field, type: 'string' }) : field);
     //#endregion
@@ -40,19 +39,16 @@ export default class Model {
     (!silent && this.store) && (this.store.fireEvent());
   }
 
-  isEqual(field) {
-    const oldValue = this.phantom[field.name],
-          newValue = this.data[field.name];
+  isEqual(fieldName) {
+    const oldValue = this.phantom[fieldName],
+          newValue = this.data[fieldName],
+          field = this.fields.find(field => field.name === fieldName);
 
     return field.equals ? field.equals(newValue, oldValue) : newValue === oldValue;
   }
 
   isModified(fieldName) {
-    return this.modified && !this.phantom[this.idProperty]; // should not detect new record as a modified record
-  }
-
-  isNewlyCreated() {
-    return !this.phantom[this.idProperty];
+    return this.modified; // should not detect new record as a modified record
   }
 
   setSelected(selected, silent) {

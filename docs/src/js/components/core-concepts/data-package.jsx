@@ -49,19 +49,19 @@ export default Store({
       </pre>
       <p className="mb-md">Now, just bind a store to the <code>Component</code>:</p>
       <pre className="mb-md">
-{`import React, { Component } from 'react';
-import { bind } from 'ext-react';
+{`import React, { PureComponent } from 'react';
 import CardStore from '~/stores/card';
 
-export default class Card extends Component {
+export default class Card extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.reload = () => this.forceUpdate();
+  }
+
   componentDidMount() {
     CardStore.clearData();
     CardStore.load();
     CardStore.subscribe(this.reload);
-  }
-
-  componentWillUnmount() {
-    CardStore.unsubscribe(this.reload);
   }
 
   render() {
@@ -88,11 +88,6 @@ export default class Card extends Component {
         </section>
       </section>
     </section>;
-  }
-
-  @bind
-  reload() {
-    this.forceUpdate();
   }
 }`}
       </pre>
