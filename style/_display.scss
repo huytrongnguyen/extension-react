@@ -8,7 +8,7 @@
 
 .scrollable { overflow: auto; }
 
-.container { 
+.container {
   padding: $size;
   .row {
     margin: 0 (-$size);
@@ -45,21 +45,3 @@
     text-align: $align;
   }
 }
-
-
-
-
-
-// .breadcrumb-item+.breadcrumb-item::before {
-//   display: inline-block;
-//   color: $link-color;
-//   padding-left: $size;
-//   content: "\232A";
-// }
-
-// .img-thumbnail {
-//   padding: $size-sm;
-//   background-color: $white;
-//   border: $border;
-//   border-radius: $size-sm;
-// }

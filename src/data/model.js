@@ -48,7 +48,7 @@ export default class Model {
   }
 
   isModified(fieldName) {
-    return this.modified; // should not detect new record as a modified record
+    return this.modified;
   }
 
   setSelected(selected, silent) {
