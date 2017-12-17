@@ -19,6 +19,7 @@ export default class AbstractStore extends List {
     //#region methods
     this.createRecord = record => new Model(record, this);
     this.getRecords = this.collect;
+    this.getRawDatas = this.map(record => record.getData()).collect();
     this.getModifiedRecords = () => this.filter(record => record.isModified());
     this.getNewRecords = () => this.filter(record => record.isNewlyCreated());
     this.subscribe = observer => this.subject.subscribe({ next: value => observer(value) });

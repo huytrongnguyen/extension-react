@@ -24,20 +24,20 @@ export default class ProxyStore extends AbstractStore {
       body: method === 'post' && params,
       responseType,
     })
-    .map(value => value.response)
     .subscribe({
-      next: response => {
+      next: value => {
         const { reader: { rootProperty, totalProperty } = {} } = this.proxy;
+        let { response } = value;
+        if (done) { response = done(response)}
         this.loadData(rootProperty ? response[rootProperty] : response);
         this.totalCount = (this.pageSize && totalProperty) ? response[totalProperty] : this.count();
-        done && done(response);
       },
       error: err => fail (err.response || err.message),
       complete: always
     });
   }
 
-  async sync({ done, fail, always } = {}) {
+  sync({ done, fail, always } = {}) {
     const { url, responseType = 'json', writer: { transform } = {} } = this.proxy;
     let params = this.getModifiedRecords().map(record => record.data).collect();console.log(params)
     transform && (params = transform(params));
@@ -48,9 +48,8 @@ export default class ProxyStore extends AbstractStore {
       body: params,
       responseType,
     })
-    .map(value => value.response)
     .subscribe({
-      next: done,
+      next: value => done ? done(value.response) : value.response,
       error: err => fail (err.response || err.message),
       complete: always
     });
