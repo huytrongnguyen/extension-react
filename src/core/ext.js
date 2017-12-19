@@ -17,6 +17,7 @@ export class Ext {
     this.isArray = value => toString.call(value) === '[object Array]';
 
     this.clone = obj => JSON.parse(JSON.stringify(obj)); // deep clone
+    this.delay = ms => new Promise(resolve => setTimeout(resolve, ms));
   }
 
   extend() {

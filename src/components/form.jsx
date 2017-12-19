@@ -1,5 +1,28 @@
 import React from 'react';
 import Ext from '~/core/ext';
+import { Panel } from './container';
+
+export default function Form({ title = 'Form', labelWidth = 4, children, ...others }) {
+  const fields = Rext.List(React.Children.toArray(children)).map(child => child.props).collect();
+
+  return <Panel title={title} {...others}>
+    {fields.map(props => <Field labelWidth={labelWidth} {...props} />)}
+  </Panel>
+}
+
+function Field({ label, labelWidth, type = 'text', value, onChange, children, ...others }) {
+  if (type === 'action') {
+    return <div className="text-center">{children}</div>
+  }
+  return <article className="row form-group">
+    <label className={`col-${labelWidth} form-label text-right`}>{label}</label>
+    <div className={`col-${12 - labelWidth}`}>
+      {(type === 'text') && <TextField value={value} onChange={onChange} {...others} />}
+      {(type === 'checkbox') && <Checkbox checked={value} onCheckChange={onChange} {...others} />}
+      {(type === 'textarea') && <TextArea value={value} onChange={onChange} {...others} />}
+    </div>
+  </article>
+}
 
 export function Button({ className = '', text, children, ...others }) {
   return <button type="button" className={Ext.className('btn', className)} {...others}>
@@ -9,17 +32,6 @@ export function Button({ className = '', text, children, ...others }) {
 
 export function ButtonLink({ text, children, ...others }) {
   return <a href="javascript:void(0)" {...others}>{text || children}</a>
-}
-
-export function Field({ type = 'text', inline = false, label = '', labelWidth = 3, value, onChange, ...others }) {
-  return <article className={Ext.className('form-group', { 'row': inline })}>
-  <label className={Ext.className({ [`col-sm-${labelWidth} text-sm-right`]: inline })}>{label}</label>
-  <div className={Ext.className({ [`col-sm-${12 - labelWidth}`]: inline })}>
-    {(type === 'text') && <TextField value={value} onChange={onChange} {...others} />}
-    {(type === 'checkbox') && <Checkbox value={value} onChange={onChange} {...others} />}
-    {(type === 'textarea') && <TextArea value={value} onChange={onChange} {...others} />}
-  </div>
-</article>
 }
 
 export function TextField({ value = '', className = '', onChange, ...others }) {

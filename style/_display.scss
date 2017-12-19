@@ -4,7 +4,7 @@
 .d-flex { display: flex; @include full-screen(); }
 .flex-row { flex-direction: row; }
 .flex-column { flex-direction: column; }
-// .d-inline-flex { display: inline-flex; }
+.d-inline-flex { display: inline-flex; }
 
 .scrollable { overflow: auto; }
 
@@ -43,5 +43,118 @@
 @each $align in (left, center, right, justify) {
   .text-#{$align} {
     text-align: $align;
+  }
+}
+
+.panel {
+  border: $border;
+  .panel-header {
+    background-image: -webkit-linear-gradient(top, #ededed 0px, #ededed 1px, #e7e7e7 2px, #d1d1d1 100%);
+    border-bottom: $border;
+    padding: $size-sm;
+    text-align: center;
+    font-weight: bold;
+  }
+  .panel-body {
+    .panel-view {
+      padding: $size;
+      overflow: auto;
+    }
+  }
+}
+
+.form-group {
+  margin-bottom: $size-sm !important;
+  .form-label {
+    padding-right: 0 !important;
+  }
+  .form-control {
+    width: 100%;
+  }
+}
+
+.dropdown {
+  height: 25px;
+  .dropdown-inner {
+    display: inline-flex;
+    width: 100%;
+    .dropdown-text {
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-align: left;
+      &.form-control-sm {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        margin-right: -1px;
+        &[readonly] {
+          background-color: $white;
+        }
+        &[disabled] {
+          background-color: #d1d1d1;
+        }
+      }
+    }
+    .dropdown-toggle {
+      width: $size;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      &::after {
+        margin-left: -$size-xs;
+      }
+    }
+  }
+}
+
+.dropdown-menu {
+  width: 100%;
+  font-size: $size;
+  padding: 0;
+  min-width: 6rem;
+  .dropdown-action {
+    padding: $size-sm;
+    border-bottom: $border;
+    .form-control-sm {
+      width: 100%;
+    }
+  }
+  .dropdown-list {
+    overflow: auto;
+    max-height: $size * 10;
+    .dropdown-item {
+      white-space: normal;
+      cursor: pointer;
+      &.selected {
+        background-color: #d3d3d3;
+        border-color: #b3abaa;
+      }
+    }
+  }
+}
+
+.break-word {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
+}
+
+.list-group {
+  .list-group-item{
+    cursor: pointer;
+    &.removable {
+      .form-control-sm {
+        float: left;
+        width: 90%;
+      }
+      .close {
+        font-size: $size-lg;
+      }
+    }
+    &.active {
+      background-color: #d3d3d3;
+      border-color: #b3abaa;
+      color: $night;
+    }
   }
 }

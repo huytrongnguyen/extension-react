@@ -1,0 +1,41 @@
+@import "variables";
+
+.dialog {
+  background-color: $bg-color;
+  border-radius: $size-xs;
+  box-shadow: $box-shadow;
+  width: auto;
+  height: auto;
+  max-height: 95%;
+  .dialog-header {
+    min-height: $size-xl;
+    background-image: -webkit-linear-gradient(top, #ededed 0px, #ededed 1px, #e7e7e7 2px, #d1d1d1 100%);
+    border-bottom: 1px solid #afafaf;
+    border-top: 1px solid #f6f6f6;
+    border-top-left-radius: $size-xs;
+    border-top-right-radius: $size-xs;
+    padding: 0 $size-xl;
+    .dialog-title {
+      font-weight: bold;
+    }
+    .tool {
+      position: absolute;
+      top: $size / 2;
+      right: $size / 2;
+      width: $size;
+      height: $size;
+      font-size: $size;
+      line-height: 0;
+      background-color: $red;
+      border: 1px solid #e2463f;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+  }
+  .dialog-body {
+    padding: $size;
+    .toast-icon {
+      margin-right: $size;
+    }
+  }
+}
