@@ -18,23 +18,22 @@ export default class GridCell extends PureComponent {
 
   render() {
     const { value, readOnly } = this.state,
-          { editable, className = '', render = value => value, record, dataIndex, rowIndex, ...others } = this.props;
+          { editable, noMarkDirty, className = '', render = value => value, record, dataIndex, rowIndex, ...others } = this.props,
+          cls = Ext.className('rx-grid-cell', className, {'modified': !noMarkDirty && dataIndex && (record.isModified(dataIndex))});
 
-    if (editable) {
-      if (readOnly) {
-        return <section className={Ext.className('rx-grid-cell', className)} style={{flex:1}} onClick={() => this.setReadOnly(false)} {...others}>
-          {render(value, record, dataIndex, rowIndex)}
-        </section>
-      } else {
-        return <section className={Ext.className('rx-grid-cell', className)} style={{flex:1}} {...others}>
-          <TextField value={value} autoFocus onChange={this.setValue} onBlur={this.afterEdit} />
-        </section>
-      }
-    } else {
-      return <section className={Ext.className('rx-grid-cell', className)} style={{flex:1}} {...others}>
+    if (!editable) {
+      return <section className={cls} style={{flex:1}} {...others}>
         {render(value, record, dataIndex, rowIndex)}
       </section>
     }
+    if (readOnly) {
+      return <section className={cls} style={{flex:1}} onClick={() => this.setReadOnly(false)} {...others}>
+        {render(value, record, dataIndex, rowIndex)}
+      </section>
+    }
+    return <section className={cls} style={{flex:1}} {...others}>
+      <TextField value={value} autoFocus onChange={this.setValue} onBlur={this.afterEdit} />
+    </section>
   }
 
   @bind

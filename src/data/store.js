@@ -1,11 +1,14 @@
 import Ext from '~/core/ext';
+import AbstractStore from './abstract-store';
 import ProxyStore from './proxy-store';
+import ArrayStore from './array-store';
 
-class Store extends ProxyStore {
-  constructor(config) {
-    super();
-    Ext.extend(this, config);
+export default config => {
+  if (!config.type) {
+    return new ProxyStore(config);
+  } else if (config.type === 'Array') {
+    return new ArrayStore(config);
+  } else {
+    return new AbstractStore(config);
   }
 }
-
-export default config => new Store(config);

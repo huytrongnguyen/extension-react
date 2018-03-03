@@ -25,15 +25,21 @@ Use `npm` or `yarn` to install following dependencies:
 To launch your app, add the following to your `app.js` file
 
 ```js
-// app.js
+// ./app.js
 import 'babel-polyfill';
-import React from 'react';
-import Rext from 'ext-react';
-import Viewport from './components/viewport/viewport';
+import React, { PureComponent } from 'react';
+import { Application } from 'ext-react';
 
-Rext.application({
-  launch: () => <Viewport />
-});
+@Application({
+  views: [
+    require('./components/viewport/viewport'),
+  ],
+})
+export default class App extends PureComponent {
+  render() {
+    return <Viewport />
+  }
+}
 ```
 
 ## Core Concepts
@@ -86,7 +92,6 @@ export default class Dashboard {
 Stores load data via a `Proxy`. Creating a `Store` is easy - we just tell it the `Proxy` to use for loading and saving its data:
 
 ```js
-// ./stores/dashboard.js
 import { Store } from 'ext-react';
 
 export default Store({
@@ -156,21 +161,24 @@ In this above example, we use `subscribe` to update the component whenever data'
 `HashRouter` uses the hash portion of the URL (i.e. window.location.hash) to keep your UI in sync with the URL.
 
 ```js
-// main.js
+// ./app.js
 import 'babel-polyfill';
-import Rext from 'ext-react';
-import Viewport from './components/viewport';
+import React, { PureComponent } from 'react';
+import { Application } from 'ext-react';
 
-Rext.application({
+@Application({
   views: [
+    require('./components/viewport/viewport'),
     require('./components/search'),
     require('./components/details'),
     require('./components/notfound'),
   ],
-  launch: () => <Viewport />
-});
-
-Rext.launch(<Viewport />);
+})
+export default class App extends PureComponent {
+  render() {
+    return <Viewport />
+  }
+}
 
 // ./components/viewport/viewport.js
 import React, { Component } from 'react';
@@ -197,7 +205,7 @@ import { Route, Component } from 'ext-react';
 })
 export default class Search { }
 
-// ./components/search/detail.js
+// /components/search/detail.js
 import React from 'react';
 import { Route, Component } from 'ext-react';
 
@@ -228,19 +236,23 @@ Extension React has several build-in components to support for building responsi
 ```js
 // ./app.js
 import 'babel-polyfill';
-import React from 'react';
-import Rext from 'ext-react';
-import Viewport from './components/viewport/viewport';
+import React, { PureComponent } from 'react';
+import { Application } from 'ext-react';
 
-Rext.application({
+@Application({
   stores: [
     require('./stores/cards'),
   ],
   views: [
+    require('./components/viewport/viewport'),
     require('./components/cards'),
   ],
-  launch: () => <Viewport />
-});
+})
+export default class App extends PureComponent {
+  render() {
+    return <Viewport />
+  }
+}
 
 // ./stores/card
 import { Store } from 'ext-react';
@@ -295,6 +307,10 @@ export default class CardView extends PureComponent {
 ```
 
 ## Release Notes
+
+### [2.1.x]
+
+  * Using `@Application` to launch the app instead of `Rext.application`
 
 ### [2.0.x]
 

@@ -12,22 +12,24 @@ export default class ScreenNavigation extends PureComponent {
         <li><strong><code>HashRouter</code></strong> uses the hash portion of the URL (i.e. window.location.hash) to keep your UI in sync with the URL.</li>
       </ul>
       <pre className="mb-md">
-{`// main.js
+{`// ./app.js
 import 'babel-polyfill';
-import Rext from 'ext-react';
-import Viewport from './components/viewport';
+import React, { PureComponent } from 'react';
+import { Application } from 'ext-react';
 
-Rext.application({
+@Application({
   views: [
+    require('./components/viewport/viewport'),
     require('./components/search'),
     require('./components/details'),
     require('./components/notfound'),
   ],
-  launch: () => <Viewport />
-});
-
-Rext.launch(<Viewport />);
-`}
+})
+export default class App extends PureComponent {
+  render() {
+    return <Viewport />
+  }
+}`}
       </pre>
       <pre className="mb-md">
 {`// ./components/viewport.js
@@ -41,8 +43,7 @@ export default function Viewport() {
     <Link to="/details/huynguyen">Details</Link>
     <HashRouter />
   </section>
-}
-`}
+}`}
       </pre>
       <pre className="mb-md">
 {`// ./components/search.js
@@ -53,8 +54,7 @@ import { Route, Component } from 'ext-react';
 @Component({
   view: () => <section />
 })
-export default class Search { }
-`}
+export default class Search { }`}
       </pre>
       <pre className="mb-md">
 {`// ./components/details.js
@@ -65,8 +65,7 @@ import { Route, Component } from 'ext-react';
 @Component({
   view: ({ params }) => <h1>{params.name}</h1>
 })
-export default class Details { }
-`}
+export default class Details { }`}
       </pre>
       <pre className="mb-md">
 {`// ./components/notfound.js

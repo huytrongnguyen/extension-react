@@ -1,30 +1,12 @@
-import { List } from './list';
+import { List } from './collection';
 
-class DOM extends List {
-  show() {
-    this.data.each(selector => selector.style.display = 'block');
-  }
-
-  hide() {
-    this.data.each(selector => selector.style.display = 'none');
-  }
-
-  parent() {
-    this.comp = this.comp.parentElement;
-    return this;
-  }
-
-  width() {
-    return this.comp.clientWidth;
-  }
-
-  height() {
-    return this.comp.clientHeight;
-  }
-
-  find(selector) {
-    return this.comp.querySelector(selector);
+class Dom extends List {
+  constructor() {
+    super();
+    this.display = status => this.selectors.each(selector => selector.style.display = status);
+    this.show = () => this.display('block');
+    this.hide = () => this.display('hide');
   }
 }
 
-export default selector => DOM.getEl(selector);
+export default (selector) => new Dom(document.querySelectorAll(selector));

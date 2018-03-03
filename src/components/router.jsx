@@ -1,8 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Observable } from 'rxjs';
 import Ext from '~/core/ext';
-import List from '~/core/list';
-// import Observable from '~/reactive/observable';
 
 const ROUTES = {},
       getRoute = () => window.location.hash.substring(1) || '/',
@@ -63,7 +61,7 @@ function matchPath() {
           routePath = mapRoute.path;
 
     let matched = true;
-    List(mapRoute.path).each((routeName, index) => {
+    Ext.List(mapRoute.path).each((routeName, index) => {
       if (routeName !== currentPath[index]) {
         if (routeName.startsWith(':')) { // detect param value
           params[routeName.substring(1)] = currentPath[index];

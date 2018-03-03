@@ -1,5 +1,10 @@
+## [2.1.x]
+> Mar 3, 2018
+
+  * Using `@Application` to launch the app instead of `Rext.application`
+
 ## [2.0.x]
-> Dec 1, 2016
+> Dec 1, 2017
 
   * Change `Rext.launch` to `Rext.application` with new configuration
   * Apply `rxjs`

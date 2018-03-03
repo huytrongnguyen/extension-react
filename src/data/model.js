@@ -1,5 +1,4 @@
 import Ext from '~/core/ext';
-import List from '~/core/list';
 
 export default class Model {
   constructor(data, store) {
@@ -11,7 +10,8 @@ export default class Model {
     this.data = data;
     this.store = store;
     const fieldConfig = (store && store.fields) ? store.fields : [];
-    this.fields = List(fieldConfig).map(field => Ext.isString(field) ? ({ name: field, type: 'string' }) : field);
+    this.fields = Ext.List(fieldConfig).map(field => Ext.isString(field) ? ({ name: field, type: 'string' }) : field);
+    this.idProperty = store ? store.idProperty : 'id';
     //#endregion
 
     //#region methods
@@ -44,11 +44,15 @@ export default class Model {
           newValue = this.data[fieldName],
           field = this.fields.find(field => field.name === fieldName);
 
-    return field.equals ? field.equals(newValue, oldValue) : newValue === oldValue;
+    return (field && field.equals) ? field.equals(newValue, oldValue) : newValue === oldValue;
   }
 
   isModified(fieldName) {
-    return this.modified;
+    if (!this.phantom[this.idProperty]) { // should not detect new record as a modified record
+      return false;
+    }
+
+    return fieldName ? !this.isEqual(fieldName) : this.fields.contains(field => !this.isEqual(field.name));
   }
 
   setSelected(selected, silent) {

@@ -9,19 +9,23 @@ export default class Architecture extends PureComponent {
       <pre className="mb-md">
 {`// ./app.js
 import 'babel-polyfill';
-import React from 'react';
-import Rext from 'ext-react';
-import Viewport from './components/viewport/viewport';
+import React, { PureComponent } from 'react';
+import { Application } from 'ext-react';
 
-Rext.application({
+@Application({
   stores: [
     require('./stores/cards'),
   ],
   views: [
+    require('./components/viewport/viewport'),
     require('./components/cards'),
   ],
-  launch: () => <Viewport />
-});`}
+})
+export default class App extends PureComponent {
+  render() {
+    return <Viewport />
+  }
+}`}
       </pre>
       <pre className="mb-md">
 {`// ./stores/card

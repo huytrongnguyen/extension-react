@@ -1,13 +1,5 @@
-import { Dictionary } from '~/core/dictionary';
+import { Dictionary } from '~/core/collection';
 
-class StoreManager extends Dictionary {
-  set(key, value) {
-    this.data[key] = value;
-  }
-
-  get(key) {
-    return this.data[key];
-  }
-}
+class StoreManager extends Dictionary { }
 
 export default new StoreManager();

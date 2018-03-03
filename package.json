@@ -1,6 +1,6 @@
 {
   "name": "ext-react",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "JavaScript library that build on top of React",
   "main": "dist/rext.js",
   "author": "Lionel Nguyen <huynguyen8505@gmail.com> (https://github.com/huytrongnguyen)",
@@ -19,7 +19,8 @@
     "build": "yarn script && yarn style",
     "script": "rm -rf dist/* && babel src -D -d dist",
     "style": "node-sass --include-path scss style/rext.scss dist/css/rext.min.css --output-style compressed && gulp copy",
-    "server": "babel-node server.js --presets env"
+    "server": "babel-node server.js --presets env",
+    "prepublish": "yarn build"
   },
   "files": [
     "LICENSE",

@@ -63,15 +63,21 @@ export default class GettingStarted extends PureComponent {
       </pre>
       <p className="mb-md">To launch your app, add the following to your <code>app.js</code> file</p>
       <pre>
-{`// app.js
+{`// ./app.js
 import 'babel-polyfill';
-import React from 'react';
-import Rext from 'ext-react';
-import Viewport from './components/viewport/viewport';
+import React, { PureComponent } from 'react';
+import { Application } from 'ext-react';
 
-Rext.application({
-  launch: () => <Viewport />
-});`}
+@Application({
+  views: [
+    require('./components/viewport/viewport'),
+  ],
+})
+export default class App extends PureComponent {
+  render() {
+    return <Viewport />
+  }
+}`}
       </pre>
     </Container>
   }

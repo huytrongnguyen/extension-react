@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import Ext from '~/core/ext';
-import List from '~/core/list';
 import StoreManager from '~/data/store-manager';
 
 export default config => Controller => {
@@ -9,7 +8,7 @@ export default config => Controller => {
   return class HocComponent extends PureComponent {
     constructor(props) {
       super(props);
-      const stores = List(config.stores).reduce((stores, storeId) => {
+      const stores = Ext.List(config.stores).reduce((stores, storeId) => {
               stores[storeId] = StoreManager.get(storeId);
               return stores;
             }, {}),
@@ -20,6 +19,14 @@ export default config => Controller => {
       Ext.initialState(this, {
         stores,
         [config.componentAs || '$view']: controller
+      });
+    }
+
+    componentDidMount() {
+      Ext.Map(this.state.stores).values().each(store => {
+        if (store.autoLoad) {
+          store.load();
+        }
       });
     }
 

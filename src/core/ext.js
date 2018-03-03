@@ -1,13 +1,18 @@
+import { Observable } from 'rxjs';
+import { List, Dictionary } from './collection';
+
 export class Ext {
   constructor() {
     this.DOM = require('./dom').default;
     this.String = require('./string').default;
-    this.List = require('./list').default;
-    this.Map = require('./dictionary').default;
+    this.Ajax = require('~/data/ajax').default;
+    this.List = value => new List(value);
+    this.Map = keyValues => new Dictionary(keyValues);
+    this.StoreManager = new Dictionary();
 
     this.SCROLL_WIDTH = this.getScrollWidth();
     this.BORDER_WIDTH = 2;
-    this.CHECK_COLUMN_WIDTH = 33;
+    this.CHECK_COLUMN_WIDTH = 28;
     this.UNKNOWN_ERROR_MSG = 'An unknown error has occurred.';
 
     this.isPrimitive = value => { const type = typeof value; return type === 'string' || type === 'number' || type === 'boolean'; }
@@ -17,6 +22,8 @@ export class Ext {
     this.isArray = value => toString.call(value) === '[object Array]';
 
     this.clone = obj => JSON.parse(JSON.stringify(obj)); // deep clone
+
+    this.interval = (period, action) => Observable.interval(1000 * period).subscribe(x => action());
   }
 
   extend() {
