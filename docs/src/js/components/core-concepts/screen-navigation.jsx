@@ -16,10 +16,10 @@ export default class ScreenNavigation extends PureComponent {
 import 'babel-polyfill';
 import React, { PureComponent } from 'react';
 import { Application } from 'ext-react';
+import Viewport from './components/viewport/viewport';
 
 @Application({
   views: [
-    require('./components/viewport/viewport'),
     require('./components/search'),
     require('./components/details'),
     require('./components/notfound'),

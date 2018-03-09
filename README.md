@@ -29,12 +29,9 @@ To launch your app, add the following to your `app.js` file
 import 'babel-polyfill';
 import React, { PureComponent } from 'react';
 import { Application } from 'ext-react';
+import Viewport from './components/viewport/viewport';
 
-@Application({
-  views: [
-    require('./components/viewport/viewport'),
-  ],
-})
+@Application()
 export default class App extends PureComponent {
   render() {
     return <Viewport />
@@ -165,10 +162,10 @@ In this above example, we use `subscribe` to update the component whenever data'
 import 'babel-polyfill';
 import React, { PureComponent } from 'react';
 import { Application } from 'ext-react';
+import Viewport from './components/viewport/viewport';
 
 @Application({
   views: [
-    require('./components/viewport/viewport'),
     require('./components/search'),
     require('./components/details'),
     require('./components/notfound'),
@@ -308,17 +305,18 @@ export default class CardView extends PureComponent {
 
 ## Release Notes
 
-### [2.1.x]
+### [2.1.1]
 
   * Using `@Application` to launch the app instead of `Rext.application`
+  * `Ajax` should support to use `async`/`await`
 
-### [2.0.x]
+### [2.0.1]
 
   * Change `Rext.launch` to `Rext.application` with new configuration
   * Apply `rxjs`
   * Update scss
 
-### [1.8.x]
+### [1.8.0]
 
   * Refactor `Rext` core
     * Changed in `Ext`, `Rext` is extended from `Ext`
@@ -333,20 +331,20 @@ export default class CardView extends PureComponent {
   * Using function component instead of class component in `core/container`, `core/form`
   * Update scss
 
-### [1.7.x]
+### [1.7.1]
 
   * Change default component alias to `$view`
   * Add function `Rext.initialState`
   * Update documentation
 
-### [1.6.x]
+### [1.6.2]
   * Provide `Dropdown` component
   * Support `editable` for `Grid`
   * Add function `Rext.generateSetter` to handle `setState` for each field in state
   * Fix issue in routes
   * Update documentation for API
 
-### [1.5.x]
+### [1.5.0]
   * `React.launch` now works with promise function (and `async/await` syntax)
   * Remove `Rext.application` function
   * Small refactor in `List` (`List([1,2,3])` instead of `List.of([1,2,3])`) and `Map` (`Map({a:1})` instead of `Map.of({a:1})`)
@@ -355,28 +353,28 @@ export default class CardView extends PureComponent {
   * Fix issue in `get` and `set` of `Cache`
   * Update documentation for API
 
-### [1.4.x]
+### [1.4.4]
   * Change `Rext.application` to `Rext.launch`, do not need a separate target `<div id="root"/>` in index.html file.
   * Revise `Container` concept and change to `Component`
   * Provide `Container` component and CSS
 
-### [1.3.x]
+### [1.3.4]
   * Correct `List`, `Map`
   * Change `Rext.bootstrap` to `Rext.application` and `init` to `launch`
   * Provide `HashRouter` component and `Router` decorator
   * Revise `Store` with new implementation
   * Update README.md
 
-### [1.2.x]
+### [1.2.1]
   * Fix issue in `router` component
   * Update README.md
   * Improve `Store` and `Observable`
   * Implement `Model`
 
-### [1.1.x]
+### [1.1.0]
   * Implement `Observable`
 
-### [1.0.x]
+### [1.0.0]
   * Change params in `bootstrap` function
   * Implement `Store`, `Container` and `Router`
 

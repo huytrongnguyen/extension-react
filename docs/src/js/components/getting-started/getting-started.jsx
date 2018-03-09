@@ -67,12 +67,9 @@ export default class GettingStarted extends PureComponent {
 import 'babel-polyfill';
 import React, { PureComponent } from 'react';
 import { Application } from 'ext-react';
+import Viewport from './components/viewport/viewport';
 
-@Application({
-  views: [
-    require('./components/viewport/viewport'),
-  ],
-})
+@Application()
 export default class App extends PureComponent {
   render() {
     return <Viewport />

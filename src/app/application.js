@@ -4,7 +4,7 @@ import Ext from '~/core/ext';
 import StoreManager from '~/data/store-manager';
 
 export default config => Viewport => {
-  Ext.List(config.stores).each(store => {
+  (config && config.stores) && Ext.List(config.stores).each(store => {
     store = store.default;
     StoreManager.set(store.storeId, store);
   });

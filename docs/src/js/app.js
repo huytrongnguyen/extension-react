@@ -1,9 +1,9 @@
 import 'babel-polyfill';
-import React from 'react';
-import Rext from '~/rext';
+import React, { PureComponent } from 'react';
+import { Application } from '~/rext';
 import Viewport from './components/viewport/viewport';
 
-Rext.application({
+@Application({
   stores: [
     require('./components/example/stores/card'),
   ],
@@ -20,5 +20,9 @@ Rext.application({
     require('./components/example/notfound'),
     require('./components/example/cards'),
   ],
-  launch: () => <Viewport />
-});
+})
+export default class App extends PureComponent {
+  render() {
+    return <Viewport />
+  }
+}
